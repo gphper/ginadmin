@@ -1,0 +1,267 @@
+/*内页*/
+.wrapper-content{
+    padding: 0;
+}
+.clearfix{
+    clear: both;
+}
+
+/*分页*/
+.recordpage{
+    text-align: center;
+    margin-top: 30px;
+}
+.recordpage span{
+    color: #44b6eb;
+    float: right;
+}
+.pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover, .pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover {
+    background-color: #0054FF !important;
+    border-color: #0054FF !important;
+    color: #fff !important;
+}
+
+/*内页顶部导航*/
+.m-b {
+    margin-bottom: 30px;
+}
+.tabs-container{
+    min-height: 57px;
+    background: #f1f2f7;
+    border-bottom: 1px solid #0054FF;
+    padding: 0 25px;
+}
+.tabs-container .nav-tabs{
+    height: 56px;
+    float: left;
+}
+.nav-tabs > li > a {
+    color: #9b9999;
+    font-size: 18px;
+    line-height: 32px;
+    font-weight: normal;
+    padding: 10px 15px;
+    margin: 0 25px 0 0;
+}
+.nav-tabs > li:last-child >a{
+    margin-right:0;
+}
+.tabs-container .nav-tabs > li.active > a, .tabs-container .nav-tabs > li.active > a:focus, .tabs-container .nav-tabs > li.active > a:hover {
+    color: #2c2b2b;
+    border: 0;
+    background: none;
+    border-bottom: 4px solid #0054FF;
+}
+
+/*内页块*/
+.ibox{
+    padding: 0 25px;
+}
+
+/*表格*/
+.table-new{}
+.table-new thead{
+    background: #2c2b2b !important;
+}
+.table-new th{
+    font-size: 16px;
+    font-weight: normal;
+    color: #fff;
+    height: 50px;
+    text-align: center;
+}
+table.dataTable thead .sorting::after {
+    color: rgba(255, 255, 255, .9);
+
+}
+.table-new th:first-child{
+    border-radius: 10px 0 0 0;
+}
+.table-new th:last-child{
+    border-radius: 0 10px 0 0;
+}
+.table-new td{
+    font-size: 14px;
+    height: 50px;
+    text-align: center;
+    border: 0;
+}
+.table-new tr:nth-child(odd) td{
+    background: #fff;
+}
+.table-new tr:nth-child(even) td{
+    background: #f0f0f0;
+}
+.table-new a{
+    margin: 0 10px;
+}
+.table-new .iconfont,.table-new .fa{
+    color: #44b6eb;
+    font-size: 22px;
+}
+.table-new .iconfont:hover,.table-new .fa:hover{
+    color: #0f60ad;
+}
+
+/*弹出框*/
+.layui-layer-title{
+    /*background: #f1f2f7 !important;*/
+}
+.layui-layer-title img{
+    margin-right: 10px;
+}
+#uploader .placeholder{
+    min-height: 308px !important;
+}
+
+/*表单*/
+.form-control:focus, .single-line:focus {
+    border-color: #44b6eb !important
+}
+.has-success .form-control {
+    border-color: #44b6eb
+}
+.table-from{
+    width: 800px;
+}
+.table-from td{
+    height: 50px;
+    padding: 10px 0;
+}
+.table-from td.tit{
+    font-weight: bold;
+    padding-right: 15px;
+    text-align: right;
+}
+.table-from select{
+    background-color: #FFF;
+    border: 1px solid #e5e6e7;
+    border-radius: 1px;
+    color: inherit;
+    display: block;
+    padding: 6px 12px;
+    -webkit-transition: border-color .15s ease-in-out 0s, box-shadow .15s ease-in-out 0s;
+    transition: border-color .15s ease-in-out 0s, box-shadow .15s ease-in-out 0s;
+    width: 100%;
+    font-size: 14px;
+}
+
+/*筛选*/
+.form-screen{
+    float: right;
+    padding: 0 25px;
+    margin-top: 10px;
+}
+.form-screen label{
+    color: #2c2b2b;
+    height: 34px;
+    line-height: 34px;
+    padding: 0 15px;
+    background: #cfcfcf;
+    display: inline-block;
+    margin: 0;
+    float: left;
+}
+.form-screen .form-control{
+    /*border: 0;*/
+}
+.form-screen select{
+    background-color: #FFF;
+    border: 1px solid #e5e6e7;
+    border-radius: 1px;
+    color: inherit;
+    display: inline-block;
+    padding: 6px 12px;
+    -webkit-transition: border-color .15s ease-in-out 0s, box-shadow .15s ease-in-out 0s;
+    transition: border-color .15s ease-in-out 0s, box-shadow .15s ease-in-out 0s;
+    /*width: 100%;*/
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+/*按钮*/
+.btn-primary,.btn-success {
+    background: #0054FF;
+    border-color: #0054FF;
+}
+.btn-primary.active, .btn-primary:active, .btn-primary:focus, .btn-primary:hover, .open .dropdown-toggle.btn-primary{
+    background: #0f60ad;
+    border-color: #0f60ad;
+}
+.btn-success.active, .btn-success:active, .btn-success:focus, .btn-success:hover, .open .dropdown-toggle.btn-success {
+    background-color: #0f60ad;
+    border-color: #0f60ad;
+}
+.btn-danger.active, .btn-danger:active, .btn-danger:focus, .btn-danger:hover, .open .dropdown-toggle.btn-danger {
+    background-color: #ff2121;
+    border-color: #ff2121;
+}
+.btn{
+    min-width: 100px;
+}
+
+/*日历*/
+.laydate_body .laydate_top {
+    border-top: 1px solid #44b6eb !important;
+    background-color: #44b6eb !important;
+}
+.laydate_body .laydate_ym {
+    border: 1px solid #44b6eb !important;
+    background-color: #44b6eb !important;
+}
+.laydate_body .laydate_ym .laydate_yms {
+    border: 1px solid #44b6eb !important;
+    background-color: #44b6eb !important;
+    color: #fff;
+}
+.laydate_body .laydate_y .laydate_yms a {
+    border-bottom: 1px solid #44b6eb !important;
+}
+.laydate_body .laydate_y .laydate_yms .laydate_chdown {
+    border-top: 1px solid #44b6eb !important;
+    border-bottom: none;
+}
+.laydate_body .laydate_choose {
+    border: 0 !important;
+}
+.laydate_body .laydate_chprev {
+    border-right: 1px solid #44b6eb !important;
+}
+.laydate_body .laydate_choose:hover, .laydate_body .laydate_y .laydate_yms a:hover {
+    background-color: #0f60ad !important;
+}
+.laydate_body .laydate_click {
+    background-color: #44b6eb !important;
+    color: #fff !important;
+}
+.laydate_body .laydate_m .laydate_yms span:hover, .laydate_body .laydate_time .laydate_hmsno span:hover, .laydate_body .laydate_y .laydate_yms ul li:hover, .laydate_body .laydate_table td:hover {
+    background-color: #44b6eb !important;
+    color: #fff !important;
+}
+.laydate_body .laydate_box .laydate_void {
+    color: #44b6eb !important;
+}
+/*.laydate-icon{
+    background: url(../../img/icon_date.png) no-repeat center right #fff !important;
+}*/
+
+/*选项卡*/
+.layui-tab-title .layui-this{
+    color: #fff !important;
+    background: #0054FF !important;
+    border-radius: 2px 2px 0 0;
+}
+.layui-tab-title .layui-this::after{
+    border: 0 !important;
+}
+
+/*蒙语竖向排列*/
+.vtl{
+    -moz-writing-mode: vertical-lr !important;
+    writing-mode: vertical-lr !important;
+    -webkit-writing-mode: vertical-lr !important;
+    -o-writing-mode: vertical-lr !important;
+    -ms-writing-mode: tb-lr !important;
+    writing-mode: tb-lr !important;
+    -webkit-text-orientation: sideways-right !important;
+}

@@ -1,0 +1,195 @@
+/*展览*/
+.exhibition{
+    padding: 0 50px;
+}
+.exhibition-list li{
+    float: left;
+    width: 303px;
+    height: 276px;
+    margin-bottom: 25px;
+    padding: 0 30px;
+}
+.exhibition-list .list-pic{
+    width: 243px;
+    height: 184px;
+    position: relative;
+    background: #000;
+    overflow: hidden;
+}
+.exhibition-list .list-pic > img{
+    width: 243px;
+    height: 184px;
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    -ms-transition: all .3s;
+    transition: all .3s;
+}
+.exhibition-list li:hover .list-pic > img{
+    transform: scale(1.1);
+    opacity: .5;
+}
+.exhibition-list .list-pic .list-type{
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 5px 10px;
+    color: #fff;
+    background: #44b6eb;
+}
+.exhibition-list .list-pic > a{
+    color: #fff;
+    display: none;
+    border: 1px solid #fff;
+    padding: 5px 10px;
+    position: absolute;
+}
+.exhibition-list li:hover .list-pic > a{
+    display: inline-block;
+}
+.exhibition-list .list-pic > a:hover{
+    color: #000;
+    background: #fff;
+}
+.exhibition-list .list-pic .btn-edit{
+    top: 60px;
+    left: 50px;
+}
+.exhibition-list .list-pic .btn-delete{
+    top: 60px;
+    right: 50px;
+}
+.exhibition-list .list-pic .btn-set{
+    top: 110px;
+    left: 24px;
+}
+.exhibition-list .list-pic .btn-order{
+    top: 110px;
+    left: 144px;
+}
+
+.exhibition-list .list-tit{
+    color: #fff;
+    font-size: 16px;
+    background: #44b6eb;
+    height: 92px;
+    line-height: 92px;
+    text-align: center;
+    position: relative;
+    padding: 0 16%;
+}
+.exhibition-list .list-tit:before{
+    content: '';
+    position: absolute;
+    left: 10%;
+    top: 26px;
+    width: 80%;
+    height: 40px;
+    border: 1px solid #fff;
+}
+.exhibition-list .list-tit:after{
+    content: '';
+    position: absolute;
+    left: 15%;
+    top: 21px;
+    width: 70%;
+    height: 50px;
+    border: 1px solid #fff;
+}
+
+/*展品*/
+.exhibit{
+    margin: 0 50px;
+    padding: 30px 20px 5px;
+    border: 1px solid #44b6eb;
+}
+.exhibit-list li{
+    float: left;
+    width: 263px;
+    height: 310px;
+    margin-bottom: 25px;
+    padding: 0 10px;
+}
+.exhibit-list .list-pic{
+    width: 243px;
+    height: 184px;
+    position: relative;
+    background: #000;
+    overflow: hidden;
+}
+.exhibit-list .list-pic > img{
+    width: 243px;
+    height: 184px;
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    -ms-transition: all .3s;
+    transition: all .3s;
+}
+.exhibit-list li:hover .list-pic > img{
+    transform: scale(1.1);
+    opacity: .5;
+}
+.exhibit-list .list-pic > a{
+    color: #fff;
+    display: none;
+    border: 1px solid #fff;
+    padding: 5px 10px;
+    position: absolute;
+}
+.exhibit-list li:hover .list-pic > a{
+    display: inline-block;
+}
+.exhibit-list .list-pic > a:hover{
+    color: #000;
+    background: #fff;
+}
+.exhibit-list .list-pic .btn-edit{
+    top: 60px;
+    left: 50px;
+}
+.exhibit-list .list-pic .btn-delete{
+    top: 60px;
+    right: 50px;
+}
+.exhibit-list .list-pic .btn-set{
+    top: 110px;
+    left: 24px;
+}
+.exhibit-list .list-pic .btn-order{
+    top: 110px;
+    left: 144px;
+}
+.exhibit-list .list-tit{
+    color: #fff;
+    font-size: 16px;
+    background: #44b6eb;
+    height: 42px;
+    line-height: 40px;
+    border-bottom: 1px solid #fff;
+    text-align: center;
+    position: relative;
+    padding: 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+.exhibit-list .list-info{
+    color: #fff;
+    font-size: 14px;
+    background: #44b6eb;
+    height: 84px;
+    line-height: 25px;
+    overflow: hidden;
+    padding: 10px 10px;
+}
+.exhibit-list .list-info span{
+    display: inline-block;
+    width: 109px;
+    height: 25px;
+    padding: 0 5px;
+    overflow: hidden;
+}
+.exhibit-list .list-info span i{
+    margin-right: 5px;
+}

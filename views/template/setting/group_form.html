@@ -1,0 +1,116 @@
+{{define "bodyattr"}}class="gray-bg"{{end}}
+
+{{define "head"}}
+    <style type="text/css">
+        .treeview span.indent {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .treeview span.icon {
+            width: 12px;
+            margin-right: 5px;
+        }
+    </style>
+{{end}}
+
+{{define "body"}}
+<div class="wrapper wrapper-content">
+    <div class="row m-b">
+        <div class="col-sm-12">
+            <div class="tabs-container">
+                <ul class="nav nav-tabs">
+                    <li><a href="/admin/setting/admingroup/index">角色列表</a></li>
+                    <li class="active"><a href="">添加角色</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form action="/admin/setting/admingroup/save" method="post" class="form-horizontal ajaxForm">
+                        <input type="hidden" name="groupid" value="{{.adminGroup.GroupId}}">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">角色名称</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="groupname" value="{{.adminGroup.GroupName}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">权限设置</label>
+                            <div class="col-sm-6 treeview">
+                                <ul class="list-group" name="privs">
+
+                                    {{range $k,$v := .menuList}}
+                                        <li class="list-group-item node-tree">
+                                            <span class="icon expand-icon glyphicon glyphicon-minus"></span>
+                                            <input class="cb" id="layer1_{{$k}}" type="checkbox" name="privs[]" {{if judgeContainPriv $.jsonPrivs .MenuPriv}}checked{{end}} value="{{.MenuPriv}}">
+                                            {{.MenuText}}
+                                        </li>
+                                        {{range $kk,$vv := .Nodes}}
+                                            <li class="list-group-item node-tree">
+                                                <span class="indent"></span>
+                                                <span class="icon glyphicon"></span>
+                                                <input class="cb" id="layer2_{{$k}}_{{$kk}}" type="checkbox" {{if judgeContainPriv $.jsonPrivs .NodePriv}}checked{{end}} name="privs[]" value="{{.NodePriv}}">
+                                                {{.NodeText}}
+                                            </li>
+
+                                            {{range $kkk,$vvv := .PrivChild}}
+                                                <li class="list-group-item node-tree">
+                                                    <span class="indent"></span>
+                                                    <span class="indent"></span>
+                                                    <span class="icon glyphicon"></span>
+                                                    <input id="layer3_{{$k}}_{{$kk}}_{{$kkk}}" type="checkbox" {{if judgeContainPriv $.jsonPrivs .NodeSonPriv}}checked{{end}} name="privs[]" class="cb" value="{{.NodeSonPriv}}">
+                                                    {{.NodeSonText}}
+                                                </li>
+                                            {{end}}
+                                        {{end}}
+
+                                    {{end}}
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-primary" type="submit">添加</button>
+                                <button class="btn btn-white" type="reset">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{end}}
+
+
+{{define "script"}}
+<script type="text/javascript">
+    jQuery(function ($) {
+        $('.cb').click(function () {
+            if (this.id.indexOf('layer1') > -1) {
+                if ($(this).prop("checked")) {
+                    $('.cb[id^=' + this.id.replace('layer1', 'layer2') + ']').prop("checked", true);
+                    $('.cb[id^=' + this.id.replace('layer1', 'layer3') + ']').prop("checked", true);
+                } else {
+                    $('.cb[id^=' + this.id.replace('layer1', 'layer2') + ']').prop("checked", false);
+                    $('.cb[id^=' + this.id.replace('layer1', 'layer3') + ']').prop("checked", false);
+                }
+            }
+            if (this.id.indexOf('layer2') > -1) {
+                if ($(this).prop("checked")) {
+                    $('.cb[id^=' + this.id.replace('layer2', 'layer3') + ']').prop("checked", true);
+                } else {
+                    $('.cb[id^=' + this.id.replace('layer2', 'layer3') + ']').prop("checked", false);
+                }
+            }
+        });
+    });
+</script>
+{{end}}

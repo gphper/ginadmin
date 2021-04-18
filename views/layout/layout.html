@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+
+    <title>{{.title}}</title>
+
+    <link rel="stylesheet" href="/statics/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/statics/js/plugins/laydate/theme/default/laydate.css">
+    <link rel="stylesheet" href="/statics/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/statics/css/animate.min.css">
+    <link rel="stylesheet" href="/statics/css/style.min.css">
+    <link rel="stylesheet" href="/statics/css/common.css">
+    <link rel="stylesheet" href="/statics/js/plugins/layui/css/layui.css">
+    <link rel="stylesheet" href="/statics/css/iconfont.css">
+    <link rel="stylesheet" href="/statics/css/add/base.css">
+    <script src="/statics/js/jquery-1.12.4.min.js"></script>
+    <script src="/statics/js/bootstrap.min.js"></script>
+    <script src="/statics/js/plugins/layer/layer.js"></script>
+    <script src="/statics/js/plugins/layui/layui.js"></script>
+    <script type="text/javascript">
+        jQuery.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        var UPLOAD_URL = '';
+        var UPLOAD_RESOURCE_URL = '';
+    </script>
+    <link rel="stylesheet" href="/statics/js/plugins/webuploader/single.css">
+    <script src="/statics/js/plugins/upload_resource/upload_resource.js"></script>
+
+    {{template "head" .}}
+</head>
+<body {{template "bodyattr" .}}>
+<style>
+    .laydate_body .laydate_box .laydate_void {
+        color: #aaa !important;
+    }
+
+    .laydate_body .laydate_click {
+        background-color: #44b6eb !important;
+        color: #fff !important;
+    }
+</style>
+{{template "body" .}}
+
+<script src="/statics/js/public.js"></script>
+{{template "script" .}}
+</body>
+</html>

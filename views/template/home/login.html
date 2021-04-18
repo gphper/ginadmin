@@ -1,0 +1,25 @@
+{{define "bodyattr"}} {{end}}
+
+{{define "head"}}
+<link rel="stylesheet" href="/statics/css/login.css">
+{{end}}
+
+{{define "body"}}
+<div class="loginscreen">
+    <div class="login">
+        <img src="/statics/img/logo.png" alt="" class="logo">
+{{/*        <h3>后台管理平台</h3>*/}}
+        <form class="m-t" role="form" method="POST" action="/admin/login">
+            <div class="form-group">
+                <input type="text" name="username" class="form-control" placeholder="手机/邮箱/用户名" required value="" autocomplete="off"/>
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="密码" required autocomplete="off"/>
+            </div>
+            <button type="submit" class="btn btn-primary block full-width m-b">登 录</button>
+        </form>
+    </div>
+</div>
+{{end}}
+
+{{define "script"}}{{end}}

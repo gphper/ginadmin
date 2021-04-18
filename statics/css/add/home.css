@@ -1,0 +1,52 @@
+body{ min-width: 1366px; overflow-x: auto;}
+
+#wrapper{ background-color: #fff;}
+
+
+/*头部*/
+.content-tabs{ height: 70px; background: url(../../img/top-bg.png);}
+#logo-img{ margin: 19px 24px 14px 29px;float: left;}
+.content-tabs .title{ font-size: 33px;line-height: 70px;color: #484848;}
+.content-tabs .roll-nav{ display: none;}
+#side-menu{ height: 64px;}
+.clear{ height: 70px; border: none; font-size: 14px; line-height: 70px; color: #4B4B4B;}
+.clear:hover{ background-color: rgba(0,0,0,0);}
+
+.clear .photo{ border-radius: 50%;float: left;margin: 22px 0;}
+.dropdown-menu{ width: 100%; margin: 0;}
+.dropdown-menu>li>a:focus,
+.dropdown-menu>li>a:hover{ background-color: #0054FF; color: #fff;}
+
+/*左侧菜单*/
+body.canvas-menu .navbar-static-side,
+body.fixed-sidebar .navbar-static-side{ width: 250px; margin-top: 70px; padding-top: 0;}
+.navbar-default{ background: url(../../img/nav-bg.png);}
+
+.nav>li{}
+.navbar-default .nav > li > a{ font-size: 18px;font-weight: normal;color: #fff;line-height: 25px;padding: 15px 40px 15px 60px;}
+.navbar-default .nav > li > a:focus,
+.navbar-default .nav > li > a:hover{ background-color: rgba(0,0,0,0); color: #fff;}
+.navbar-default .nav > li > a.active{ color: #fff;background-color: rgba(0,0,0,0.3);}
+.nav > li > a i {
+    width: 35px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 26px;
+    margin-right: 8px;
+    float: left;
+    display: none;
+}
+.navbar-default .nav > li.active{ background-color: rgba(0,0,0,0.3); border: 0}
+.navbar-default .nav > li.active > a{ color: #fff;}
+/*.navbar-default .nav-second-level { padding-bottom: 25px;}*/
+.nav-second-level li a { padding-left: 65px; }
+.navbar-default .child-li a{ width: 100%; font-size: 14px !important;}
+.navbar-default .nav > li > a.J_menuItem.data-a:hover,
+.navbar-default .nav > li > a.J_menuItem.data-a.active{ color: #fff;background: #0054FF;}
+.navbar-default .nav > li > a.J_menuItem.data-a{padding-left: 75px;}
+.nav-second-level li:last-child{ margin-bottom: 0;}
+
+
+/*右侧主题*/
+#page-wrapper{ margin-left: 250px; padding: 0;}
+#page-wrapper .row{ margin: 0;}

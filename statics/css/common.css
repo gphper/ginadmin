@@ -1,0 +1,286 @@
+@charset "utf-8";
+/*
+* 框架主体样式
+*
+*@author yh 20181129
+*@version 1.0.0
+*/
+body {
+    font-family: "Microsoft Yahei" !important;
+    font-size: 14px;
+}
+
+/*系统框架*/
+#logo-img {
+    height: 40px;
+    margin-left: 10px;
+    margin-top: 5px;
+    vertical-align: top;
+}
+
+#wrapper {
+    background-color: #252a2f;
+}
+
+#page-wrapper {
+    margin-left: 200px;
+    height: calc(100% - 60px) !important;
+    margin-top: 50px;
+}
+
+.nav-header {
+    padding: 0;
+}
+.nav-header .fa-cogs{
+    font-size:18px;
+    vertical-align: middle;
+    margin-top: -3px;
+}
+.fa-refresh{
+    font-size:18px;
+    margin-right:5px;
+    vertical-align: middle;
+    margin-top: -3px;
+    display: inline-block;
+    font-style: normal;
+    font-weight: 400;
+}
+#side-menu {
+    position: absolute;
+    width: auto;
+    min-width: 60px;
+    text-align: center;
+    right: 0px;
+    top: 0;
+    line-height: 50px;
+}
+
+.nav-header a {
+    color: #fff;
+}
+
+.content-tabs {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.content-tabs .roll-nav {
+    right: 60px;
+    height: 50px;
+    line-height: 50px;
+    width:84px;
+    color: #fff;
+    padding: 0 18px;
+}
+
+.search-nav {
+    position: absolute;
+    right: 200px;
+    top: 5px;
+    height: 50px;
+    width: 340px;
+    color: #fff;
+    padding: 0 18px;
+}
+
+.search-nav .btn,
+.search-nav .btn:hover {
+    background-color: #02aadb;
+    color: #fff;
+    width: 80px;
+}
+
+.search-nav input {
+    color: #666;
+    width: 200px;
+    display: inline-block;
+    height: 40px;
+}
+
+#header .glyphicon {
+    line-height: 50px;
+    margin-right: 5px;
+}
+
+.fresh {
+    position: relative;
+    top: -1px;
+}
+
+.content-tabs .roll-nav:hover {
+    background: #131619;
+    color: #fff;
+}
+
+.nav-header .text-muted {
+    color: #fff;
+}
+
+.content-tabs .title {
+    color: #fff;
+    margin-left: 10px;
+    display: inline-block;
+    line-height: 50px;
+    font-size: 24px;
+}
+
+.clear {
+    padding: 0 18px;
+    height: 50px;
+    text-align: center;
+    border-right: 1px solid #131619;
+    border-left: 1px solid #131619;
+}
+
+.clear:hover {
+    background: #131619;
+}
+
+.m-t-xs-2 {
+    margin-top: 7px;
+}
+
+.dropdown-menu {
+    margin: 0;
+    right: 0 !important;
+    min-width: 132px;
+    left: auto;
+    padding-bottom: 6px;
+    background: rgb(19, 25, 31);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+
+.dropdown-menu > li > a {
+    font-size: 14px;
+    padding: 3px 10px;
+}
+
+.dropdown-menu i.fa {
+    width: 26px;
+}
+
+.content-tabs {
+    background: #252a2f;
+    position: fixed;
+    top: 0;
+    height: 50px;
+    width: 100%;
+    border-bottom: none;
+}
+
+body.canvas-menu .navbar-static-side,
+body.fixed-sidebar .navbar-static-side {
+    width: 200px;
+    height: calc(100% - 60px);
+    margin-top: 50px;
+    padding-top: 16px;
+}
+
+/*系统框架结束*/
+/*checkbox radio通用样式开始*/
+input[type="checkbox"],
+input[type="radio"] {
+    -webkit-appearance: none;
+    background: #ffffff url(green.png);
+    width: 20px;
+    height: 20px;
+    margin-top: 0;
+    margin-right: 5px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+input[type="checkbox"]:focus,
+input[type="checkbox"]:hover {
+    background-position: -24px 0;
+    outline: none;
+}
+
+input[type="checkbox"]:checked {
+    background-position: -48px 0;
+}
+
+input[type="checkbox"][disabled] {
+    background-position: -72px 0;
+}
+
+input[type="checkbox"][disabled]:checked {
+    background-position: -96px 0;
+}
+
+input[type="radio"] {
+    background-position: -120px 0;
+    outline: none;
+}
+
+input[type="radio"]:focus,
+input[type="radio"]:hover {
+    background-position: -144px 0;
+    outline: none;
+}
+
+input[type="radio"]:checked {
+    background-position: -168px 0;
+}
+
+input[type="radio"][disabled] {
+    background-position: -192px 0;
+}
+
+input[type="radio"][disabled]:checked {
+    background-position: -216px 0;
+}
+
+/*checkbox radio通用样式结束*/
+/*项目中checkbox radio样式*/
+.form-group input[type="checkbox"]:nth-child(n+2),
+.form-group input[type="radio"]:nth-child(n+2) {
+    margin-left: 20px;
+}
+
+.checkbox-inline,
+.radio-inline {
+    cursor: default;
+}
+
+/*项目中checkbox radio样式结束*/
+
+.showmsg-div {
+    width: 400px;
+    padding-top: 100px;
+    padding: 20px;
+    height: auto;
+    min-height: 300px;
+}
+
+.showmsg-div h1 {
+    margin-top: 50px;
+    font-size: 40px;
+    letter-spacing: 5px;
+}
+
+.showmsg-div h1.number {
+    font-size: 75px;
+}
+
+.showmsg-div p {
+    display: table;
+    margin-top: 20px;
+    text-align: justify;
+    word-break: break-all;
+}
+
+.showmsg-div .green {
+    color: #18a689;
+}
+
+.showmsg-div .red {
+    color: red;
+}
+
+.showmsg-div #backBtn {
+    background-color: #00b7ee;
+    border: 1px solid #00b7ee;
+    margin-top: 50px;
+    width: 100px;
+}

@@ -1,0 +1,383 @@
+html{
+	max-width: 900px;
+	margin: 0 auto;
+}
+body {
+	margin: 0;
+	background: url('../../img/ques-bj.png') no-repeat center;
+	background-size: 100% 100%;
+	min-height: 100vh;
+}
+
+.model {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 9;
+	display: none;
+}
+
+.model .model_content {
+	width: 75%;
+	margin: 35% auto 0;
+	text-align: center;
+}
+
+.model .model_content p {
+	font-size: .3rem;
+	color: #C83D45;
+}
+
+.model .model_content img {
+	width: 1.58rem;
+}
+
+.btn {
+	background: #DB3C3C;
+	color: #fff;
+	border-radius: 2rem;
+	margin: .46rem auto;
+	width: 2.52rem;
+}
+.content{
+	padding-top: .46rem;
+}
+.content .intro p {
+	margin: 0;
+	color: #fff;
+}
+
+.content .qusTille {
+	min-height: 2.12rem;
+	line-height: .46rem;
+	font-size: .28rem;
+	color: #434343;
+	margin: 0 .6rem .8rem .6rem;
+}
+
+.content form {
+	width: 85%;
+	height: 55%;
+	margin: 0 auto;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	position: relative;
+	/*overflow: hidden;*/
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	border-radius: 0;
+}
+
+.content form .ques_content {
+	width: 100%;
+	height: 92%;
+	border: none;
+	padding: 15px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	background: #fff;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	box-shadow:0px 0px 20px 0px rgba(0, 0, 0, 0.15);
+	border-radius: 0;
+}
+
+.content form .ques_content>div.ques_item {
+	width: 100%;
+	display: none;
+	max-height: 90%;
+}
+
+.content form .ques_content>div.ques_item .ques_rate {
+	font-size: .3rem;
+	color: #7d7d7d;
+}
+
+.content form .ques_content>div.ques_item h1 {
+	font-size: .3rem;
+	line-height: 1.4;
+	font-weight: normal;
+}
+
+.content form .ques_content>div.ques_item.current {
+	display: block;
+}
+
+.answer_content {
+	font-size: .28rem;
+	margin: .22rem auto;
+	width: 80%;
+	max-height: 90%;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.content form .action_btn {
+	width: 100%;
+	text-align: center;
+	margin-top: .46rem;
+}
+
+.content form .action_btn .btn {
+	color: #fff;
+	font-size: .32rem;
+	width: 2.5rem;
+	max-width: 40%;
+	height: .72rem;
+	border: 0;
+	float: left;
+	display: none;
+}
+
+.content form .action_btn .btn-next,
+.content form .action_btn .btn-next .btn-submit {
+	float: right;
+}
+
+.content form .action_btn .btn.show {
+	display: inline-block;
+	margin: 0 5%;
+}
+
+.btn.btn-prev{
+	background: #997A52;
+}
+
+.content form textarea:focus,
+.content form .action_btn .btn:focus,
+.content form .action_btn .btn:active {
+	outline: none;
+}
+
+/* radio and checkbox */
+.input-wrap {
+	position: relative;
+	width: 90%;
+	line-height: .72rem;
+	padding-left: 25px;
+	margin-left: 2%;
+}
+
+@media screen and (max-width:320px) {
+	.input-wrap {
+		width: 91%;
+	}
+}
+
+input[type="radio"] {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: .72rem;
+	z-index: 10;
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+
+input[type="radio"]+span {
+	position: absolute;
+	left: 3px;
+	top: calc(0.36rem - 7px);
+	display: block;
+	border: 1px solid transparent;
+	background: #FFA749;
+	border-radius: 15px;
+	width: 10px;
+	height: 10px;
+	z-index: 0;
+}
+
+input[type="radio"]:checked+span {
+	left: 0;
+	top: calc(0.36rem - 9px);
+	width: 16px;
+	height: 16px;
+	border: 1px solid #FFA749;
+	background: transparent;
+}
+
+input[type="radio"]:checked+span:after {
+	content: '';
+	display: block;
+	width: 10px;
+	height: 10px;
+	margin-top: 3px;
+	margin-left: 3px;
+	background-color: #FFA749;
+	border-radius: 50%;
+}
+
+input[type="checkbox"] {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: .72rem;
+	z-index: 10;
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+
+input[type="radio"].default,
+input[type="checkbox"].default {
+	width: 15px;
+	height: 15px;
+	opacity: 1;
+	filter: alpha(opacity=1);
+}
+
+input[type="checkbox"]+span {
+	position: absolute;
+	left: 0;
+	top: calc(0.36rem - 9px);
+	display: block;
+	border: 1px solid #FFA749;
+	background: #fff;
+	/*border-radius: 5px;*/
+	width: 16px;
+	height: 16px;
+	z-index: 0;
+	margin-top: -2px;
+}
+
+input[type="checkbox"]:checked+span:after {
+	content: '';
+	display: block;
+	width: 8px;
+	height: 4px;
+	border-left: 3px solid #FFA749;
+	border-bottom: 3px solid #FFA749;
+	transform: rotate(-45deg);
+	margin-left: 3px;
+	margin-top: 4px;
+}
+
+input[type="button"],
+button {
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	-webkit-appearance: none;
+}
+
+input[type="text"] {
+	display: block;
+	width: 80%;
+	height: 28px;
+	padding: 3px;
+	border: 1px solid #FFA749;
+	-webkit-appearance: none;
+}
+
+/*input[type="text"] + input[type="radio"], input[type="text"] + input[type="checkbox"]{
+            height: 0;
+        }
+        input[type="text"] + input[type="radio"] + .input-tag, input[type="text"] + input[type="checkbox"] + .input-tag{
+            display: none;
+        }*/
+
+.moveToLeft {
+	-webkit-animation: moveToLeft .6s ease both;
+	-moz-animation: moveToLeft .6s ease both;
+	animation: moveToLeft .6s ease both;
+}
+
+.moveFromRight {
+	-webkit-animation: moveFromRight .6s ease both;
+	-moz-animation: moveFromRight .6s ease both;
+	animation: moveFromRight .6s ease both;
+}
+
+/*翻页动画效果*/
+/*左出*/
+@-webkit-keyframes moveToLeft {
+	to {
+		-webkit-transform: translateX(-100%);
+	}
+}
+
+@-moz-keyframes moveToLeft {
+	to {
+		-moz-transform: translateX(-100%);
+	}
+}
+
+@keyframes moveToLeft {
+	to {
+		transform: translateX(-100%);
+	}
+}
+
+/*右进*/
+@-webkit-keyframes moveFromRight {
+	from {
+		-webkit-transform: translateX(100%);
+	}
+}
+
+@-moz-keyframes moveFromRight {
+	from {
+		-moz-transform: translateX(100%);
+	}
+}
+
+@keyframes moveFromRight {
+	from {
+		transform: translateX(100%);
+	}
+}
+
+/*左进*/
+@-webkit-keyframes moveFromLeft {
+	from {
+		-webkit-transform: translateX(-100%);
+	}
+}
+
+@-moz-keyframes moveFromLeft {
+	from {
+		-moz-transform: translateX(-100%);
+	}
+}
+
+@keyframes moveFromLeft {
+	from {
+		transform: translateX(-100%);
+	}
+}
+
+/*右出*/
+@-webkit-keyframes moveToRight {
+	to {
+		-webkit-transform: translateX(100%);
+	}
+}
+
+@-moz-keyframes moveToRight {
+	to {
+		-moz-transform: translateX(100%);
+	}
+}
+
+@keyframes moveToRight {
+	to {
+		transform: translateX(100%);
+	}
+}
+
+::-webkit-scrollbar {
+	-webkit-appearance: none;
+	width: 0;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, 0);
+	-webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0);
+}
