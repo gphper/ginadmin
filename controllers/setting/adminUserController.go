@@ -1,7 +1,6 @@
 package setting
 
 import (
-	"fmt"
 	"ginadmin/comment"
 	"ginadmin/controllers"
 	"ginadmin/models"
@@ -27,16 +26,16 @@ func (this *AdminUserController) Index() gin.HandlerFunc {
 		var adminUserList []adminUser
 
 		nickname := c.Query("nickname")
-		created_at := c.Query("created_at")
+		createdAt := c.Query("created_at")
 
-		adminDb := models.Db.Debug().Table("admin_users").Joins("join admin_groups on admin_groups.group_id = admin_users.group_id").Select("admin_users.*,admin_groups.group_name").Where("uid != ?", 1)
-fmt.Println(created_at)
+		adminDb := models.Db.Table("admin_users").Joins("join admin_groups on admin_groups.group_id = admin_users.group_id").Select("admin_users.*,admin_groups.group_name").Where("uid != ?", 1)
+
 		if nickname != ""{
 			adminDb = adminDb.Where("nickname like ?","%"+nickname+"%")
 		}
 
-		if created_at != ""{
-			period := strings.Split(created_at," ~ ")
+		if createdAt != ""{
+			period := strings.Split(createdAt," ~ ")
 			start := period[0]+" 00:00:00"
 			end := period[1]+" 23:59:59"
 			adminDb = adminDb.Where("admin_users.created_at > ? ",start).Where("admin_users.created_at < ?",end)
