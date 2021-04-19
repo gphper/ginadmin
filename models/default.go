@@ -18,7 +18,7 @@ func init(){
 		fmt.Println(err)
 	}
 	//自动注册数据表
-	Db.AutoMigrate(&AdminUsers{},&AdminGroup{})
+	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&AdminUsers{},&AdminGroup{})
 	//注册回调函数
 	RegisterCallback()
 	//填充数据
