@@ -19,6 +19,10 @@
 ### 使用文档
 - [项目目录](#结构)
 - [分页](#分页)
+- [日志](#日志)
+- [数据库](#数据库)
+- [定时任务](#定时任务)
+- [用户权限](#用户权限)
 
 ### <a name="结构">项目目录</a>
 ```
@@ -35,5 +39,27 @@
 |--views //视图模板目录
 ```
 
-
 ### <a name="分页">分页</a>
+
+1.  使用 `comment/util.go` 里面的 `PageOperation` 进行分页
+    ```
+    adminDb := models.Db.Table("admin_users").Select("nickname","username").Where("uid != ?", 1)
+    adminUserData := comment.PageOperation(c, adminDb, 1, &adminUserList)
+    ```
+2.  在html中使用
+    ```
+    {{ .adminUserData.PageHtml }}
+    ```    
+
+### <a name="日志">日志</a>
+1.  自定义日志 在 `comment/loggers` 目录下新建logger
+    ```
+    参考 userlog.go 文件
+    ```
+2.  调用自定义的的logger写日志
+    ```
+    loggers.UserLogger.Info("无法获取网址",
+    zap.String("url", "http://www.baidu.com"),
+    zap.Int("attempt", 3),
+    zap.Duration("backoff", time.Second),)
+    ```

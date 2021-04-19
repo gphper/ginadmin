@@ -41,7 +41,7 @@ func init(){
 
 func getWriter(filename string) io.Writer {
 	hook, err := rotatelogs.New(
-		"./logs/%Y%m%d/admin/"+filename,
+		filename,
 		rotatelogs.WithMaxAge(time.Hour*24*7),
 		rotatelogs.WithRotationTime(time.Hour),
 	)
