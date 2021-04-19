@@ -1,12 +1,14 @@
 package setting
 
 import (
+	"fmt"
 	"ginadmin/comment"
 	"ginadmin/controllers"
 	"ginadmin/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 type AdminUserController struct {
@@ -18,16 +20,29 @@ type AdminUserController struct {
 */
 func (this *AdminUserController) Index() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		p := c.Query("p")
-		page, _ := strconv.Atoi(p)
-
 		type adminUser struct {
 			models.AdminUsers
 			GroupName string
 		}
 		var adminUserList []adminUser
-		adminDb := models.Db.Table("admin_users").Joins("join admin_groups on admin_groups.group_id = admin_users.group_id").Select("admin_users.*,admin_groups.group_name").Where("uid != ?", 1)
-		adminUserData := comment.PageOperation(c, adminDb, 1, page, &adminUserList)
+
+		nickname := c.Query("nickname")
+		created_at := c.Query("created_at")
+
+		adminDb := models.Db.Debug().Table("admin_users").Joins("join admin_groups on admin_groups.group_id = admin_users.group_id").Select("admin_users.*,admin_groups.group_name").Where("uid != ?", 1)
+fmt.Println(created_at)
+		if nickname != ""{
+			adminDb = adminDb.Where("nickname like ?","%"+nickname+"%")
+		}
+
+		if created_at != ""{
+			period := strings.Split(created_at," ~ ")
+			start := period[0]+" 00:00:00"
+			end := period[1]+" 23:59:59"
+			adminDb = adminDb.Where("admin_users.created_at > ? ",start).Where("admin_users.created_at < ?",end)
+		}
+
+		adminUserData := comment.PageOperation(c, adminDb, 1, &adminUserList)
 		c.HTML(http.StatusOK, "adminuser.html", gin.H{
 			"adminUserData": adminUserData,
 			"created_at":    c.Query("created_at"),
@@ -122,7 +137,7 @@ func (this *AdminUserController) Edit() gin.HandlerFunc {
 */
 func (this *AdminUserController) Del() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		id := c.Param("id")
+		id := c.Query("id")
 		models.Db.Where("uid = ?", id).Delete(models.AdminUsers{})
 		this.Success(c, "", "删除成功")
 	}

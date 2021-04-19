@@ -98,7 +98,7 @@ func(con *AdminGroupController) Edit() gin.HandlerFunc{
  */
 func(con *AdminGroupController) Del() gin.HandlerFunc{
 	return func(c *gin.Context) {
-		id := c.Param("id")
+		id := c.Query("id")
 		models.Db.Where("group_id = ?",id).Delete(models.AdminGroup{})
 		con.Success(c,"","删除成功")
 	}

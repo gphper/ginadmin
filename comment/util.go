@@ -72,8 +72,10 @@ type PageData struct {
 	PageCount int
 }
 
-func PageOperation(c *gin.Context, db *gorm.DB, limit int, page int, data interface{}) PageData {
+func PageOperation(c *gin.Context, db *gorm.DB, limit int,data interface{}) PageData {
 	var count float64
+	p := c.Query("p")
+	page, _ := strconv.Atoi(p)
 	db.Offset((page - 1) * limit).Limit(limit).Find(data)
 	db.Count(&count)
 	pageCount := int(math.Ceil(count / float64(limit)))
@@ -85,7 +87,7 @@ func PageOperation(c *gin.Context, db *gorm.DB, limit int, page int, data interf
 			paramUrl += "&" + k + "=" + v[0]
 		}
 	}
-	fmt.Println(paramUrl)
+
 	pageHtml := "<nav aria-label='Page navigation'><ul class='pagination'><li><a href='" + url + "?p=1' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>"
 
 	if pageCount < 5 {
@@ -118,6 +120,11 @@ func PageOperation(c *gin.Context, db *gorm.DB, limit int, page int, data interf
 		}
 	}
 	pageHtml += "<li><a href='" + url + "?p=" + strconv.Itoa(pageCount) + paramUrl + "' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li><li></li></ul></nav>"
+
+	if pageCount == 0{
+		pageHtml = ""
+	}
+
 	return PageData{
 		Count:     1,
 		Data:      data,
