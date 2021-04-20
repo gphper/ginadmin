@@ -9,6 +9,7 @@ import (
 type AppConf struct {
 	MysqlConf `ini:"mysql"`
 	SessionConf `ini:"session"`
+	BaseConf `ini:"base"`
 }
 
 type MysqlConf struct {
@@ -21,6 +22,10 @@ type MysqlConf struct {
 
 type SessionConf struct {
 	SessionName string `ini:"session_name"`
+}
+
+type BaseConf struct {
+	Port string `ini:"port"`
 }
 
 var App = new(AppConf)

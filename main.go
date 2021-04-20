@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	_ "ginadmin/comment/cron"
 	template2 "ginadmin/comment/template"
+	"ginadmin/conf"
 	_ "ginadmin/models"
 	"ginadmin/router"
 	"github.com/gin-contrib/multitemplate"
@@ -42,7 +44,7 @@ func main(){
 	r.StaticFS("/uploadfile", http.Dir("./uploadfile"))
 
 	srv := &http.Server{
-		Addr:    ":8091",
+		Addr:    conf.App.BaseConf.Port,
 		Handler: r,
 	}
 
