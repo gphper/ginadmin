@@ -13,6 +13,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -27,12 +28,13 @@ func loadTemplates(templatesDir string) multitemplate.Renderer {
 	if err != nil {
 		panic(err.Error())
 	}
-
 	for _, include := range includes {
 		layoutCopy := make([]string, len(layouts))
 		copy(layoutCopy, layouts)
 		files := append(layoutCopy, include)
-		r.AddFromFilesFuncs(filepath.Base(include),template2.GlobalTemplateFun,files...)
+		dirSlice := strings.Split(include,"\\")
+		fileName := strings.Join(dirSlice[2:],"/")
+		r.AddFromFilesFuncs(fileName,template2.GlobalTemplateFun,files...)
 	}
 	return r
 }

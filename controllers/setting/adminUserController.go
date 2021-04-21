@@ -42,7 +42,7 @@ func (this *AdminUserController) Index() gin.HandlerFunc {
 		}
 
 		adminUserData := comment.PageOperation(c, adminDb, 1, &adminUserList)
-		c.HTML(http.StatusOK, "adminuser.html", gin.H{
+		c.HTML(http.StatusOK, "setting/adminuser.html", gin.H{
 			"adminUserData": adminUserData,
 			"created_at":    c.Query("created_at"),
 			"nickname":      c.Query("nickname"),
@@ -58,7 +58,7 @@ func (this *AdminUserController) AddIndex() gin.HandlerFunc {
 		//获取角色
 		var adminGroup []models.AdminGroup
 		models.Db.Where("group_id != ?", 1).Find(&adminGroup)
-		c.HTML(http.StatusOK, "adminuser_form.html", gin.H{
+		c.HTML(http.StatusOK, "setting/adminuser_form.html", gin.H{
 			"adminGroups": adminGroup,
 		})
 	}
@@ -124,7 +124,7 @@ func (this *AdminUserController) Edit() gin.HandlerFunc {
 		models.Db.Find(&adminGroup)
 		var adminUser models.AdminUsers
 		models.Db.Where("uid = ?", id).First(&adminUser)
-		c.HTML(http.StatusOK, "adminuser_form.html", gin.H{
+		c.HTML(http.StatusOK, "setting/adminuser_form.html", gin.H{
 			"adminGroups": adminGroup,
 			"adminUser":   adminUser,
 		})

@@ -16,7 +16,7 @@ type LoginController struct {
 func(this *LoginController) Login() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if c.Request.Method == "GET"{
-			c.HTML(http.StatusOK,"login.html",gin.H{})
+			c.HTML(http.StatusOK,"home/login.html",gin.H{})
 		}else{
 			username := c.PostForm("username")
 			password := c.PostForm("password")

@@ -13,7 +13,7 @@ type UploadController struct {
 
 func(con *UploadController) Show() gin.HandlerFunc{
 	return func(c *gin.Context) {
-		c.HTML(http.StatusOK,"upload.html",gin.H{
+		c.HTML(http.StatusOK,"demo/upload.html",gin.H{
 
 		})
 	}

@@ -21,7 +21,7 @@ func(con *AdminGroupController) Index() gin.HandlerFunc{
 	return func(c *gin.Context) {
 		var adminGroups []models.AdminGroup
 		models.Db.Where("group_id != ?",1).Find(&adminGroups)
-		c.HTML(http.StatusOK,"group.html",gin.H{
+		c.HTML(http.StatusOK,"setting/group.html",gin.H{
 			"adminGroups":adminGroups,
 		})
 	}
@@ -32,7 +32,7 @@ func(con *AdminGroupController) Index() gin.HandlerFunc{
  */
 func(con *AdminGroupController) AddIndex() gin.HandlerFunc{
 	return func(c *gin.Context) {
-		c.HTML(http.StatusOK,"group_form.html",gin.H{
+		c.HTML(http.StatusOK,"setting/group_form.html",gin.H{
 			"menuList":menu.GetMenu(),
 		})
 	}
@@ -85,7 +85,7 @@ func(con *AdminGroupController) Edit() gin.HandlerFunc{
 		models.Db.Where("group_id = ?",id).First(&adminGroup)
 		var jsonPrivs map[string]interface{}
 		json.Unmarshal([]byte(adminGroup.Privs),&jsonPrivs)
-		c.HTML(http.StatusOK,"group_form.html",gin.H{
+		c.HTML(http.StatusOK,"setting/group_form.html",gin.H{
 			"adminGroup":adminGroup,
 			"jsonPrivs": jsonPrivs,
 			"menuList":menu.GetMenu(),

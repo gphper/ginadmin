@@ -25,7 +25,7 @@ func (con *HomeController)Home() gin.HandlerFunc {
 			c.String(200, `<script type="text/javascript">top.location.href="/admin/login"</script>`)
 			return
 		}
-		c.HTML(http.StatusOK,"home.html",gin.H{
+		c.HTML(http.StatusOK,"home/home.html",gin.H{
 			"menuList":menuList,
 			"userInfo":userData,
 			"userPrivs":userData["privs"],

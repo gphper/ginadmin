@@ -34,7 +34,7 @@ func(con *AdminSystemController) Index()gin.HandlerFunc{
 		if err != nil{
 			loggers.AdminLogger.Error("读取目录失败",zap.Error(err))
 		}
-		c.HTML(http.StatusOK,"systemlog.html",gin.H{
+		c.HTML(http.StatusOK,"setting/systemlog.html",gin.H{
 			"log_path":path,
 			"files":files,
 		})
@@ -104,7 +104,7 @@ func(con *AdminSystemController) View()gin.HandlerFunc{
 			}
 		}
 
-		c.HTML(http.StatusOK,"systemlog_view.html",gin.H{
+		c.HTML(http.StatusOK,"setting/systemlog_view.html",gin.H{
 			"file_path":file_path,
 			"filecontents":filecontents,
 			"start_line":start_line,
