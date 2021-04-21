@@ -7,35 +7,36 @@ import (
 	"net/http"
 )
 
-func AdminUserAuth() gin.HandlerFunc{
-	return func(c *gin.Context){
+func AdminUserAuth() gin.HandlerFunc {
+	return func(c *gin.Context) {
 		session := sessions.Default(c)
 		userInfoJson := session.Get("userInfo")
-		if userInfoJson == nil{
+		if userInfoJson == nil {
 			// 取不到就是没有登录
 			c.Header("Content-Type", "text/html; charset=utf-8")
 			c.String(200, `<script type="text/javascript">top.location.href="/admin/login"</script>`)
 			return
 		}
 		userData := make(map[string]interface{})
-		err := json.Unmarshal([]byte(userInfoJson.(string)),&userData)
-		if err != nil{
+		err := json.Unmarshal([]byte(userInfoJson.(string)), &userData)
+		if err != nil {
 			// 取不到就是没有登录
 			c.Header("Content-Type", "text/html; charset=utf-8")
 			c.String(200, `<script type="text/javascript">top.location.href="/admin/login"</script>`)
 			return
-		}else{
+		} else {
 			uri := c.FullPath()
 			userPrivs := userData["privs"]
 			userPrivsSlice := userPrivs.(map[string]interface{})
 			//将url转为index
-			_,ook := userPrivsSlice["all"]
-			_,okk := userPrivsSlice[uri]
-			if ook || okk || uri == "/admin/home/"{
+			_, ook := userPrivsSlice["all"]
+			_, okk := userPrivsSlice[uri]
+			if ook || okk || uri == "/admin/home/" {
+				c.Set("userPrivs", userPrivsSlice)
 				c.Next()
-			}else{
-				c.JSON(http.StatusNonAuthoritativeInfo,gin.H{
-					"Status":"无权限禁止访问",
+			} else {
+				c.JSON(http.StatusNonAuthoritativeInfo, gin.H{
+					"Status": "无权限禁止访问",
 				})
 				c.Abort()
 			}
