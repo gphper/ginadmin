@@ -23,6 +23,7 @@
 - [数据库](#数据库)
 - [定时任务](#定时任务)
 - [配置文件](#配置文件)
+- [模板页面](#模板页面)
 - [用户权限](#用户权限)
 
 ### <a name="结构">项目目录</a>
@@ -105,13 +106,36 @@
    conf.App.BaseConf.Port
    ```
 
-   
+### <a name="模板页面">模板页面</a>
+
+- 所有的后台模板都写到 `views/template` 目录下面，并且分目录存储，调用时按照 `目录/模板名称` 的方式调用
 
 
+### <a name="用户权限">用户权限</a>
 
+- 菜单权限定义到 `comment/menu/menu.go` 文件下，定义完之后在用户组管理里面编辑权限
 
+- 在控制器中可用从 `gin.context` 获取权限
 
+  ```go
+  privs,_ := c.Get("userPrivs")
+  ```
 
+- template 中判断权限的函数 `judgeContainPriv` 定义在 `comment/template/default.go` 文件下
+
+  ```go
+  "judgeContainPriv": func(privMap map[string]interface{},priv string)bool {
+  	//判断权限是all的全通过
+  	_,o :=privMap["all"]
+  	if o {
+  		return true
+  	}
+  	_,ok := privMap[priv]
+  	return ok
+  },
+  ```
+
+  
 
 
 
