@@ -9,17 +9,40 @@
     <div class="login">
         <img src="/statics/img/logo.png" alt="" class="logo">
 {{/*        <h3>后台管理平台</h3>*/}}
-        <form class="m-t" role="form" method="POST" action="/admin/login">
+        <form class="m-t" role="form" id="addForm" action="/admin/login" method="POST">
             <div class="form-group">
                 <input type="text" name="username" class="form-control" placeholder="手机/邮箱/用户名" required value="" autocomplete="off"/>
             </div>
             <div class="form-group">
                 <input type="password" name="password" class="form-control" placeholder="密码" required autocomplete="off"/>
             </div>
-            <button type="submit" class="btn btn-primary block full-width m-b">登 录</button>
+            <button type="button" id="submitAdd" class="btn btn-primary block full-width m-b">登 录</button>
         </form>
     </div>
 </div>
 {{end}}
 
-{{define "script"}}{{end}}
+{{define "script"}}
+    <script type="text/javascript">
+        $("#submitAdd").click(function(){
+            var targetUrl = $("#addForm").attr("action");
+            var data = $("#addForm").serialize();
+            $.ajax({
+                type:'post',
+                url:targetUrl,
+                cache: false,
+                data:data,
+                dataType:'json',
+                success:function(data){
+                    // console.log()
+                    // layer.alert(data.msg)
+                    layer.msg(data.msg, {icon: 2, shade: 0.3, time: 2000});
+                },
+                error:function(){
+                    alert("请求失败")
+                }
+            })
+
+        })
+    </script>
+{{end}}
