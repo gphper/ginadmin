@@ -10,22 +10,24 @@ import (
 
 var Db *gorm.DB
 
-func init(){
+func init() {
 	var err error
-	dns := fmt.Sprintf("%s:%s@(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",conf.App.UserName,conf.App.Password,conf.App.Host,conf.App.Database)
+	dns := fmt.Sprintf("%s:%s@(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", conf.App.UserName, conf.App.Password, conf.App.Host, conf.App.Database)
 	Db, err = gorm.Open("mysql", dns)
-	if err != nil{
+	if err != nil {
 		fmt.Println(err)
 	}
+	Db.DB().SetMaxOpenConns(conf.App.MaxOpenConn)
+	Db.DB().SetMaxIdleConns(conf.App.MaxIdleConn)
 	//自动注册数据表
-	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&AdminUsers{},&AdminGroup{})
+	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&AdminUsers{}, &AdminGroup{})
 	//注册回调函数
 	RegisterCallback()
 	//填充数据
 	FillData()
 }
 
-func FillData(){
+func FillData() {
 	//填充管理用户组
 	adminGroup := AdminGroup{
 		GroupId:   1,
@@ -35,7 +37,7 @@ func FillData(){
 	Db.Save(&adminGroup)
 	//初始化管理员
 	salt := comment.RandString(6)
-	passwordSalt := comment.Encryption("111111",salt)
+	passwordSalt := comment.Encryption("111111", salt)
 	adminUser := AdminUsers{
 		Uid:       1,
 		GroupId:   1,
@@ -50,10 +52,10 @@ func FillData(){
 	Db.Save(&adminUser)
 }
 
-func RegisterCallback(){
+func RegisterCallback() {
 	//注册创建数据回调
 	Db.Callback().Create().After("gorm:create").Register("my_plugin:after_create", func(scope *gorm.Scope) {
-		str := fmt.Sprintf("sql语句：%s 参数：%s",scope.SQL,scope.SQLVars)
+		str := fmt.Sprintf("sql语句：%s 参数：%s", scope.SQL, scope.SQLVars)
 		fmt.Println(str)
 	})
 	//TODO 注册删除数据回调

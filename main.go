@@ -32,19 +32,20 @@ func loadTemplates(templatesDir string) multitemplate.Renderer {
 		layoutCopy := make([]string, len(layouts))
 		copy(layoutCopy, layouts)
 		files := append(layoutCopy, include)
-		dirSlice := strings.Split(include,"\\")
-		fileName := strings.Join(dirSlice[2:],"/")
-		r.AddFromFilesFuncs(fileName,template2.GlobalTemplateFun,files...)
+		dirSlice := strings.Split(include, "\\")
+		fileName := strings.Join(dirSlice[2:], "/")
+		r.AddFromFilesFuncs(fileName, template2.GlobalTemplateFun, files...)
 	}
 	return r
 }
 
-func main(){
+func main() {
 	r := router.Init()
 	r.HTMLRender = loadTemplates("./views")
 	r.StaticFS("/statics", http.Dir("./statics"))
 	r.StaticFS("/uploadfile", http.Dir("./uploadfile"))
-
+	// pprof路由
+	//pprof.Register(r)
 	srv := &http.Server{
 		Addr:    conf.App.BaseConf.Port,
 		Handler: r,

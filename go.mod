@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/gin-contrib/multitemplate v0.0.0-20200916052041-666a7309d230
+	github.com/gin-contrib/pprof v1.3.0
 	github.com/gin-contrib/sessions v0.0.3
 	github.com/gin-contrib/zap v0.0.1
 	github.com/gin-gonic/gin v1.6.3
