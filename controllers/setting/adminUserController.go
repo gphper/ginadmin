@@ -19,29 +19,30 @@ type AdminUserController struct {
 */
 func (this *AdminUserController) Index() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		nickname := c.Query("nickname")
+		createdAt := c.Query("created_at")
+
 		type adminUser struct {
 			models.AdminUsers
 			GroupName string
 		}
 		var adminUserList []adminUser
 
-		nickname := c.Query("nickname")
-		createdAt := c.Query("created_at")
-
-		adminDb := models.Db.Table("admin_users").Joins("join admin_groups on admin_groups.group_id = admin_users.group_id").Select("admin_users.*,admin_groups.group_name").Where("uid != ?", 1)
+		adminDb := models.GetAllAdminUserJoinGroup()
 
 		if nickname != "" {
-			adminDb = adminDb.Where("nickname like ?", "%"+nickname+"%")
+			adminDb = models.GetAllAdminUserJoinGroupLikeNickname(adminDb, nickname)
 		}
 
 		if createdAt != "" {
 			period := strings.Split(createdAt, " ~ ")
 			start := period[0] + " 00:00:00"
 			end := period[1] + " 23:59:59"
-			adminDb = adminDb.Where("admin_users.created_at > ? ", start).Where("admin_users.created_at < ?", end)
+			adminDb = models.GetAllAdminUserJoinGroupTimeRange(adminDb, start, end)
 		}
 
 		adminUserData := comment.PageOperation(c, adminDb, 1, &adminUserList)
+
 		c.HTML(http.StatusOK, "setting/adminuser.html", gin.H{
 			"adminUserData": adminUserData,
 			"created_at":    c.Query("created_at"),
@@ -55,11 +56,9 @@ func (this *AdminUserController) Index() gin.HandlerFunc {
 */
 func (this *AdminUserController) AddIndex() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//获取角色
-		var adminGroup []models.AdminGroup
-		models.Db.Where("group_id != ?", 1).Find(&adminGroup)
+		adminGroups, _ := models.GetAllAdminGroup()
 		c.HTML(http.StatusOK, "setting/adminuser_form.html", gin.H{
-			"adminGroups": adminGroup,
+			"adminGroups": adminGroups,
 		})
 	}
 }
@@ -70,40 +69,18 @@ func (this *AdminUserController) AddIndex() gin.HandlerFunc {
 func (this *AdminUserController) Save() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var err error
-		username, ubool := c.GetPostForm("username")
-		password, pbool := c.GetPostForm("password")
+		username, _ := c.GetPostForm("username")
+		password, _ := c.GetPostForm("password")
 		nickname := c.PostForm("nickname")
 		phone := c.PostForm("phone")
 		groupid := c.PostForm("groupid")
 		groupidd, _ := strconv.Atoi(groupid)
 		uid := c.PostForm("uid")
 		uidd, _ := strconv.Atoi(uid)
-		adminUser := models.AdminUsers{
-			Uid:       uint(uidd),
-			GroupId:   uint(groupidd),
-			Username:  "",
-			Nickname:  nickname,
-			Password:  "",
-			Phone:     phone,
-			LastLogin: "",
-			Salt:      "",
-			ApiToken:  "",
-		}
-
-		if ubool {
-			adminUser.Username = username
-		}
-
-		if pbool && password != "" {
-			salt := comment.RandString(6)
-			adminUser.Salt = salt
-			passwordSalt := comment.Encryption(password, salt)
-			adminUser.Password = passwordSalt
-		}
 		if uidd > 0 {
-			err = models.Db.Model(&adminUser).Update(adminUser).Error
+			err = models.SaveAdminUser(uidd, groupidd, nickname, phone, password)
 		} else {
-			err = models.Db.Save(&adminUser).Error
+			err = models.AddAdminUser(groupidd, username, nickname, phone, password)
 		}
 
 		if err == nil {

@@ -31,7 +31,7 @@ func AdminUserAuth() gin.HandlerFunc {
 			//将url转为index
 			_, ook := userPrivsSlice["all"]
 			_, okk := userPrivsSlice[uri]
-			if ook || okk || uri == "/admin/home/" {
+			if ook || okk || uri == "/admin/home/" || uri == "/admin/home/welcome" {
 				c.Set("userPrivs", userPrivsSlice)
 				c.Next()
 			} else {
