@@ -27,7 +27,8 @@ type SessionConf struct {
 }
 
 type BaseConf struct {
-	Port string `ini:"port"`
+	Port     string `ini:"port"`
+	FillData bool   `ini:"fill_data"`
 }
 
 var App = new(AppConf)

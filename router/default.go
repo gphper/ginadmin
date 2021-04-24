@@ -34,6 +34,8 @@ func Init() *gin.Engine {
 		{
 			adminHomeRouter.GET("/", (&controllers.HomeController{}).Home())
 			adminHomeRouter.GET("/welcome", (&controllers.HomeController{}).Welcome())
+			adminHomeRouter.GET("/edit_password", (&controllers.HomeController{}).EditPassword())
+			adminHomeRouter.POST("/save_password", (&controllers.HomeController{}).SavePassword())
 		}
 
 		adminSettingRouter := adminRouter.Group("/setting")

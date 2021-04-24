@@ -22,7 +22,7 @@ class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden"
                             <i class="fa fa-user"></i>{{.userInfo.username}}
                             <small>{{.userInfo.groupname}}</small>
                         </div>
-                        <li><a href="" target="rIframe"><i class="fa fa-lock"></i>修改密码</a></li>
+                        <li><a href="/admin/home/edit_password?id={{.userInfo.uid}}" target="rIframe"><i class="fa fa-lock"></i>修改密码</a></li>
                         <li><a href="" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="fa fa-power-off"></i>安全退出</a></li>
                         <form id="logout-form" action="/admin/login_out" method="POST" style="display: none;">
 

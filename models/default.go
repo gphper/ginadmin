@@ -23,8 +23,10 @@ func init() {
 	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&AdminUsers{}, &AdminGroup{})
 	//注册回调函数
 	RegisterCallback()
-	//填充数据
-	FillData()
+	//配置文件判断是否填充数据
+	if conf.App.BaseConf.FillData {
+		FillData()
+	}
 }
 
 func FillData() {

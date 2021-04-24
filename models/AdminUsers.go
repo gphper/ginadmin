@@ -67,3 +67,15 @@ func SaveAdminUser(uid int, groupid int, nickname string, phone string, password
 	}
 	return Db.Model(&adminUser).Update(adminUser).Error
 }
+
+func GetAdminUserById(id string) (AdminUsers, error) {
+	var adminUser AdminUsers
+	err := Db.Table("admin_users").Where("uid = ?", id).First(&adminUser).Error
+	return adminUser, err
+}
+
+func AlterAdminUserPass(id string, password string) error {
+	return Db.Table("admin_users").Where("uid = ?", id).Update(map[string]interface{}{
+		"password": password,
+	}).Error
+}

@@ -2,7 +2,10 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
+	"ginadmin/comment"
 	"ginadmin/comment/menu"
+	"ginadmin/models"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -17,6 +20,7 @@ func (con *HomeController) Home() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
 		userInfoJson := session.Get("userInfo")
+		fmt.Println(userInfoJson)
 		userData := make(map[string]interface{})
 		err := json.Unmarshal([]byte(userInfoJson.(string)), &userData)
 		if err != nil {
@@ -36,5 +40,45 @@ func (con *HomeController) Home() gin.HandlerFunc {
 func (con *HomeController) Welcome() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.HTML(http.StatusOK, "home/welcome.html", gin.H{})
+	}
+}
+
+func (con *HomeController) EditPassword() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		id := c.Query("id")
+		c.HTML(http.StatusOK, "home/password_form.html", gin.H{
+			"id": id,
+		})
+	}
+}
+
+func (con *HomeController) SavePassword() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		id := c.PostForm("id")
+		oldPassword := c.PostForm("old_password")
+		newPassword := c.PostForm("new_password")
+		subPassword := c.PostForm("sub_password")
+
+		if newPassword != subPassword {
+			con.Error(c, "请确认新密码")
+			return
+		}
+
+		adminUser, _ := models.GetAdminUserById(id)
+		oldPass := comment.Encryption(oldPassword, adminUser.Salt)
+		if oldPass != adminUser.Password {
+			con.Error(c, "原密码不正确")
+			return
+		}
+
+		newPass := comment.Encryption(newPassword, adminUser.Salt)
+		err := models.AlterAdminUserPass(id, newPass)
+		if err != nil {
+			con.Error(c, "修改密码失败")
+			return
+		} else {
+			con.Success(c, "", "修改成功")
+			return
+		}
 	}
 }
