@@ -23,7 +23,7 @@ func (this *LoginController) Login() gin.HandlerFunc {
 			var adminUser models.AdminUsers
 			err := models.Db.Table("admin_users").Where("username = ?", username).First(&adminUser).Error
 			if err != nil {
-				this.Error(c, "用户不存在")
+				this.Error(c, "账号密码错误")
 				return
 			}
 
@@ -34,7 +34,7 @@ func (this *LoginController) Login() gin.HandlerFunc {
 				adminGroup.GroupId = adminUser.GroupId
 				err = models.Db.Find(&adminGroup).Error
 				if err != nil {
-					this.Error(c, "用户不存在")
+					this.Error(c, "账号密码错误")
 				}
 				var jsonPrivs map[string]int
 				json.Unmarshal([]byte(adminGroup.Privs), &jsonPrivs)

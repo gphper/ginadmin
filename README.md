@@ -1,5 +1,5 @@
 # GinAdmin
-这个项目是以Gin框架为基础搭建的后台管理模块，请大家多提意见指正！
+这个项目是以Gin框架为基础搭建的后台管理平台，虽然很多人都认为go是用来开发高性能服务端项目的，但是也难免有要做web管理端的需求，总不能再使用别的语言来开发吧。所以整合出了GinAdmin项目，请大家多提意见指正！
 
 ## 依赖
 * golang > 1.8
@@ -10,6 +10,7 @@
 * WebUpload
 
 ## 使用文档
+- [开始使用](#开始使用)
 - [项目目录](#结构)
 - [分页](#分页)
 - [日志](#日志)
@@ -19,7 +20,39 @@
 - [模板页面](#模板页面)
 - [用户权限](#用户权限)
 
+### <a name="开始使用">开始使用</a>
+
+1. git 克隆地址 
+
+   ```
+   git clone https://github.com/gphper/ginadmin.git
+   ```
+
+2. 下载依赖包
+
+   ```go
+   go mod download
+   ```
+
+3. 配置 `conf/config.ini`文件
+
+   ```
+   [mysql]
+   username=root
+   password=123456
+   database=db_beego
+   host=127.0.0.1
+   port=3306
+   max_open_conn=50
+   max_idle_conn=20
+   [session]
+   session_name=gosession_id
+   [base]
+   port=:8091
+   ```
+
 ### <a name="结构">项目目录</a>
+
 ```
 |--api  // Api接口控制器
 |--comment // 封装的公共方法
