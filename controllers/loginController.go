@@ -26,7 +26,6 @@ func (this *LoginController) Login() gin.HandlerFunc {
 				this.Error(c, "账号密码错误")
 				return
 			}
-
 			//判断密码是否正确
 			if comment.Encryption(password, adminUser.Salt) == adminUser.Password {
 				//获取用户组信息
@@ -48,7 +47,8 @@ func (this *LoginController) Login() gin.HandlerFunc {
 				userstr, _ := json.Marshal(userInfo)
 				session.Set("userInfo", string(userstr))
 				session.Save()
-				c.Redirect(http.StatusFound, "/admin/home")
+				//c.Redirect(http.StatusFound, "/admin/home")
+				this.Success(c, "/admin/home", "登录成功")
 			} else {
 				this.Error(c, "账号密码错误")
 			}

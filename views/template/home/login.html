@@ -30,11 +30,14 @@
             $.ajax({
                 type:'post',
                 url:targetUrl,
-                cache: false,
                 data:data,
                 dataType:'json',
                 success:function(data){
-                    layer.msg(data.msg, {icon: 2, shade: 0.3, time: 2000});
+                    if(data.status){
+                        window.location.href = data.url;
+                    }else{
+                        layer.msg(data.msg, {icon: 2, shade: 0.3, time: 2000});
+                    }
                 },
                 error:function(){
                     alert("请求失败")

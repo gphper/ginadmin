@@ -51,6 +51,8 @@
    port=:8091
    ```
 
+4. 运行 `go run main.go`访问地址 http://localhost:端口地址/admin/login。默认账户：admin  密码：111111
+
 ### <a name="结构">项目目录</a>
 
 ```
