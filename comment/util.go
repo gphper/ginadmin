@@ -72,7 +72,7 @@ type PageData struct {
 	PageCount int
 }
 
-func PageOperation(c *gin.Context, db *gorm.DB, limit int,data interface{}) PageData {
+func PageOperation(c *gin.Context, db *gorm.DB, limit int, data interface{}) PageData {
 	var count float64
 	p := c.Query("p")
 	page, _ := strconv.Atoi(p)
@@ -121,7 +121,7 @@ func PageOperation(c *gin.Context, db *gorm.DB, limit int,data interface{}) Page
 	}
 	pageHtml += "<li><a href='" + url + "?p=" + strconv.Itoa(pageCount) + paramUrl + "' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li><li></li></ul></nav>"
 
-	if pageCount == 0{
+	if pageCount == 0 {
 		pageHtml = ""
 	}
 

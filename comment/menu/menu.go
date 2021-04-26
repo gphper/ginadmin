@@ -6,9 +6,9 @@ type NodeSon struct {
 }
 
 type Node struct {
-	NodeText string
-	NodeUrl string
-	NodePriv string
+	NodeText  string
+	NodeUrl   string
+	NodePriv  string
 	PrivChild []NodeSon
 }
 
@@ -16,22 +16,22 @@ type Menu struct {
 	MenuText string
 	MenuPriv string
 	MenuIcon string
-	Nodes []Node
+	Nodes    []Node
 }
 
 var MenuList []Menu
 
-func GetMenu() []Menu{
+func GetMenu() []Menu {
 	MenuList = []Menu{
 		{
 			MenuText: "设置",
 			MenuPriv: "setting",
 			MenuIcon: "fa fa-cog",
-			Nodes:    []Node{
+			Nodes: []Node{
 				{
-					NodeText:  "管理员管理",
-					NodeUrl:   "/admin/setting/adminuser/index",
-					NodePriv:  "/admin/setting/adminuser/index",
+					NodeText: "管理员管理",
+					NodeUrl:  "/admin/setting/adminuser/index",
+					NodePriv: "/admin/setting/adminuser/index",
 					PrivChild: []NodeSon{
 						{
 							NodeSonText: "添加管理员",
@@ -48,9 +48,9 @@ func GetMenu() []Menu{
 					},
 				},
 				{
-					NodeText:  "角色管理",
-					NodeUrl:   "/admin/setting/admingroup/index",
-					NodePriv:  "/admin/setting/admingroup/index",
+					NodeText: "角色管理",
+					NodeUrl:  "/admin/setting/admingroup/index",
+					NodePriv: "/admin/setting/admingroup/index",
 					PrivChild: []NodeSon{
 						{
 							NodeSonText: "添加角色",
@@ -67,9 +67,9 @@ func GetMenu() []Menu{
 					},
 				},
 				{
-					NodeText:  "系统日志",
-					NodeUrl:   "/admin/setting/system/index",
-					NodePriv:  "/admin/setting/system/index",
+					NodeText: "系统日志",
+					NodeUrl:  "/admin/setting/system/index",
+					NodePriv: "/admin/setting/system/index",
 					PrivChild: []NodeSon{
 						{
 							NodeSonText: "日志列表",
@@ -91,11 +91,11 @@ func GetMenu() []Menu{
 			MenuText: "示例",
 			MenuPriv: "demo",
 			MenuIcon: "fa fa-cog",
-			Nodes:    []Node{
+			Nodes: []Node{
 				{
-					NodeText:  "附件管理",
-					NodeUrl:   "/admin/demo/show",
-					NodePriv:  "/admin/demo/show",
+					NodeText: "附件管理",
+					NodeUrl:  "/admin/demo/show",
+					NodePriv: "/admin/demo/show",
 					PrivChild: []NodeSon{
 						{
 							NodeSonText: "上传文件",

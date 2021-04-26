@@ -6,13 +6,12 @@ import (
 )
 
 type ApiUserController struct {
-
 }
 
-func(apicon *ApiUserController) UserList() gin.HandlerFunc{
+func (apicon *ApiUserController) UserList() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.HTML(http.StatusOK,"index.html",gin.H{
-			"title":"hello world",
+		c.HTML(http.StatusOK, "index.html", gin.H{
+			"title": "hello world",
 		})
 	}
 }

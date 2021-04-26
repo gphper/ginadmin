@@ -4,7 +4,7 @@ import (
 	"github.com/robfig/cron"
 )
 
-func init(){
+func init() {
 	crontab := cron.New()
 	//crontab.AddFunc("* * * * * *", myfunc)
 	crontab.Start()

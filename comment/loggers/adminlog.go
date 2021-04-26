@@ -10,7 +10,7 @@ import (
 
 var AdminLogger *zap.Logger
 
-func init(){
+func init() {
 	// 设置一些基本日志格式 具体含义还比较好理解，直接看zap源码也不难懂
 	encoder := zapcore.NewJSONEncoder(zapcore.EncoderConfig{
 		MessageKey:  "msg",
