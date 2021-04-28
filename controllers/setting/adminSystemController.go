@@ -28,7 +28,7 @@ func (con *AdminSystemController) Index() gin.HandlerFunc {
 		if err != nil {
 			fmt.Printf("get root path err:%v", err)
 		}
-		path = path + "\\logs"
+		path = path + comment.GetLine() + "logs"
 
 		files, err := ioutil.ReadDir(path)
 		if err != nil {
@@ -37,6 +37,7 @@ func (con *AdminSystemController) Index() gin.HandlerFunc {
 		c.HTML(http.StatusOK, "setting/systemlog.html", gin.H{
 			"log_path": path,
 			"files":    files,
+			"line":     comment.GetLine(),
 		})
 	}
 }
@@ -53,9 +54,11 @@ func (con *AdminSystemController) GetDir() gin.HandlerFunc {
 		}
 		fileSlice := make([]FileNode, 0)
 		path := c.Query("path")
+		fmt.Println(path)
 		files, err := ioutil.ReadDir(path)
 		if err != nil {
 			con.Error(c, "获取目录失败")
+			return
 		}
 		for _, v := range files {
 			var fileType string
@@ -66,7 +69,7 @@ func (con *AdminSystemController) GetDir() gin.HandlerFunc {
 			}
 			fileSlice = append(fileSlice, FileNode{
 				Name: v.Name(),
-				Path: path + "\\" + v.Name(),
+				Path: path + comment.GetLine() + v.Name(),
 				Type: fileType,
 			})
 		}

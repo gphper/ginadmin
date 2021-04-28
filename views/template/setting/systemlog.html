@@ -41,7 +41,7 @@
                                         <span class="icon glyphicon glyphicon-folder-close"></span>
                                         {{ .Name}}
                                         <a href="javascript:void(0);" id="logview">展开</a>
-                                        <input type="hidden" name="path" value="{{ $.log_path }}\{{.Name}}">
+                                        <input type="hidden" name="path" value="{{ $.log_path }}{{ $.line }}{{.Name}}">
                                     </li>
                                 {{end}}
                             </ul>
