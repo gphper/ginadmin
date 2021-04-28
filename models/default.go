@@ -12,7 +12,7 @@ var Db *gorm.DB
 
 func init() {
 	var err error
-	dns := fmt.Sprintf("%s:%s@(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", conf.App.UserName, conf.App.Password, conf.App.Host, conf.App.Database)
+	dns := fmt.Sprintf("%s:%s@(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", conf.App.MysqlConf.UserName, conf.App.MysqlConf.Password, conf.App.MysqlConf.Host, conf.App.MysqlConf.Database)
 	Db, err = gorm.Open("mysql", dns)
 	if err != nil {
 		fmt.Println(err)

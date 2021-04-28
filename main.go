@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"ginadmin/comment"
 	_ "ginadmin/comment/cron"
 	template2 "ginadmin/comment/template"
 	"ginadmin/conf"
@@ -32,7 +33,7 @@ func loadTemplates(templatesDir string) multitemplate.Renderer {
 		layoutCopy := make([]string, len(layouts))
 		copy(layoutCopy, layouts)
 		files := append(layoutCopy, include)
-		dirSlice := strings.Split(include, "\\")
+		dirSlice := strings.Split(include, comment.GetLine())
 		fileName := strings.Join(dirSlice[2:], "/")
 		r.AddFromFilesFuncs(fileName, template2.GlobalTemplateFun, files...)
 	}
@@ -47,7 +48,7 @@ func main() {
 	// pprof路由
 	//pprof.Register(r)
 	srv := &http.Server{
-		Addr:    conf.App.BaseConf.Port,
+		Addr:    conf.App.BaseConf.Host + ":" + conf.App.BaseConf.Port,
 		Handler: r,
 	}
 

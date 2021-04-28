@@ -28,6 +28,7 @@ type SessionConf struct {
 
 type BaseConf struct {
 	Port     string `ini:"port"`
+	Host     string `ini:"host"`
 	FillData bool   `ini:"fill_data"`
 }
 
@@ -39,7 +40,7 @@ func init() {
 	if err != nil {
 		fmt.Printf("get root path err:%v", err)
 	}
-	fmt.Println(path)
+	fmt.Println("rootpath:" + path)
 	err = ini.MapTo(App, path+"/conf/config.ini")
 	if err != nil {
 		fmt.Printf("load ini err:%v", err)

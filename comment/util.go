@@ -10,7 +10,6 @@ import (
 	"math"
 	"math/rand"
 	"os"
-	"path/filepath"
 	"runtime"
 	"strconv"
 	"time"
@@ -20,20 +19,20 @@ import (
 获取项目根目录
 */
 func RootPath() (path string, err error) {
-	sysType := runtime.GOOS
-
-	if sysType == "linux" {
-		path, err = filepath.Abs(filepath.Dir(os.Args[0]))
-		if err != nil {
-			fmt.Printf("path err %v", err)
-		}
+	path, err = os.Getwd()
+	if err != nil {
+		fmt.Printf("path err %v", err)
 	}
+	return
+}
 
-	if sysType == "windows" {
-		path, err = os.Getwd()
-		if err != nil {
-			fmt.Printf("path err %v", err)
-		}
+func GetLine() (line string) {
+	sys := runtime.GOOS
+	if sys == "linux" {
+		line = "/"
+	}
+	if sys == "windows" {
+		line = "\\"
 	}
 	return
 }
