@@ -39,7 +39,7 @@ func Init() *gin.Engine {
 		}
 
 		adminSettingRouter := adminRouter.Group("/setting")
-		adminSettingRouter.Use(middleware.AdminUserAuth())
+		adminSettingRouter.Use(middleware.AdminUserAuth(), middleware.AdminUserPrivs())
 		{
 			adminGroup := adminSettingRouter.Group("/admingroup")
 			{
@@ -70,7 +70,7 @@ func Init() *gin.Engine {
 
 		//Demo演示文件上传
 		adminDemoRouter := adminRouter.Group("/demo")
-		adminDemoRouter.Use(middleware.AdminUserAuth())
+		adminDemoRouter.Use(middleware.AdminUserAuth(), middleware.AdminUserPrivs())
 		{
 			adminDemoRouter.GET("/show", (&demo.UploadController{}).Show())
 			adminDemoRouter.POST("/upload", (&demo.UploadController{}).Upload())
