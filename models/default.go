@@ -34,7 +34,7 @@ func FillData() {
 	adminGroup := AdminGroup{
 		GroupId:   1,
 		GroupName: "管理员组",
-		Privs:     "{\"all\":1}",
+		Privs:     "{\"all\":{}}",
 	}
 	Db.Save(&adminGroup)
 	//初始化管理员

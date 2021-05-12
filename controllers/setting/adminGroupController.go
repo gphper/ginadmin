@@ -43,11 +43,11 @@ func (con *AdminGroupController) AddIndex() gin.HandlerFunc {
 func (con *AdminGroupController) Save() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var privsJsonStr string
-		privMap := make(map[string]int)
+		privMap := make(map[string]struct{})
 		privs, _ := c.GetPostFormArray("privs[]")
 		//将数组转为map便于提高后面的判断效率
-		for k, v := range privs {
-			privMap[v] = k
+		for _, v := range privs {
+			privMap[v] = struct{}{}
 		}
 
 		privsJson, err := json.Marshal(privMap)
@@ -79,7 +79,7 @@ func (con *AdminGroupController) Edit() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Query("id")
 		adminGroup, _ := models.FindAdminGroupById(id)
-		var jsonPrivs map[string]interface{}
+		var jsonPrivs map[string]struct{}
 		json.Unmarshal([]byte(adminGroup.Privs), &jsonPrivs)
 		c.HTML(http.StatusOK, "setting/group_form.html", gin.H{
 			"adminGroup": adminGroup,

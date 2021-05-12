@@ -54,7 +54,6 @@ func (con *AdminSystemController) GetDir() gin.HandlerFunc {
 		}
 		fileSlice := make([]FileNode, 0)
 		path := c.Query("path")
-		fmt.Println(path)
 		files, err := ioutil.ReadDir(path)
 		if err != nil {
 			con.Error(c, "获取目录失败")

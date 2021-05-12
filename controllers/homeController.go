@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"ginadmin/comment"
 	"ginadmin/comment/menu"
 	"ginadmin/models"
@@ -20,9 +19,10 @@ func (con *HomeController) Home() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
 		userInfoJson := session.Get("userInfo")
-		fmt.Println(userInfoJson)
 		userData := make(map[string]interface{})
 		err := json.Unmarshal([]byte(userInfoJson.(string)), &userData)
+		privs := make(map[string]struct{})
+		json.Unmarshal([]byte(userData["privs"].(string)), &privs)
 		if err != nil {
 			// 取不到就是没有登录
 			c.Header("Content-Type", "text/html; charset=utf-8")
@@ -32,7 +32,7 @@ func (con *HomeController) Home() gin.HandlerFunc {
 		c.HTML(http.StatusOK, "home/home.html", gin.H{
 			"menuList":  menuList,
 			"userInfo":  userData,
-			"userPrivs": userData["privs"],
+			"userPrivs": privs,
 		})
 	}
 }

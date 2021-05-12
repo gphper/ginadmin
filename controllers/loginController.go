@@ -35,19 +35,23 @@ func (this *LoginController) Login() gin.HandlerFunc {
 				if err != nil {
 					this.Error(c, "账号密码错误")
 				}
-				var jsonPrivs map[string]int
-				json.Unmarshal([]byte(adminGroup.Privs), &jsonPrivs)
+				//var jsonPrivs map[string]int
+				//json.Unmarshal([]byte(adminGroup.Privs), &jsonPrivs)
 				userInfo := make(map[string]interface{})
 				userInfo["uid"] = adminUser.Uid
 				userInfo["username"] = adminUser.Username
 				userInfo["groupname"] = adminGroup.GroupName
-				userInfo["privs"] = jsonPrivs
+				//userInfo["privs"] = jsonPrivs
+				userInfo["privs"] = adminGroup.Privs
 				//session 存储数据
 				session := sessions.Default(c)
 				userstr, _ := json.Marshal(userInfo)
+
 				session.Set("userInfo", string(userstr))
 				session.Save()
-				//c.Redirect(http.StatusFound, "/admin/home")
+
+				uio := make(map[string]interface{})
+				json.Unmarshal([]byte(session.Get("userInfo").(string)), &uio)
 				this.Success(c, "/admin/home", "登录成功")
 			} else {
 				this.Error(c, "账号密码错误")

@@ -63,8 +63,8 @@ func AdminUserPrivs() gin.HandlerFunc {
 			})
 		}
 		uri := c.FullPath()
-		userPrivs := userData["privs"]
-		userPrivsSlice := userPrivs.(map[string]interface{})
+		userPrivsSlice := make(map[string]struct{})
+		json.Unmarshal([]byte(userData["privs"].(string)), &userPrivsSlice)
 		//将url转为index
 		_, ook := userPrivsSlice["all"]
 		_, okk := userPrivsSlice[uri]
