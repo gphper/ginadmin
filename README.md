@@ -11,6 +11,7 @@
 
 ## 使用文档
 - [开始使用](#开始使用)
+- [docker-compose构建环境](#docker-compose)
 - [项目目录](#结构)
 - [分页](#分页)
 - [日志](#日志)
@@ -52,6 +53,8 @@
    ```
 
 4. 运行 `go run main.go`访问地址 http://localhost:端口地址/admin/login。默认账户：admin  密码：111111
+
+### <a name="docker-compose">docker-compose构建环境</a>
 
 ### <a name="结构">项目目录</a>
 
