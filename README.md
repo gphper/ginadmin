@@ -56,6 +56,27 @@
 
 ### <a name="docker-compose">docker-compose构建环境</a>
 
+1. 替换conf目录下的配置项
+
+   ```ini
+   [mysql]
+   username=docker
+   password=123456
+   database=docker_mysql
+   host=localmysql
+   port=3306
+   max_open_conn=50
+   max_idle_conn=20
+   [session]
+   session_name=gosession_id
+   [base]
+   host=0.0.0.0
+   port=20010
+   fill_data=true
+   ```
+
+2. 执行命令 docker-compose up
+
 ### <a name="结构">项目目录</a>
 
 ```
