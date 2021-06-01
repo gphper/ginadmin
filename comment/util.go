@@ -4,8 +4,6 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
 	"html/template"
 	"math"
 	"math/rand"
@@ -13,6 +11,9 @@ import (
 	"runtime"
 	"strconv"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 /**
@@ -72,12 +73,12 @@ type PageData struct {
 }
 
 func PageOperation(c *gin.Context, db *gorm.DB, limit int, data interface{}) PageData {
-	var count float64
+	var count int64
 	p := c.Query("p")
 	page, _ := strconv.Atoi(p)
 	db.Offset((page - 1) * limit).Limit(limit).Find(data)
 	db.Count(&count)
-	pageCount := int(math.Ceil(count / float64(limit)))
+	pageCount := int(math.Ceil(float64(count) / float64(limit)))
 	url := c.FullPath()
 
 	paramUrl := ""

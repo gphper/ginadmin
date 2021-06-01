@@ -2,8 +2,9 @@ package models
 
 import (
 	"ginadmin/comment"
-	"github.com/jinzhu/gorm"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type AdminUsers struct {
@@ -65,7 +66,7 @@ func SaveAdminUser(uid int, groupid int, nickname string, phone string, password
 		passwordSalt := comment.Encryption(password, salt)
 		adminUser.Password = passwordSalt
 	}
-	return Db.Model(&adminUser).Update(adminUser).Error
+	return Db.Model(&adminUser).Updates(adminUser).Error
 }
 
 func GetAdminUserById(id string) (AdminUsers, error) {
@@ -75,7 +76,7 @@ func GetAdminUserById(id string) (AdminUsers, error) {
 }
 
 func AlterAdminUserPass(id string, password string) error {
-	return Db.Table("admin_users").Where("uid = ?", id).Update(map[string]interface{}{
+	return Db.Table("admin_users").Where("uid = ?", id).Updates(map[string]interface{}{
 		"password": password,
 	}).Error
 }
