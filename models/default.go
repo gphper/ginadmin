@@ -2,14 +2,22 @@ package models
 
 import (
 	"fmt"
-	"ginadmin/comment"
 	"ginadmin/conf"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
 )
 
 var Db *gorm.DB
+
+type GaTabler interface {
+	schema.Tabler
+	FillData()
+}
+
+type BaseModle struct {
+}
 
 func init() {
 	var err error
@@ -21,39 +29,16 @@ func init() {
 	sqlDb, _ := Db.DB()
 	sqlDb.SetMaxOpenConns(conf.App.MaxOpenConn)
 	sqlDb.SetMaxIdleConns(conf.App.MaxIdleConn)
-	//自动注册数据表
-	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&AdminUsers{}, &AdminGroup{})
+
 	//注册回调函数
 	RegisterCallback()
-	//配置文件判断是否填充数据
-	if conf.App.BaseConf.FillData {
-		FillData()
-	}
 }
 
-func FillData() {
-	//填充管理用户组
-	adminGroup := AdminGroup{
-		GroupId:   1,
-		GroupName: "管理员组",
-		Privs:     "{\"all\":{}}",
+func GetModels() []interface{} {
+	return []interface{}{
+		&AdminUsers{},
+		&AdminGroup{},
 	}
-	Db.Save(&adminGroup)
-	//初始化管理员
-	salt := comment.RandString(6)
-	passwordSalt := comment.Encryption("111111", salt)
-	adminUser := AdminUsers{
-		Uid:       1,
-		GroupId:   1,
-		Username:  "admin",
-		Nickname:  "管理员",
-		Password:  passwordSalt,
-		Phone:     "",
-		LastLogin: "",
-		Salt:      salt,
-		ApiToken:  "",
-	}
-	Db.Save(&adminUser)
 }
 
 func RegisterCallback() {

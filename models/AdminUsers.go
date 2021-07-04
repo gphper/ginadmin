@@ -8,6 +8,7 @@ import (
 )
 
 type AdminUsers struct {
+	BaseModle
 	Uid       uint   `gorm:"primary_key;auto_increment"`
 	GroupId   uint   `gorm:"size:20;comment:'用户组id'"`
 	Username  string `gorm:"size:100;comment:'用户名'"`
@@ -79,4 +80,26 @@ func AlterAdminUserPass(id string, password string) error {
 	return Db.Table("admin_users").Where("uid = ?", id).Updates(map[string]interface{}{
 		"password": password,
 	}).Error
+}
+
+func (au *AdminUsers) TableName() string {
+	return "admin_users"
+}
+
+func (au *AdminUsers) FillData() {
+	//初始化管理员
+	salt := comment.RandString(6)
+	passwordSalt := comment.Encryption("111111", salt)
+	adminUser := AdminUsers{
+		Uid:       1,
+		GroupId:   1,
+		Username:  "admin",
+		Nickname:  "管理员",
+		Password:  passwordSalt,
+		Phone:     "",
+		LastLogin: "",
+		Salt:      salt,
+		ApiToken:  "",
+	}
+	Db.Save(&adminUser)
 }

@@ -3,6 +3,7 @@ package conf
 import (
 	"fmt"
 	"ginadmin/comment"
+
 	"gopkg.in/ini.v1"
 )
 
@@ -40,7 +41,7 @@ func init() {
 	if err != nil {
 		fmt.Printf("get root path err:%v", err)
 	}
-	fmt.Println("rootpath:" + path)
+
 	err = ini.MapTo(App, path+"/conf/config.ini")
 	if err != nil {
 		fmt.Printf("load ini err:%v", err)

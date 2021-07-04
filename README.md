@@ -120,13 +120,28 @@
 
 ### <a name="数据库">数据库</a>
 
-1. 数据库迁移，将定义好的model填充写到下面的 `AutoMigrate` 方法中
+1. models下定义的文件均需要实现 `TableName() string`  方法，并将实现该结构体的指针写入到 `GetModels` 方法中
 
    ```go
-   Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&AdminUsers{},&AdminGroup{})
+   func GetModels() []interface{} {
+   	return []interface{}{
+   		&AdminUsers{},
+   		&AdminGroup{},
+   	}
+   }
    ```
 
-2. 数据填充，将数据写入到 `models\default.go` 下面的 `FillData` 中
+2. 数据库迁移,在 `cli\cmd`  执行命令行工具
+
+   ```go
+   go run ginadmin-cli.go db migrate
+   ```
+
+3. 数据填充，需在相应目录下实现 `FillData()` 方法执行如下命令
+
+   ```go
+   go run ginadmin-cli.go db seed
+   ```
 
 ### <a name="定时任务">定时任务</a>
 

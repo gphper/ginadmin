@@ -3,15 +3,12 @@ package models
 import "time"
 
 type AdminGroup struct {
+	BaseModle
 	GroupId   uint   `gorm:"primary_key;auto_increment"`
 	GroupName string `gorm:"size:20;comment:'用户组名称'"`
 	Privs     string `gorm:"type:text;comment:'权限'"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-}
-
-func (AdminGroup) TableName() string {
-	return "admin_groups"
 }
 
 func GetAllAdminGroup() ([]AdminGroup, error) {
@@ -37,4 +34,18 @@ func FindAdminGroupById(id string) (AdminGroup, error) {
 
 func DelAdminGroupById(id string) error {
 	return Db.Where("group_id = ?", id).Delete(AdminGroup{}).Error
+}
+
+func (ag *AdminGroup) TableName() string {
+	return "admin_groups"
+}
+
+func (ag *AdminGroup) FillData() {
+	//填充管理用户组
+	adminGroup := AdminGroup{
+		GroupId:   1,
+		GroupName: "管理员组",
+		Privs:     "{\"all\":{}}",
+	}
+	Db.Save(&adminGroup)
 }
