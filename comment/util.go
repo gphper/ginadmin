@@ -10,6 +10,7 @@ import (
 	"os"
 	"runtime"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -24,6 +25,7 @@ func RootPath() (path string, err error) {
 	if err != nil {
 		fmt.Printf("path err %v", err)
 	}
+	path = strings.Split(path, "ginadmin")[0] + "ginadmin"
 	return
 }
 
