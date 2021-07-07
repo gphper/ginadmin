@@ -81,7 +81,7 @@
 
 ```
 |--api  // Api接口控制器
-|--cli  // 命令行角色
+|--cli  // 命令行工具
 |--comment // 封装的公共方法
 |--conf // 配置文件
 |--controllers // Admin控制器存在目录
