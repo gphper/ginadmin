@@ -21,7 +21,7 @@
 - [模板页面](#模板页面)
 - [用户权限](#用户权限)
 
-### <a name="开始使用">开始使用</a>
+### :small_blue_diamond:<a name="开始使用">开始使用</a>
 
 1. git 克隆地址 
 
@@ -54,7 +54,7 @@
 
 4. 运行 `go run main.go`访问地址 http://localhost:端口地址/admin/login。默认账户：admin  密码：111111
 
-### <a name="docker-compose">docker-compose构建环境</a>
+### :small_blue_diamond:<a name="docker-compose">docker-compose构建环境</a>
 
 1. 替换conf目录下的配置项
 
@@ -77,10 +77,11 @@
 
 2. 执行命令 docker-compose up
 
-### <a name="结构">项目目录</a>
+### :small_blue_diamond:<a name="结构">项目目录</a>
 
 ```
 |--api  // Api接口控制器
+|--cli  // 命令行角色
 |--comment // 封装的公共方法
 |--conf // 配置文件
 |--controllers // Admin控制器存在目录
@@ -93,7 +94,7 @@
 |--views //视图模板目录
 ```
 
-### <a name="分页">分页</a>
+### :small_blue_diamond:<a name="分页">分页</a>
 
 1.  使用 `comment/util.go` 里面的 `PageOperation` 进行分页
     ```go
@@ -105,7 +106,7 @@
     {{ .adminUserData.PageHtml }}
     ```
 
-### <a name="日志">日志</a>
+### :small_blue_diamond:<a name="日志">日志</a>
 1.  自定义日志 在 `comment/loggers` 目录下新建logger
     ```
     参考 userlog.go 文件
@@ -118,7 +119,7 @@
     zap.Duration("backoff", time.Second),)
     ```
 
-### <a name="数据库">数据库</a>
+### :small_blue_diamond:<a name="数据库">数据库</a>
 
 1. models下定义的文件均需要实现 `TableName() string`  方法，并将实现该结构体的指针写入到 `GetModels` 方法中
 
@@ -143,11 +144,11 @@
    go run ginadmin-cli.go db seed
    ```
 
-### <a name="定时任务">定时任务</a>
+### :small_blue_diamond:<a name="定时任务">定时任务</a>
 
 -    在 `comment/cron/cron.go`  添加定时执行任务
 
-### <a name="配置文件">配置文件</a>
+### :small_blue_diamond:<a name="配置文件">配置文件</a>
 
 1. 现在 `conf/conf.go` 添加配置项的 struct 类型，例如
 
@@ -173,12 +174,12 @@
    conf.App.BaseConf.Port
    ```
 
-### <a name="模板页面">模板页面</a>
+### :small_blue_diamond:<a name="模板页面">模板页面</a>
 
 - 所有的后台模板都写到 `views/template` 目录下面，并且分目录存储，调用时按照 `目录/模板名称` 的方式调用
 
 
-### <a name="用户权限">用户权限</a>
+### :small_blue_diamond:<a name="用户权限">用户权限</a>
 
 - 菜单权限定义到 `comment/menu/menu.go` 文件下，定义完之后在用户组管理里面编辑权限
 
