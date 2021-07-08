@@ -135,3 +135,25 @@ func PageOperation(c *gin.Context, db *gorm.DB, limit int, data interface{}) Pag
 		PageCount: pageCount,
 	}
 }
+
+/**
+*首字母大写
+**/
+func StrFirstToUpper(str string) (string, string) {
+	temp := strings.Split(str, "_")
+	var upperStr string
+	var firstStr string
+	for y := 0; y < len(temp); y++ {
+		vv := []rune(temp[y])
+		for i := 0; i < len(vv); i++ {
+			if i == 0 {
+				firstStr += string(vv[i])
+				vv[i] -= 32
+				upperStr += string(vv[i])
+			} else {
+				upperStr += string(vv[i])
+			}
+		}
+	}
+	return upperStr, firstStr
+}

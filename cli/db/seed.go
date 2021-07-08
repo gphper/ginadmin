@@ -42,6 +42,6 @@ func seedFunc(cmd *cobra.Command, args []string) {
 	}
 
 	if err != nil {
-		fmt.Println("migrate database fail:", err.Error())
+		fmt.Printf("migrate database fail:%s", err.Error())
 	}
 }

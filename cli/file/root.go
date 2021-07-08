@@ -13,4 +13,5 @@ var CmdFile = &cobra.Command{
 
 func init() {
 	CmdFile.AddCommand(cmdModel)
+	CmdFile.AddCommand(cmdController)
 }

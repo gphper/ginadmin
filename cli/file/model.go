@@ -3,6 +3,7 @@ package file
 import (
 	"bufio"
 	"errors"
+	"fmt"
 	"ginadmin/comment"
 	"html/template"
 	"io"
@@ -45,35 +46,16 @@ func init() {
 	cmdModel.Flags().StringVarP(&modelName, "model", "m", "", "input model name eg: shop_items")
 }
 
-func strFirstToUpper(str string) (string, string) {
-	temp := strings.Split(str, "_")
-	var upperStr string
-	var firstStr string
-	for y := 0; y < len(temp); y++ {
-		vv := []rune(temp[y])
-		for i := 0; i < len(vv); i++ {
-			if i == 0 {
-				firstStr += string(vv[i])
-				vv[i] -= 32
-				upperStr += string(vv[i])
-			} else {
-				upperStr += string(vv[i])
-			}
-		}
-	}
-	return upperStr, firstStr
-}
-
 func modelFunc(cmd *cobra.Command, args []string) {
 	if len(modelName) == 0 {
 		cmd.Help()
 		return
 	}
-	fileName, firstName := strFirstToUpper(modelName)
+	fileName, firstName := comment.StrFirstToUpper(modelName)
 	err := writeModel(fileName, firstName)
 
 	if err != nil {
-		cobra.CompErrorln(err.Error())
+		fmt.Printf("[error] %s", err.Error())
 		return
 	}
 	modifyDefault(fileName)

@@ -20,6 +20,7 @@
 - [配置文件](#配置文件)
 - [模板页面](#模板页面)
 - [用户权限](#用户权限)
+- [命令行工具](#命令行工具)
 
 ### :small_blue_diamond:<a name="开始使用">开始使用</a>
 
@@ -135,13 +136,13 @@
 2. 数据库迁移,在 `cli\cmd`  执行命令行工具
 
    ```go
-   go run ginadmin-cli.go db migrate
+   ginadmin-cli.exe db migrate
    ```
 
 3. 数据填充，需在相应目录下实现 `FillData()` 方法执行如下命令
 
    ```go
-   go run ginadmin-cli.go db seed
+   ginadmin-cli.exe db seed
    ```
 
 ### :small_blue_diamond:<a name="定时任务">定时任务</a>
@@ -203,9 +204,13 @@
   },
   ```
 
-  
 
+### :small_blue_diamond:<a name="命令行工具">命令行工具</a>
 
-
-
-
+- 在 `cli\cmd` 目录下执行 `go install ginadmin-cli.go` 命令安装 ginadmin-cli 命令
+- 数据库相关命令
+  - 数据表迁移 `ginadmin-cli.exe db migrate`
+  - 数据表填充 `ginadmin-cli.exe db seed`
+- 创建文件相关命令
+  - 创建model `ginadmin-cli.exe file model -m shop_item`
+  - 创建controller `ginadmin-cli.exe file controller -p hello -c HelloController -m Index,Add`
