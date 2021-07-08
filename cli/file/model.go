@@ -67,6 +67,7 @@ func strFirstToUpper(str string) (string, string) {
 func modelFunc(cmd *cobra.Command, args []string) {
 	if len(modelName) == 0 {
 		cmd.Help()
+		return
 	}
 	fileName, firstName := strFirstToUpper(modelName)
 	err := writeModel(fileName, firstName)
