@@ -47,6 +47,10 @@ func RegisterCallback() {
 		str := fmt.Sprintf("sql语句：%s 参数：%s", db.Statement.SQL.String(), db.Statement.Vars)
 		fmt.Println(str)
 	})
+	// Db.Callback().Query().After("gorm:query").Register("my_plugin:after_select", func(db *gorm.DB) {
+	// 	str := fmt.Sprintf("sql语句：%s 参数：%s", db.Statement.SQL.String(), db.Statement.Vars)
+	// 	fmt.Println(str)
+	// })
 	//TODO 注册删除数据回调
 
 	//TODO 注册更新数据回调

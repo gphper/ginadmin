@@ -4,10 +4,11 @@ import (
 	"ginadmin/comment"
 	"ginadmin/controllers"
 	"ginadmin/models"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 type AdminUserController struct {
@@ -42,7 +43,6 @@ func (this *AdminUserController) Index() gin.HandlerFunc {
 		}
 
 		adminUserData := comment.PageOperation(c, adminDb, 1, &adminUserList)
-
 		c.HTML(http.StatusOK, "setting/adminuser.html", gin.H{
 			"adminUserData": adminUserData,
 			"created_at":    c.Query("created_at"),

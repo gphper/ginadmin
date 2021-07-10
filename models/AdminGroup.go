@@ -4,11 +4,11 @@ import "time"
 
 type AdminGroup struct {
 	BaseModle
-	GroupId   uint   `gorm:"primary_key;auto_increment"`
-	GroupName string `gorm:"size:20;comment:'用户组名称'"`
-	Privs     string `gorm:"type:text;comment:'权限'"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	GroupId   uint      `gorm:"primary_key;auto_increment"`
+	GroupName string    `gorm:"size:20;comment:'用户组名称'"`
+	Privs     string    `gorm:"type:text;comment:'权限'"`
+	CreatedAt time.Time `gorm:"size:0"`
+	UpdatedAt time.Time `gorm:"size:0"`
 }
 
 func GetAllAdminGroup() ([]AdminGroup, error) {

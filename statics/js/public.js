@@ -46,15 +46,7 @@ jQuery(function ($) {
                 if (data.status) {
                     layer.msg(data.msg, {
                         icon: 6, scrollbar: false, time: 1000, shade: [0.3, '#393D49'], end: function () {
-                            if (!$('#rIframe', parent.document.body).prop('id')) {
-                                if (data.url && data.iframe_jump) {
-                                    parent.location.href = data.url;
-                                } else {
-                                    parent.location.reload();
-                                }
-                            } else {
-                                location.href = data.url;
-                            }
+                            window.location.href = data.url;
                         }
                     });
                 } else {

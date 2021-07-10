@@ -1,7 +1,5 @@
-{{define "bodyattr"}}class="gray-bg"{{end}}
-
 {{define "head"}}
-    <link rel="stylesheet" type="text/css" href="/statics/css/plugins/webuploader.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/webuploader.css">
     <style>
         #upload-container, #upload-list{width: 500px; margin: 0 auto; }
         #upload-container{cursor: pointer; border-radius: 15px; background: #EEEFFF; height: 200px;}
@@ -16,17 +14,7 @@
 {{end}}
 
 {{define "body"}}
-    <div class="wrapper wrapper-content">
-
-        <div class="row m-b">
-            <div class="col-sm-12">
-                <div class="tabs-container">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="">图片上传</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+    <div class="container-fluid p-t-15">
 
         <div class="row">
             <div class="col-sm-12">
@@ -55,8 +43,7 @@
 {{end}}
 
 {{define "script"}}
-    <script src="/statics/js/jquery-1.12.4.min.js"></script>
-    <script src="/statics/js/plugins/webuploader/webuploader.nolog.min.js"></script>
+    <script src="/statics/js/webuploader/webuploader.nolog.min.js"></script>
     <script>
         $('#upload-container').click(function(event) {
             $("#picker").find('input').click();
@@ -95,7 +82,7 @@
             // console.log(file.id+"传输成功");
             console.log(response.path)
 
-            var html = '<div class="upload-item"><img style="width:200px;" src="http://localhost:8091/'+response.path+'"/><button onclick=del_img($(this))>删除</button></div>';
+            var html = '<div class="upload-item"><img style="width:200px;" src="http://'+window.location.host+'/'+response.path+'"/><button onclick=del_img($(this))>删除</button></div>';
             $('#upload-list').append(html);
 
         });

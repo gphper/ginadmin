@@ -1,116 +1,205 @@
-{{define "bodyattr"}}
-class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden"
-{{end}}
-
 {{define "head"}}
     <link rel="stylesheet" href="/statics/js/plugins/metismenu/metismenu.min.css">
 {{end}}
 
 {{define "body"}}
-<div id="wrapper">
-    <div id="header" class="row content-tabs">
-        <img src="/statics/img/logo-title.png" id="logo-img"/>
-        <div class="title">{{.title}}</div>
-        <ul class="nav" id="side-menu">
-            <li class="nav-header">
-                <div class="dropdown">
-                    <a href="#">
-                        <i class="fa fa-cogs"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <div class="user">
-                            <i class="fa fa-user"></i>{{.userInfo.username}}
-                            <small>{{.userInfo.groupname}}</small>
-                        </div>
-                        <li><a href="/admin/home/edit_password?id={{.userInfo.uid}}" target="rIframe"><i class="fa fa-lock"></i>修改密码</a></li>
-                        <li><a href="" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="fa fa-power-off"></i>安全退出</a></li>
-                        <form id="logout-form" action="/admin/login_out" method="POST" style="display: none;">
-
-                        </form>
-                    </ul>
-                </div>
-            </li>
-        </ul>
-        <div class="roll-nav" onclick="jQuery('iframe:visible').get(0).contentWindow.location.reload();">
-            <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span><span class="fresh">刷新</span>
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+      <!--左侧导航-->
+      <aside class="lyear-layout-sidebar">
+        
+        <!-- logo -->
+        <div id="logo" class="sidebar-header">
+          <a href="index.html"><img src="/statics/images/logo-sidebar.png" title="LightYear" alt="LightYear" /></a>
         </div>
-    </div>
-    <!--左侧导航开始-->
-    <nav class="navbar-default navbar-static-side" role="navigation" style="overflow-y:auto">
-        <div class="nav-close"><i class="fa fa-times-circle"></i>
-        </div>
-        <div class="sidebar-collapse">
-            <ul class="nav metismenu" id="menuL">
+        <div class="lyear-layout-sidebar-scroll"> 
+          
+          <nav class="sidebar-main">
+            <ul class="nav nav-drawer">
                 {{range .menuList}}
                     {{if judgeContainPriv $.userPrivs .MenuPriv}}
-                    <li class="parent-li">
-                        <a href="javascript:void(0);" class="parent-a" target="rIframe" aria-expanded="false">
-                            <i class="{{.MenuIcon}}" style="color: rgb(167, 177, 194);"></i>
-                            <span class="nav-label">{{.MenuText}}</span>
-                            <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level collapse">
+                    <li class="nav-item nav-item-has-subnav">
+                        <a href="javascript:void(0)"><i class="{{.MenuIcon}}"></i> <span>{{.MenuText}}</span></a>
+                        <ul class="nav nav-subnav">
                             {{range .Nodes}}
                                 {{if judgeContainPriv $.userPrivs .NodePriv}}
-                                    <li class="child-li">
-                                        <a class="J_menuItem data-a" href="{{.NodeUrl}}" target="rIframe">{{.NodeText}}</a>
-                                    </li>
+                                <li> <a class="multitabs" href="{{.NodeUrl}}">{{.NodeText}}</a> </li>
                                 {{end}}
                             {{end}}
                         </ul>
-                    </li>
+                      </li>
                     {{end}}
                 {{end}}
             </ul>
+          </nav>
+          
+        
         </div>
-    </nav>
-    <!--左侧导航结束-->
-    <!--右侧部分开始-->
-    <div id="page-wrapper" class="gray-bg dashbard-1">
-        <div class="row J_mainContent" id="content-main">
-            <iframe class="J_iframe" name="rIframe" id="rIframe" width="100%" height="100%" frameborder="0" src="/admin/home/welcome"></iframe>
-        </div>
+        
+      </aside>
+      <!--End 左侧导航-->
+      
+      <!--头部信息-->
+      <header class="lyear-layout-header">
+        
+        <nav class="navbar navbar-default">
+          <div class="topbar">
+            
+            <div class="topbar-left">
+              <div class="lyear-aside-toggler">
+                <span class="lyear-toggler-bar"></span>
+                <span class="lyear-toggler-bar"></span>
+                <span class="lyear-toggler-bar"></span>
+              </div>
+            </div>
+            
+            <ul class="topbar-right">
+              <li class="dropdown dropdown-profile">
+                <a href="javascript:void(0)" data-toggle="dropdown">
+                  <img class="img-avatar img-avatar-48 m-r-10" src="/statics/images/users/avatar.jpg" alt="{{.userInfo.username}}" />
+                  <span>{{.userInfo.username}} <span class="caret"></span></span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li> <a class="" href="javascript:void(0)"><i class="mdi mdi-account"></i> {{.userInfo.groupname}}</a> </li>
+                  <li> <a class="multitabs" data-url="/admin/home/edit_password?id={{.userInfo.uid}}" href="javascript:void(0)"><i class="mdi mdi-lock-outline"></i> 修改密码</a> </li>
+                  <li class="divider"></li>
+                  <li> <a href="" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="mdi mdi-logout-variant"></i> 退出登录</a> </li>
+                  <form id="logout-form" action="/admin/login_out" method="POST" style="display: none;"></form>
+                </ul>
+              </li>
+              <!--切换主题配色-->
+              <li class="dropdown dropdown-skin">
+                <span data-toggle="dropdown" class="icon-palette"><i class="mdi mdi-palette"></i></span>
+                <ul class="dropdown-menu dropdown-menu-right" data-stopPropagation="true">
+                  <li class="drop-title"><p>LOGO</p></li>
+                  <li class="drop-skin-li clearfix">
+                    <span class="inverse">
+                      <input type="radio" name="logo_bg" value="default" id="logo_bg_1" checked>
+                      <label for="logo_bg_1"></label>
+                    </span>
+                    <span>
+                      <input type="radio" name="logo_bg" value="color_2" id="logo_bg_2">
+                      <label for="logo_bg_2"></label>
+                    </span>
+                    <span>
+                      <input type="radio" name="logo_bg" value="color_3" id="logo_bg_3">
+                      <label for="logo_bg_3"></label>
+                    </span>
+                    <span>
+                      <input type="radio" name="logo_bg" value="color_4" id="logo_bg_4">
+                      <label for="logo_bg_4"></label>
+                    </span>
+                    <span>
+                      <input type="radio" name="logo_bg" value="color_5" id="logo_bg_5">
+                      <label for="logo_bg_5"></label>
+                    </span>
+                    <span>
+                      <input type="radio" name="logo_bg" value="color_6" id="logo_bg_6">
+                      <label for="logo_bg_6"></label>
+                    </span>
+                    <span>
+                      <input type="radio" name="logo_bg" value="color_7" id="logo_bg_7">
+                      <label for="logo_bg_7"></label>
+                    </span>
+                    <span>
+                      <input type="radio" name="logo_bg" value="color_8" id="logo_bg_8">
+                      <label for="logo_bg_8"></label>
+                    </span>
+                  </li>
+                  <li class="drop-title"><p>头部</p></li>
+                  <li class="drop-skin-li clearfix">
+                    <span class="inverse">
+                      <input type="radio" name="header_bg" value="default" id="header_bg_1" checked>
+                      <label for="header_bg_1"></label>                      
+                    </span>                                                    
+                    <span>                                                     
+                      <input type="radio" name="header_bg" value="color_2" id="header_bg_2">
+                      <label for="header_bg_2"></label>                      
+                    </span>                                                    
+                    <span>                                                     
+                      <input type="radio" name="header_bg" value="color_3" id="header_bg_3">
+                      <label for="header_bg_3"></label>
+                    </span>
+                    <span>
+                      <input type="radio" name="header_bg" value="color_4" id="header_bg_4">
+                      <label for="header_bg_4"></label>                      
+                    </span>                                                    
+                    <span>                                                     
+                      <input type="radio" name="header_bg" value="color_5" id="header_bg_5">
+                      <label for="header_bg_5"></label>                      
+                    </span>                                                    
+                    <span>                                                     
+                      <input type="radio" name="header_bg" value="color_6" id="header_bg_6">
+                      <label for="header_bg_6"></label>                      
+                    </span>                                                    
+                    <span>                                                     
+                      <input type="radio" name="header_bg" value="color_7" id="header_bg_7">
+                      <label for="header_bg_7"></label>
+                    </span>
+                    <span>
+                      <input type="radio" name="header_bg" value="color_8" id="header_bg_8">
+                      <label for="header_bg_8"></label>
+                    </span>
+                  </li>
+                  <li class="drop-title"><p>侧边栏</p></li>
+                  <li class="drop-skin-li clearfix">
+                    <span class="inverse">
+                      <input type="radio" name="sidebar_bg" value="default" id="sidebar_bg_1" checked>
+                      <label for="sidebar_bg_1"></label>
+                    </span>
+                    <span>
+                      <input type="radio" name="sidebar_bg" value="color_2" id="sidebar_bg_2">
+                      <label for="sidebar_bg_2"></label>
+                    </span>
+                    <span>
+                      <input type="radio" name="sidebar_bg" value="color_3" id="sidebar_bg_3">
+                      <label for="sidebar_bg_3"></label>
+                    </span>
+                    <span>
+                      <input type="radio" name="sidebar_bg" value="color_4" id="sidebar_bg_4">
+                      <label for="sidebar_bg_4"></label>
+                    </span>
+                    <span>
+                      <input type="radio" name="sidebar_bg" value="color_5" id="sidebar_bg_5">
+                      <label for="sidebar_bg_5"></label>
+                    </span>
+                    <span>
+                      <input type="radio" name="sidebar_bg" value="color_6" id="sidebar_bg_6">
+                      <label for="sidebar_bg_6"></label>
+                    </span>
+                    <span>
+                      <input type="radio" name="sidebar_bg" value="color_7" id="sidebar_bg_7">
+                      <label for="sidebar_bg_7"></label>
+                    </span>
+                    <span>
+                      <input type="radio" name="sidebar_bg" value="color_8" id="sidebar_bg_8">
+                      <label for="sidebar_bg_8"></label>
+                    </span>
+                  </li>
+                </ul>
+              </li>
+              <!--切换主题配色-->
+            </ul>
+            
+          </div>
+        </nav>
+        
+      </header>
+      <!--End 头部信息-->
+      
+      <!--页面主要内容-->
+      <main class="lyear-layout-content">
+        
+        <div id="iframe-content"></div>
+        
+      </main>
+      <!--End 页面主要内容-->
     </div>
-    <!--右侧部分结束-->
-</div>
+  </div>
 {{end}}
 
 {{define "script"}}
-    <script src="/statics/js/plugins/metismenu/metismenu.min.js"></script>
-    <script type="text/javascript">
-        jQuery("#menuL").find('a').prop('target', 'rIframe');
-        jQuery('#menuL').metisMenu();
-        $(".child-li").on("click", ".data-a", function () {
-            $(".data-a").removeClass("active");
-            $(this).addClass("active");
-        });
-        $('.n-parent-a').click(function () {
-            $('#menuL').find('li.active').each(function () {
-                $(this).children('a').click();
-            });
-        });
-        $(".parent-a").hover(function () {
-            $(this).children('i').css('color', '#fff');
-        }, function () {
-            if ($(this).parent('li').prop('class').indexOf('active') == -1) {
-                $(this).children('i').css('color', '#a7b1c2');
-            }
-        });
-    </script>
-
-<script>
-    jQuery(function ($) {
-        $(".search-nav").css("right", 80 + $("#side-menu").width());
-        $(".dropdown").mouseover(function () {
-            $(".dropdown-menu").show();
-        });
-        $(".dropdown").mouseout(function () {
-            $(".dropdown-menu").hide();
-            $(this).css('background', 'transparent');
-        });
-        $('.dropdown,.dropdown-menu').mouseover(function () {
-            $(this, '.dropdown').css('background', '#13191f');
-        });
-    });
-</script>
+<script type="text/javascript" src="/statics/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="/statics/js/bootstrap-multitabs/multitabs.js"></script>
+<script type="text/javascript" src="/statics/js/index.min.js"></script>
 {{end}}

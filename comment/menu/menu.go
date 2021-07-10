@@ -26,7 +26,7 @@ func GetMenu() []Menu {
 		{
 			MenuText: "设置",
 			MenuPriv: "setting",
-			MenuIcon: "fa fa-cog",
+			MenuIcon: "mdi mdi-settings",
 			Nodes: []Node{
 				{
 					NodeText: "管理员管理",
@@ -90,7 +90,7 @@ func GetMenu() []Menu {
 		{
 			MenuText: "示例",
 			MenuPriv: "demo",
-			MenuIcon: "fa fa-cog",
+			MenuIcon: "mdi mdi-format-list-bulleted",
 			Nodes: []Node{
 				{
 					NodeText: "附件管理",
