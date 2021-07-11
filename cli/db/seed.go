@@ -2,7 +2,10 @@ package db
 
 import (
 	"fmt"
+	"ginadmin/comment"
 	"ginadmin/models"
+	"os"
+	"os/exec"
 
 	"github.com/spf13/cobra"
 )
@@ -20,8 +23,21 @@ func init() {
 }
 
 func seedFunc(cmd *cobra.Command, args []string) {
-	modelss := models.GetModels()
+
 	var err error
+	if len(args) != 0 && args[0] == "real" {
+		err = realExecSeed()
+	} else {
+		err = execSelfSeed()
+	}
+
+	if err != nil {
+		fmt.Printf("migrate database fail:%s", err.Error())
+	}
+}
+
+func realExecSeed() error {
+	modelss := models.GetModels()
 	if len(table) == 0 {
 		for _, v := range modelss {
 			tabler := v.(models.GaTabler)
@@ -40,8 +56,18 @@ func seedFunc(cmd *cobra.Command, args []string) {
 			fmt.Println("data table information does not exist")
 		}
 	}
+	return nil
+}
 
-	if err != nil {
-		fmt.Printf("migrate database fail:%s", err.Error())
+func execSelfSeed() error {
+	var out []byte
+	var err error
+	rootPath, _ := comment.RootPath()
+	cmd := exec.Command("go", "run", rootPath+"\\cli\\cmd\\ginadmin-cli.go", "db", "seed", "real")
+	if out, err = cmd.CombinedOutput(); err != nil {
+		fmt.Println(err.Error())
+		os.Exit(2)
 	}
+	_ = out
+	return err
 }

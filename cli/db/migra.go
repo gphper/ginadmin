@@ -1,8 +1,12 @@
 package db
 
 import (
+	"errors"
 	"fmt"
+	"ginadmin/comment"
 	"ginadmin/models"
+	"os"
+	"os/exec"
 
 	"github.com/spf13/cobra"
 )
@@ -20,8 +24,21 @@ func init() {
 }
 
 func migrateFunc(cmd *cobra.Command, args []string) {
-	modelss := models.GetModels()
 	var err error
+	if len(args) != 0 && args[0] == "real" {
+		err = realExec()
+	} else {
+		err = execSelf()
+	}
+
+	if err != nil {
+		fmt.Println("migrate database fail:", err.Error())
+	}
+}
+
+func realExec() error {
+	var err error
+	modelss := models.GetModels()
 	if len(table) == 0 {
 		err = models.Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(modelss...)
 	} else {
@@ -34,11 +51,21 @@ func migrateFunc(cmd *cobra.Command, args []string) {
 			}
 		}
 		if !tableExit {
-			fmt.Println("data table information does not exist")
+			err = errors.New("data table information does not exist")
 		}
 	}
+	return err
+}
 
-	if err != nil {
-		fmt.Println("migrate database fail:", err.Error())
+func execSelf() error {
+	var out []byte
+	var err error
+	rootPath, _ := comment.RootPath()
+	cmd := exec.Command("go", "run", rootPath+"\\cli\\cmd\\ginadmin-cli.go", "db", "migrate", "real")
+	if out, err = cmd.CombinedOutput(); err != nil {
+		fmt.Println(err.Error())
+		os.Exit(2)
 	}
+	_ = out
+	return err
 }
