@@ -10,6 +10,20 @@
 * WebUpload
 * Light Year Admin Using Iframe
 
+## 功能清单
+
+:white_check_mark:权限控制
+
+:white_check_mark:日志管理
+
+:white_check_mark:模板页面
+
+:white_check_mark:自动分页
+
+:white_check_mark:Docker部署
+
+:black_square_button:命令行操作​
+
 ## 使用文档
 - [开始使用](#开始使用)
 - [docker-compose构建环境](#docker-compose)
@@ -21,7 +35,6 @@
 - [配置文件](#配置文件)
 - [模板页面](#模板页面)
 - [用户权限](#用户权限)
-- [命令行工具](#命令行工具)
 
 ### :small_blue_diamond:<a name="开始使用">开始使用</a>
 
