@@ -1,0 +1,22 @@
+version: '3'
+services:
+  mysql:
+    container_name: ginadmin-mysql
+    image: ginadmin-mysql
+    build:
+      context: ..
+      dockerfile: build/DockerfileMysql
+
+  web:
+    container_name: ginadmin-web
+    image: ginadmin-web
+    build:
+      context: ..
+      dockerfile: build/DockerfileWeb
+    ports:
+      - 20010:20010
+    depends_on:
+      - mysql
+    links:
+      - mysql:localmysql
+    restart: always

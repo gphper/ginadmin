@@ -1,0 +1,111 @@
+{{define "head"}}
+    <style type="text/css">
+        .treeview span.indent {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .treeview span.icon {
+            width: 12px;
+            margin-right: 5px;
+        }
+    </style>
+{{end}}
+
+{{define "body"}}
+    <div class="container-fluid p-t-15">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="col-sm-12 treeview">
+                            <ul class="list-group">
+                                <li class="list-group-item node-tree">
+                                    {{ .log_path }}
+                                </li>
+                                {{range  .files}}
+
+                                    <li class="list-group-item node-tree">
+                                        <span class="icon mdi mdi-folder"></span>
+                                        {{ .Name}}
+                                        <a href="javascript:void(0);" id="logview">展开</a>
+                                        <input type="hidden" name="path" value="{{ $.log_path }}{{ $.line }}{{.Name}}">
+                                    </li>
+                                {{end}}
+                            </ul>
+                        </div>
+                        <div class="row"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{{end}}
+
+{{define "script"}}
+    <script type="text/javascript">
+        jQuery(function ($) {
+            $(document).on('click', 'a[id^=logview]', function () {
+                if ($(this).text() == '展开') {
+                    $(this).text('收起');
+
+                    var p = $(this).parent();
+                    p.find('.icon').prop('class', 'icon mdi mdi-folder-open');
+                    var path = p.find('[name=path]').val();
+                    var layer = p.find('.indent').length;
+                    var layerhtml = '';
+                    for (var i = 0; i < layer + 1; i++) {
+                        layerhtml += '<span class="indent"></span>';
+                    }
+                    $.getJSON('/admin/setting/system/getdir', {path: path}, function (data) {
+                        var e = p;
+                        var ehtml, ehref, edownload;
+                        var filesize = '';
+                        data = data['data']
+                        data.reverse();
+                        for (var i in data) {
+                            if (data[i].type == 'dir') {
+                                ehtml = '<span class="icon mdi mdi-folder"></span> ';
+                                ehref = '&nbsp;<a href="javascript:void(0);" id="logview">展开</a>';
+                                edownload = '';
+                            } else {
+                                ehtml = '<span class="icon mdi mdi-file"></span> ';
+                                ehref = '&nbsp;&nbsp;<a href="/admin/setting/system/view?path=' + encodeURI(data[i].path) + '" id="view_d">查看</a>';
+                                edownload = ' | <a href="?path=' + encodeURI(data[i].path) + '">下载</a>';
+                                if (data[i].size) {
+                                    filesize = '&nbsp;(' + data[i].size + ')';
+                                }
+                            }
+                            e.after(['<li class="list-group-item node-tree">' + layerhtml + ehtml + data[i].name + filesize +
+                            '<input type="hidden" name="path" value="' + data[i].path + '">' + ehref + edownload + '</li>'].join(""));
+                        }
+                    })
+                } else {
+                    $(this).text('展开');
+
+                    var p = $(this).parent();
+                    p.find('.icon').prop('class', 'icon mdi mdi-folder');
+                    var layer = p.find('.indent').length;
+
+                    while (true) {
+                        if (p.next().find('.indent').length > layer) {
+                            p.next().remove();
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            });
+
+            $(document).on('click', 'a[id^=view_d]', function () {
+                layer.open({
+                    type: 2,
+                    content: this.href,
+                    area: ['96%', '96%']
+                });
+                return false;
+            });
+        });
+    </script>
+{{end}}

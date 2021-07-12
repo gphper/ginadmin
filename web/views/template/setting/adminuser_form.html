@@ -1,0 +1,74 @@
+{{define "head"}}  {{end}}
+
+{{define "body"}}
+<div class="container-fluid p-t-15">
+  
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            
+            <form action="/admin/setting/adminuser/save" method="post" class="row ajaxForm">
+            <input type="hidden" name="uid" value="{{.adminUser.Uid}}"/>
+             
+            <div class="form-group col-md-12">
+                <label for="title">用户名</label>
+                {{if .adminUser.Username}}
+                    <p class="form-control-static">{{.adminUser.Username}}</p>
+                {{else}}
+                    <input type="text" class="form-control" name="username" value="{{.adminUser.Username}}"/>
+                {{end}}
+            </div>
+
+            <div class="form-group col-md-12">
+                <label for="title">密码</label>
+                <input type="password" class="form-control" name="password" placeholder="不修改密码则不填"/>
+            </div>
+
+            <div class="form-group col-md-12">
+                <label for="type">角色</label>
+                <div class="form-controls">
+                  <select name="type" class="form-control" name="groupid" id="type">
+                    <option value="">请选择角色</option>
+                        {{range .adminGroups}}
+                            {{if $.adminUser}}
+                                {{if eq $.adminUser.GroupId .GroupId}}
+                                    <option selected value="{{.GroupId}}">{{.GroupName}}</option>
+                                {{else}}
+                                    <option value="{{.GroupId}}">{{.GroupName}}</option>
+                                {{end}}
+                            {{else}}
+                                <option value="{{.GroupId}}">{{.GroupName}}</option>
+                            {{end}}
+
+                        {{end}}
+                  </select>
+                </div>
+              </div>
+
+            <div class="form-group col-md-12">
+                <label for="title">姓名</label>
+                <input type="text" class="form-control" name="nickname" value="{{.adminUser.Nickname}}"/>
+            </div>
+
+            <div class="form-group col-md-12">
+                <label for="title">手机号</label>
+                <input type="text" class="form-control" name="phone" value="{{.adminUser.Phone}}"/>
+            </div>
+              
+            <div class="form-group col-md-12">
+                <button type="submit" class="btn btn-primary ajax-post" target-form="add-form">确 定</button>
+                <button type="button" class="btn btn-default" onclick="javascript:history.back(-1);return false;">返 回</button>
+            </div>
+            </form>
+   
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+{{end}}
+
+{{define "script"}} {{end}}
