@@ -1,8 +1,12 @@
 package controllers
 
 import (
-	"github.com/gin-gonic/gin"
+	"errors"
+	"ginadmin/pkg/comment"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 type BaseController struct {
@@ -22,4 +26,25 @@ func (Base *BaseController) Error(c *gin.Context, message string) {
 		"status": false,
 		"msg":    message,
 	})
+}
+
+func (Base *BaseController) FormBind(c *gin.Context, obj interface{}) error {
+
+	trans, err := comment.InitTrans("zh")
+	if err != nil {
+		return err
+	}
+
+	if err := c.ShouldBind(obj); err != nil {
+		errs, ok := err.(validator.ValidationErrors)
+		if !ok {
+			return errs
+		}
+
+		for _, v := range errs.Translate(trans) {
+			return errors.New(v)
+		}
+
+	}
+	return nil
 }

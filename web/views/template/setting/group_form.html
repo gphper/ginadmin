@@ -31,20 +31,10 @@
               <input type="hidden" name="groupid" value="{{.adminGroup.GroupId}}">
               <div class="form-group">
                 <label for="example-text-input">角色名称</label>
-                <input class="form-control" type="text" name="groupname" placeholder="角色名称">
+                <input class="form-control" type="text" name="groupname" placeholder="角色名称" value="{{.adminGroup.GroupName}}">
               </div>
               <div class="table-responsive">
               <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>
-                      <label class="lyear-checkbox checkbox-primary">
-                        <input name="checkbox" type="checkbox" id="check-all">
-                        <span> 全选</span>
-                      </label>
-                    </th>
-                  </tr>
-                </thead>
                 <tbody>
                 {{range $k,$v := .menuList}}
                   <tr>
@@ -86,7 +76,7 @@
             <div class="hr-line-dashed"></div>
                 <div class="form-group">
                     <div class="col-sm-4 col-sm-offset-2">
-                        <button class="btn btn-primary" type="submit">添加</button>
+                        <button class="btn btn-primary" type="submit">保存</button>
                         <button class="btn btn-white" type="reset">重置</button>
                     </div>
                 </div>

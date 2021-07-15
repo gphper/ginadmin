@@ -43,11 +43,23 @@ func (con *AdminGroupController) AddIndex() gin.HandlerFunc {
 */
 func (con *AdminGroupController) Save() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		type groupForm struct {
+			Privs     []string `form:"privs[]" label:"权限" json:"privs" binding:"required"`
+			GroupName string   `form:"groupname" label:"用户组名" json:"groupname" binding:"required"`
+		}
+		var gf groupForm
+
+		err := con.FormBind(c, &gf)
+		if err != nil {
+			con.Error(c, err.Error())
+			return
+		}
+
 		var privsJsonStr string
 		privMap := make(map[string]struct{})
-		privs, _ := c.GetPostFormArray("privs[]")
 		//将数组转为map便于提高后面的判断效率
-		for _, v := range privs {
+		for _, v := range gf.Privs {
 			privMap[v] = struct{}{}
 		}
 
@@ -58,13 +70,12 @@ func (con *AdminGroupController) Save() gin.HandlerFunc {
 			privsJsonStr = `[]`
 		}
 
-		groupName := c.PostForm("groupname")
 		groupId, err := strconv.Atoi(c.PostForm("groupid"))
 		if err != nil {
 			groupId = 0
 		}
 
-		dbErr := models.SaveAdminGroup(uint(groupId), groupName, privsJsonStr)
+		dbErr := models.SaveAdminGroup(uint(groupId), gf.GroupName, privsJsonStr)
 		if dbErr != nil {
 			con.Error(c, "操作失败")
 		} else {
