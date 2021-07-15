@@ -2,7 +2,7 @@ package setting
 
 import (
 	"encoding/json"
-	"ginadmin/internal/controllers"
+	"ginadmin/internal/controllers/admin"
 	"ginadmin/internal/menu"
 	"ginadmin/internal/models"
 	"net/http"
@@ -11,14 +11,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type AdminGroupController struct {
-	controllers.BaseController
+type adminGroupController struct {
+	admin.BaseController
 }
+
+var Agc = adminGroupController{}
 
 /**
 角色列表
 */
-func (con *AdminGroupController) Index() gin.HandlerFunc {
+func (con *adminGroupController) Index() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		adminGroups, _ := models.GetAllAdminGroup()
 		c.HTML(http.StatusOK, "setting/group.html", gin.H{
@@ -30,7 +32,7 @@ func (con *AdminGroupController) Index() gin.HandlerFunc {
 /**
 添加角色
 */
-func (con *AdminGroupController) AddIndex() gin.HandlerFunc {
+func (con *adminGroupController) AddIndex() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.HTML(http.StatusOK, "setting/group_form.html", gin.H{
 			"menuList": menu.GetMenu(),
@@ -41,7 +43,7 @@ func (con *AdminGroupController) AddIndex() gin.HandlerFunc {
 /**
 保存角色
 */
-func (con *AdminGroupController) Save() gin.HandlerFunc {
+func (con *adminGroupController) Save() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		type groupForm struct {
@@ -87,7 +89,7 @@ func (con *AdminGroupController) Save() gin.HandlerFunc {
 /**
 编辑
 */
-func (con *AdminGroupController) Edit() gin.HandlerFunc {
+func (con *adminGroupController) Edit() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Query("id")
 		adminGroup, _ := models.FindAdminGroupById(id)
@@ -104,7 +106,7 @@ func (con *AdminGroupController) Edit() gin.HandlerFunc {
 /**
 删除
 */
-func (con *AdminGroupController) Del() gin.HandlerFunc {
+func (con *adminGroupController) Del() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Query("id")
 		models.Db.Where("group_id = ?", id).Delete(models.AdminGroup{})

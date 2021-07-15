@@ -1,18 +1,17 @@
 package router
 
 import (
-	"ginadmin/api/apiuser"
+	"ginadmin/internal/controllers/api/user"
 
 	"github.com/gin-gonic/gin"
 )
 
 func ApiRouter(apiRouter *gin.RouterGroup) {
-	apiUser := new(apiuser.ApiUserController)
 	apiRouter.Use()
 	{
 		apiUserRouter := apiRouter.Group("user")
 		{
-			apiUserRouter.GET("/list", apiUser.UserList())
+			apiUserRouter.GET("/list", user.Uc.UserList())
 		}
 	}
 }

@@ -3,7 +3,7 @@ package setting
 import (
 	"bufio"
 	"fmt"
-	"ginadmin/internal/controllers"
+	"ginadmin/internal/controllers/admin"
 	"ginadmin/pkg/comment"
 	"ginadmin/pkg/loggers"
 	"io/ioutil"
@@ -15,14 +15,16 @@ import (
 	"go.uber.org/zap"
 )
 
-type AdminSystemController struct {
-	controllers.BaseController
+type adminSystemController struct {
+	admin.BaseController
 }
+
+var Asc = adminSystemController{}
 
 /**
 日志目录页面
 */
-func (con *AdminSystemController) Index() gin.HandlerFunc {
+func (con *adminSystemController) Index() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		path, err := comment.RootPath()
@@ -46,7 +48,7 @@ func (con *AdminSystemController) Index() gin.HandlerFunc {
 /**
 获取目录
 */
-func (con *AdminSystemController) GetDir() gin.HandlerFunc {
+func (con *adminSystemController) GetDir() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		type FileNode struct {
 			Name string `json:"name"`
@@ -83,7 +85,7 @@ func (con *AdminSystemController) GetDir() gin.HandlerFunc {
 /**
 获取日志详情
 */
-func (con *AdminSystemController) View() gin.HandlerFunc {
+func (con *adminSystemController) View() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		startLine, _ := strconv.Atoi(c.DefaultQuery("start_line", "1"))
 		endLine, _ := strconv.Atoi(c.DefaultQuery("end_line", "20"))

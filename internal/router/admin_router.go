@@ -1,9 +1,9 @@
 package router
 
 import (
-	"ginadmin/internal/controllers"
-	"ginadmin/internal/controllers/demo"
-	"ginadmin/internal/controllers/setting"
+	"ginadmin/internal/controllers/admin"
+	"ginadmin/internal/controllers/admin/demo"
+	"ginadmin/internal/controllers/admin/setting"
 	"ginadmin/internal/middleware"
 
 	"github.com/gin-contrib/sessions"
@@ -12,30 +12,24 @@ import (
 )
 
 func AdminRouter(adminRouter *gin.RouterGroup) {
-	loginController := new(controllers.LoginController)
-	homeController := new(controllers.HomeController)
-	adminGroupController := new(setting.AdminGroupController)
-	adminUserController := new(setting.AdminUserController)
-	adminSysController := new(setting.AdminSystemController)
-	uploadController := new(demo.UploadController)
 
 	//设置后台用户权限中间件
 	store := cookie.NewStore([]byte("secret11111"))
 	adminRouter.Use(sessions.Sessions("mysession", store))
 	{
 		/*******登录路由**********/
-		adminRouter.GET("/login", loginController.Login())
-		adminRouter.POST("/login", loginController.Login())
-		adminRouter.GET("/login_out", loginController.LoginOut())
-		adminRouter.POST("/login_out", loginController.LoginOut())
+		adminRouter.GET("/login", admin.Lc.Login())
+		adminRouter.POST("/login", admin.Lc.Login())
+		adminRouter.GET("/login_out", admin.Lc.LoginOut())
+		adminRouter.POST("/login_out", admin.Lc.LoginOut())
 
 		adminHomeRouter := adminRouter.Group("/home")
 		adminHomeRouter.Use(middleware.AdminUserAuth())
 		{
-			adminHomeRouter.GET("/", homeController.Home())
-			adminHomeRouter.GET("/welcome", homeController.Welcome())
-			adminHomeRouter.GET("/edit_password", homeController.EditPassword())
-			adminHomeRouter.POST("/save_password", homeController.SavePassword())
+			adminHomeRouter.GET("/", admin.Hc.Home())
+			adminHomeRouter.GET("/welcome", admin.Hc.Welcome())
+			adminHomeRouter.GET("/edit_password", admin.Hc.EditPassword())
+			adminHomeRouter.POST("/save_password", admin.Hc.SavePassword())
 		}
 
 		adminSettingRouter := adminRouter.Group("/setting")
@@ -43,27 +37,27 @@ func AdminRouter(adminRouter *gin.RouterGroup) {
 		{
 			adminGroup := adminSettingRouter.Group("/admingroup")
 			{
-				adminGroup.GET("/index", adminGroupController.Index())
-				adminGroup.GET("/add", adminGroupController.AddIndex())
-				adminGroup.POST("/save", adminGroupController.Save())
-				adminGroup.GET("/edit", adminGroupController.Edit())
-				adminGroup.GET("/del", adminGroupController.Del())
+				adminGroup.GET("/index", setting.Agc.Index())
+				adminGroup.GET("/add", setting.Agc.AddIndex())
+				adminGroup.POST("/save", setting.Agc.Save())
+				adminGroup.GET("/edit", setting.Agc.Edit())
+				adminGroup.GET("/del", setting.Agc.Del())
 			}
 
 			adminUser := adminSettingRouter.Group("/adminuser")
 			{
-				adminUser.GET("/index", adminUserController.Index())
-				adminUser.GET("/add", adminUserController.AddIndex())
-				adminUser.POST("/save", adminUserController.Save())
-				adminUser.GET("/edit", adminUserController.Edit())
-				adminUser.GET("/del", adminUserController.Del())
+				adminUser.GET("/index", setting.Auc.Index())
+				adminUser.GET("/add", setting.Auc.AddIndex())
+				adminUser.POST("/save", setting.Auc.Save())
+				adminUser.GET("/edit", setting.Auc.Edit())
+				adminUser.GET("/del", setting.Auc.Del())
 			}
 
 			adminSystem := adminSettingRouter.Group("/system")
 			{
-				adminSystem.GET("/index", adminSysController.Index())
-				adminSystem.GET("/getdir", adminSysController.GetDir())
-				adminSystem.GET("/view", adminSysController.View())
+				adminSystem.GET("/index", setting.Asc.Index())
+				adminSystem.GET("/getdir", setting.Asc.GetDir())
+				adminSystem.GET("/view", setting.Asc.View())
 			}
 
 		}
@@ -72,8 +66,8 @@ func AdminRouter(adminRouter *gin.RouterGroup) {
 		adminDemoRouter := adminRouter.Group("/demo")
 		adminDemoRouter.Use(middleware.AdminUserAuth(), middleware.AdminUserPrivs())
 		{
-			adminDemoRouter.GET("/show", uploadController.Show())
-			adminDemoRouter.POST("/upload", uploadController.Upload())
+			adminDemoRouter.GET("/show", demo.Uc.Show())
+			adminDemoRouter.POST("/upload", demo.Uc.Upload())
 		}
 
 	}

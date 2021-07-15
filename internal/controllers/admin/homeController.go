@@ -1,4 +1,4 @@
-package controllers
+package admin
 
 import (
 	"encoding/json"
@@ -11,11 +11,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type HomeController struct {
+type homeController struct {
 	BaseController
 }
 
-func (con *HomeController) Home() gin.HandlerFunc {
+var Hc = homeController{}
+
+func (con *homeController) Home() gin.HandlerFunc {
 	menuList := menu.GetMenu()
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
@@ -38,13 +40,13 @@ func (con *HomeController) Home() gin.HandlerFunc {
 	}
 }
 
-func (con *HomeController) Welcome() gin.HandlerFunc {
+func (con *homeController) Welcome() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.HTML(http.StatusOK, "home/welcome.html", gin.H{})
 	}
 }
 
-func (con *HomeController) EditPassword() gin.HandlerFunc {
+func (con *homeController) EditPassword() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Query("id")
 		c.HTML(http.StatusOK, "home/password_form.html", gin.H{
@@ -53,7 +55,7 @@ func (con *HomeController) EditPassword() gin.HandlerFunc {
 	}
 }
 
-func (con *HomeController) SavePassword() gin.HandlerFunc {
+func (con *homeController) SavePassword() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.PostForm("id")
 		oldPassword := c.PostForm("old_password")

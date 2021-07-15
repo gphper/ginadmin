@@ -1,24 +1,26 @@
 package demo
 
 import (
-	"ginadmin/internal/controllers"
+	"ginadmin/internal/controllers/admin"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-type UploadController struct {
-	controllers.BaseController
+type uploadController struct {
+	admin.BaseController
 }
 
-func (con *UploadController) Show() gin.HandlerFunc {
+var Uc = uploadController{}
+
+func (con *uploadController) Show() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.HTML(http.StatusOK, "demo/upload.html", gin.H{})
 	}
 }
 
-func (con *UploadController) Upload() gin.HandlerFunc {
+func (con *uploadController) Upload() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		// 单文件

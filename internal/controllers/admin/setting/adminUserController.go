@@ -1,7 +1,7 @@
 package setting
 
 import (
-	"ginadmin/internal/controllers"
+	"ginadmin/internal/controllers/admin"
 	"ginadmin/internal/models"
 	"ginadmin/pkg/comment"
 	"net/http"
@@ -11,14 +11,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type AdminUserController struct {
-	controllers.BaseController
+type adminUserController struct {
+	admin.BaseController
 }
+
+var Auc = adminUserController{}
 
 /**
 管理员列表
 */
-func (this *AdminUserController) Index() gin.HandlerFunc {
+func (con *adminUserController) Index() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		nickname := c.Query("nickname")
 		createdAt := c.Query("created_at")
@@ -54,7 +56,7 @@ func (this *AdminUserController) Index() gin.HandlerFunc {
 /**
 添加
 */
-func (this *AdminUserController) AddIndex() gin.HandlerFunc {
+func (con *adminUserController) AddIndex() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		adminGroups, _ := models.GetAllAdminGroup()
 		c.HTML(http.StatusOK, "setting/adminuser_form.html", gin.H{
@@ -66,7 +68,7 @@ func (this *AdminUserController) AddIndex() gin.HandlerFunc {
 /**
 保存
 */
-func (this *AdminUserController) Save() gin.HandlerFunc {
+func (con *adminUserController) Save() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var err error
 		username, _ := c.GetPostForm("username")
@@ -84,9 +86,9 @@ func (this *AdminUserController) Save() gin.HandlerFunc {
 		}
 
 		if err == nil {
-			this.Success(c, "/admin/setting/adminuser/index", "操作成功")
+			con.Success(c, "/admin/setting/adminuser/index", "操作成功")
 		} else {
-			this.Error(c, "操作失败")
+			con.Error(c, "操作失败")
 		}
 	}
 }
@@ -94,7 +96,7 @@ func (this *AdminUserController) Save() gin.HandlerFunc {
 /**
 编辑
 */
-func (this *AdminUserController) Edit() gin.HandlerFunc {
+func (this *adminUserController) Edit() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Query("id")
 		var adminGroup []models.AdminGroup
@@ -111,10 +113,10 @@ func (this *AdminUserController) Edit() gin.HandlerFunc {
 /**
 删除
 */
-func (this *AdminUserController) Del() gin.HandlerFunc {
+func (con *adminUserController) Del() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Query("id")
 		models.Db.Where("uid = ?", id).Delete(models.AdminUsers{})
-		this.Success(c, "", "删除成功")
+		con.Success(c, "", "删除成功")
 	}
 }
