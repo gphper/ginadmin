@@ -3,10 +3,9 @@ package setting
 import (
 	"ginadmin/internal/controllers/admin"
 	"ginadmin/internal/models"
+	"ginadmin/internal/services"
 	"ginadmin/pkg/comment"
 	"net/http"
-	"strconv"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,28 +21,19 @@ var Auc = adminUserController{}
 */
 func (con *adminUserController) Index() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		nickname := c.Query("nickname")
-		createdAt := c.Query("created_at")
+		var (
+			err           error
+			req           models.AdminUserIndexReq
+			adminUserList []models.AdminUserInfo
+		)
 
-		type adminUser struct {
-			models.AdminUsers
-			GroupName string
-		}
-		var adminUserList []adminUser
-
-		adminDb := models.GetAllAdminUserJoinGroup()
-
-		if nickname != "" {
-			adminDb = models.GetAllAdminUserJoinGroupLikeNickname(adminDb, nickname)
+		err = con.FormBind(c, &req)
+		if err != nil {
+			con.Error(c, err.Error())
+			return
 		}
 
-		if createdAt != "" {
-			period := strings.Split(createdAt, " ~ ")
-			start := period[0] + " 00:00:00"
-			end := period[1] + " 23:59:59"
-			adminDb = models.GetAllAdminUserJoinGroupTimeRange(adminDb, start, end)
-		}
-
+		adminDb := services.AuService.GetAdminUsers(req)
 		adminUserData := comment.PageOperation(c, adminDb, 1, &adminUserList)
 		c.HTML(http.StatusOK, "setting/adminuser.html", gin.H{
 			"adminUserData": adminUserData,
@@ -58,7 +48,7 @@ func (con *adminUserController) Index() gin.HandlerFunc {
 */
 func (con *adminUserController) AddIndex() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		adminGroups, _ := models.GetAllAdminGroup()
+		adminGroups, _ := services.AgService.GetAllGroup()
 		c.HTML(http.StatusOK, "setting/adminuser_form.html", gin.H{
 			"adminGroups": adminGroups,
 		})
@@ -70,25 +60,21 @@ func (con *adminUserController) AddIndex() gin.HandlerFunc {
 */
 func (con *adminUserController) Save() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var err error
-		username, _ := c.GetPostForm("username")
-		password, _ := c.GetPostForm("password")
-		nickname := c.PostForm("nickname")
-		phone := c.PostForm("phone")
-		groupid := c.PostForm("groupid")
-		groupidd, _ := strconv.Atoi(groupid)
-		uid := c.PostForm("uid")
-		uidd, _ := strconv.Atoi(uid)
-		if uidd > 0 {
-			err = models.SaveAdminUser(uidd, groupidd, nickname, phone, password)
-		} else {
-			err = models.AddAdminUser(groupidd, username, nickname, phone, password)
-		}
+		var (
+			err error
+			req models.AdminUserSaveReq
+		)
 
+		err = con.FormBind(c, &req)
+		if err != nil {
+			con.Error(c, err.Error())
+			return
+		}
+		err = services.AuService.SaveAdminUser(req)
 		if err == nil {
 			con.Success(c, "/admin/setting/adminuser/index", "操作成功")
 		} else {
-			con.Error(c, "操作失败")
+			con.Error(c, err.Error())
 		}
 	}
 }
@@ -96,13 +82,12 @@ func (con *adminUserController) Save() gin.HandlerFunc {
 /**
 编辑
 */
-func (this *adminUserController) Edit() gin.HandlerFunc {
+func (con *adminUserController) Edit() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Query("id")
-		var adminGroup []models.AdminGroup
-		models.Db.Find(&adminGroup)
-		var adminUser models.AdminUsers
-		models.Db.Where("uid = ?", id).First(&adminUser)
+		adminGroup, _ := services.AgService.GetAllGroup()
+		adminUser, _ := services.AuService.GetAdminUser(id)
+
 		c.HTML(http.StatusOK, "setting/adminuser_form.html", gin.H{
 			"adminGroups": adminGroup,
 			"adminUser":   adminUser,
@@ -116,7 +101,12 @@ func (this *adminUserController) Edit() gin.HandlerFunc {
 func (con *adminUserController) Del() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Query("id")
-		models.Db.Where("uid = ?", id).Delete(models.AdminUsers{})
-		con.Success(c, "", "删除成功")
+		err := services.AuService.DelAdminUser(id)
+		if err != nil {
+			con.Error(c, "删除失败")
+		} else {
+			con.Success(c, "", "删除成功")
+		}
+
 	}
 }

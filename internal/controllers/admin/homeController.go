@@ -36,6 +36,7 @@ func (con *homeController) Home() gin.HandlerFunc {
 			"menuList":  menuList,
 			"userInfo":  userData,
 			"userPrivs": privs,
+			"title":     "GinAdmin管理平台",
 		})
 	}
 }

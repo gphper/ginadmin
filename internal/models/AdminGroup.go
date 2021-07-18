@@ -11,29 +11,10 @@ type AdminGroup struct {
 	UpdatedAt time.Time `gorm:"size:0"`
 }
 
-func GetAllAdminGroup() ([]AdminGroup, error) {
-	var adminGroups []AdminGroup
-	error := Db.Where("group_id != ?", 1).Find(&adminGroups).Error
-	return adminGroups, error
-}
-
-func SaveAdminGroup(grouid uint, groupname string, privsJsonStr string) error {
-	adminGroup := AdminGroup{
-		GroupId:   grouid,
-		GroupName: groupname,
-		Privs:     privsJsonStr,
-	}
-	return Db.Save(&adminGroup).Error
-}
-
-func FindAdminGroupById(id string) (AdminGroup, error) {
-	var adminGroup AdminGroup
-	err := Db.Where("group_id = ?", id).First(&adminGroup).Error
-	return adminGroup, err
-}
-
-func DelAdminGroupById(id string) error {
-	return Db.Where("group_id = ?", id).Delete(AdminGroup{}).Error
+type AdminGroupSaveReq struct {
+	Privs     []string `form:"privs[]" label:"权限" json:"privs" binding:"required"`
+	GroupName string   `form:"groupname" label:"用户组名" json:"groupname" binding:"required"`
+	GroupId   uint     `form:"groupid"`
 }
 
 func (ag *AdminGroup) TableName() string {

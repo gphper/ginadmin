@@ -1,12 +1,14 @@
 package user
 
 import (
+	"ginadmin/internal/controllers/api"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 type userController struct {
+	api.BaseController
 }
 
 var Uc = userController{}

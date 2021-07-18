@@ -2,7 +2,9 @@ package demo
 
 import (
 	"ginadmin/internal/controllers/admin"
-	"log"
+	"ginadmin/internal/models"
+	"ginadmin/internal/services"
+	"ginadmin/pkg/uploader"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -23,14 +25,24 @@ func (con *uploadController) Show() gin.HandlerFunc {
 func (con *uploadController) Upload() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		// 单文件
-		file, _ := c.FormFile("upload")
-		log.Println(file.Filename)
-		filepath := "uploadfile/" + file.Filename
-		// 上传文件至指定目录
-		c.SaveUploadedFile(file, filepath)
+		var (
+			err error
+			req models.UploadReq
+		)
+		err = con.FormBind(c, &req)
+		if err != nil {
+			con.Error(c, err.Error())
+			return
+		}
+		req.Dst = "uploadfile"
 
-		//c.String(http.StatusOK, fmt.Sprintf("'%s' uploaded!", file.Filename))
+		stor := uploader.LocalStorage{}
+
+		filepath, err := services.UpService.Save(stor, req)
+		if err != nil {
+			con.Error(c, err.Error())
+		}
+
 		c.JSON(http.StatusOK, gin.H{
 			"path": filepath,
 		})

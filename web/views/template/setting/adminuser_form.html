@@ -8,7 +8,7 @@
         <div class="card">
           <div class="card-body">
             
-            <form action="/admin/setting/adminuser/save" method="post" class="row ajaxForm">
+            <form action="/admin/setting/adminuser/save" method="post" class="row ajaxForm"  autocomplete="off">
             <input type="hidden" name="uid" value="{{.adminUser.Uid}}"/>
              
             <div class="form-group col-md-12">
@@ -16,19 +16,19 @@
                 {{if .adminUser.Username}}
                     <p class="form-control-static">{{.adminUser.Username}}</p>
                 {{else}}
-                    <input type="text" class="form-control" name="username" value="{{.adminUser.Username}}"/>
+                    <input type="text" class="form-control" name="username" value="" autocomplete="off" />
                 {{end}}
             </div>
 
             <div class="form-group col-md-12">
                 <label for="title">密码</label>
-                <input type="password" class="form-control" name="password" placeholder="不修改密码则不填"/>
+                <input type="password" class="form-control" name="password" value="" autocomplete="off" placeholder="不修改密码则不填"/>
             </div>
 
             <div class="form-group col-md-12">
                 <label for="type">角色</label>
                 <div class="form-controls">
-                  <select name="type" class="form-control" name="groupid" id="type">
+                  <select class="form-control" name="groupid" id="type">
                     <option value="">请选择角色</option>
                         {{range .adminGroups}}
                             {{if $.adminUser}}

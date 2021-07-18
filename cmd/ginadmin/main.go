@@ -48,7 +48,7 @@ func main() {
 
 	r.HTMLRender = loadTemplates(rootPath + "/web/views")
 	r.StaticFS("/statics", http.Dir(rootPath+separator+"web"+separator+"statics"))
-	r.StaticFS("/uploadfile", http.Dir(rootPath+separator+"web"+separator+"uploadfile"))
+	r.StaticFS("/uploadfile", http.Dir(rootPath+separator+"uploadfile"))
 	// pprof路由
 	//pprof.Register(r)
 	srv := &http.Server{

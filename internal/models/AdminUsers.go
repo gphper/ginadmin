@@ -22,6 +22,25 @@ type AdminUsers struct {
 	UpdatedAt time.Time
 }
 
+type AdminUserInfo struct {
+	AdminUsers
+	GroupName string
+}
+
+type AdminUserIndexReq struct {
+	Nickname  string `form:"nickname"`
+	CreatedAt string `form:"created_at"`
+}
+
+type AdminUserSaveReq struct {
+	Username string `form:"username" label:"用户名" binding:"required"`
+	Password string `form:"password"`
+	Nickname string `form:"nickname" label:"姓名" binding:"required"`
+	Phone    string `form:"phone"`
+	GroupId  uint   `form:"groupid" label:"用户组" binding:"required"`
+	Uid      uint   `form:"uid"`
+}
+
 func GetAllAdminUserJoinGroup() *gorm.DB {
 	return Db.Table("admin_users").Joins("join admin_groups on admin_groups.group_id = admin_users.group_id").Select("admin_users.*,admin_groups.group_name").Where("uid != ?", 1)
 }
