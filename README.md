@@ -200,22 +200,28 @@
 
 - 菜单权限定义到 `internal/menu/menu.go` 文件下，定义完之后在用户组管理里面编辑权限
 
-- 在控制器中可用从 `gin.context` 获取权限
+- casbin版集成了casbin权限管理框架，官方地址：[casbin](#https://casbin.org/docs/zh-CN/get-started)
+
+- 框架中的常用方法定义在  `comment/auth/casbinauth/asbin.go` 文件中
+
+- 在控制器中可用从 `gin.context` 获取登录用户信息
 
   ```go
-  privs,_ := c.Get("userPrivs")
+  info,_ := c.Get("userInfo")
   ```
 
 - template 中判断权限的函数 `judgeContainPriv` 定义在 `pkg/template/default.go` 文件下
 
   ```go
-  "judgeContainPriv": func(privMap map[string]interface{},priv string)bool {
-  	//判断权限是all的全通过
-  	_,o :=privMap["all"]
-  	if o {
+  "judgeContainPriv": func(username string, obj string, act string) bool {
+  		if username == "admin" {
+  			return true
+  		}
+  		ok, err := casbinauth.Check(username, obj, act)
+  		if !ok || err != nil {
+  			return false
+  		}
   		return true
-  	}
-  	_,ok := privMap[priv]
-  	return ok
   },
   ```
+
