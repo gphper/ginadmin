@@ -1,10 +1,13 @@
+/*
+ * @Description:用户相关model
+ * @Author: gphper
+ * @Date: 2021-07-04 11:58:45
+ */
 package models
 
 import (
 	"ginadmin/pkg/comment"
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type AdminUsers struct {
@@ -36,28 +39,11 @@ type AdminUserSaveReq struct {
 	Uid       uint     `form:"uid"`
 }
 
-func GetAllAdminUserJoinGroup() *gorm.DB {
-	return Db.Table("admin_users").Joins("join admin_groups on admin_groups.group_id = admin_users.group_id").Select("admin_users.*,admin_groups.group_name").Where("uid != ?", 1)
-}
-
-func GetAllAdminUserJoinGroupLikeNickname(db *gorm.DB, nickname string) *gorm.DB {
-	return db.Where("nickname like ?", "%"+nickname+"%")
-}
-
-func GetAllAdminUserJoinGroupTimeRange(db *gorm.DB, start string, end string) *gorm.DB {
-	return db.Where("admin_users.created_at > ? ", start).Where("admin_users.created_at < ?", end)
-}
-
-func GetAdminUserById(id string) (AdminUsers, error) {
-	var adminUser AdminUsers
-	err := Db.Table("admin_users").Where("uid = ?", id).First(&adminUser).Error
-	return adminUser, err
-}
-
-func AlterAdminUserPass(id string, password string) error {
-	return Db.Table("admin_users").Where("uid = ?", id).Updates(map[string]interface{}{
-		"password": password,
-	}).Error
+type AdminUserEditPassReq struct {
+	Uid         int    `form:"id"`
+	OldPassword string `form:"old_password" label:"原始密码" binding:"required"`
+	NewPassword string `form:"new_password" label:"新密码" binding:"required"`
+	SubPassword string `form:"sub_password" label:"确认密码" binding:"required"`
 }
 
 func (au *AdminUsers) TableName() string {

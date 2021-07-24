@@ -1,3 +1,9 @@
+/*
+ * @Description:用户组相关model
+ * @Author: gphper
+ * @Date: 2021-07-11 18:56:22
+ */
+
 package models
 
 import "time"

@@ -1,3 +1,9 @@
+/*
+ * @Description:基础控制器
+ * @Author: gphper
+ * @Date: 2021-05-18 23:21:06
+ */
+
 package admin
 
 import (

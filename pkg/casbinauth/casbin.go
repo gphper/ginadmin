@@ -1,3 +1,8 @@
+/*
+ * @Description:casbin方法二次封装
+ * @Author: gphper
+ * @Date: 2021-07-20 20:52:20
+ */
 package casbinauth
 
 import (

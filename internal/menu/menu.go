@@ -1,3 +1,9 @@
+/*
+ * @Description:自定义配置菜单项
+ * @Author: gphper
+ * @Date: 2021-07-04 11:58:44
+ */
+
 package menu
 
 type NodeSon struct {

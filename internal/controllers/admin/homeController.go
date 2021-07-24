@@ -1,11 +1,17 @@
+/*
+ * @Description:后台主页
+ * @Author: gphper
+ * @Date: 2021-07-04 11:58:45
+ */
+
 package admin
 
 import (
 	"encoding/json"
 	"ginadmin/internal/menu"
 	"ginadmin/internal/models"
+	"ginadmin/internal/services"
 	"ginadmin/pkg/casbinauth"
-	"ginadmin/pkg/comment"
 	"net/http"
 	"strings"
 
@@ -64,27 +70,16 @@ func (con *homeController) EditPassword() gin.HandlerFunc {
 
 func (con *homeController) SavePassword() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		id := c.PostForm("id")
-		oldPassword := c.PostForm("old_password")
-		newPassword := c.PostForm("new_password")
-		subPassword := c.PostForm("sub_password")
 
-		if newPassword != subPassword {
-			con.Error(c, "请确认新密码")
-			return
-		}
+		var (
+			req models.AdminUserEditPassReq
+			err error
+		)
+		con.FormBind(c, &req)
+		err = services.AuService.EditPass(req)
 
-		adminUser, _ := models.GetAdminUserById(id)
-		oldPass := comment.Encryption(oldPassword, adminUser.Salt)
-		if oldPass != adminUser.Password {
-			con.Error(c, "原密码不正确")
-			return
-		}
-
-		newPass := comment.Encryption(newPassword, adminUser.Salt)
-		err := models.AlterAdminUserPass(id, newPass)
 		if err != nil {
-			con.Error(c, "修改密码失败")
+			con.Error(c, err.Error())
 			return
 		} else {
 			con.Success(c, "", "修改成功")

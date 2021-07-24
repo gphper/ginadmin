@@ -1,11 +1,18 @@
+/*
+ * @Description:用户服务
+ * @Author: gphper
+ * @Date: 2021-07-18 13:59:07
+ */
 package services
 
 import (
 	"encoding/json"
+	"errors"
 	"ginadmin/internal/dao"
 	"ginadmin/internal/models"
 	"ginadmin/pkg/casbinauth"
 	"ginadmin/pkg/comment"
+	"strconv"
 	"strings"
 
 	"gorm.io/gorm"
@@ -122,5 +129,33 @@ func (ser *adminUserService) GetAdminUser(id string) (adminUser models.AdminUser
 //删除管理员
 func (ser *adminUserService) DelAdminUser(id string) (err error) {
 	err = dao.AuDao.DB.Where("uid = ?", id).Delete(models.AdminUsers{}).Error
+	return
+}
+
+//修改密码
+func (ser *adminUserService) EditPass(req models.AdminUserEditPassReq) (err error) {
+
+	var adminUser models.AdminUsers
+
+	if req.NewPassword != req.SubPassword {
+		err = errors.New("请再次确认新密码是否正确")
+		return
+	}
+
+	adminUser, err = ser.GetAdminUser(strconv.Itoa(req.Uid))
+	if err != nil {
+		return
+	}
+
+	oldPass := comment.Encryption(req.OldPassword, adminUser.Salt)
+	if oldPass != adminUser.Password {
+		err = errors.New("原密码错误")
+		return
+	}
+
+	newPass := comment.Encryption(req.NewPassword, adminUser.Salt)
+
+	err = dao.AuDao.DB.Model(&adminUser).UpdateColumn("password", newPass).Error
+
 	return
 }

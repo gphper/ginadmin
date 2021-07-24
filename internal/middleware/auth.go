@@ -1,3 +1,8 @@
+/*
+ * @Description:后台管理中间件
+ * @Author: gphper
+ * @Date: 2021-07-04 11:58:45
+ */
 package middleware
 
 import (
@@ -25,17 +30,6 @@ func AdminUserAuth() gin.HandlerFunc {
 		}
 		c.Set("userInfo", userInfoJson)
 		c.Next()
-		// userData := make(map[string]interface{})
-		// err := json.Unmarshal([]byte(userInfoJson.(string)), &userData)
-		// if err != nil {
-		// 	// 取不到就是没有登录
-		// 	c.Header("Content-Type", "text/html; charset=utf-8")
-		// 	c.String(200, `<script type="text/javascript">top.location.href="/admin/login"</script>`)
-		// 	return
-		// } else {
-		// 	c.Set("userInfo", userData)
-		// 	c.Next()
-		// }
 	}
 }
 

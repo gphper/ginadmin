@@ -1,3 +1,8 @@
+/*
+ * @Description:公用工具类
+ * @Author: gphper
+ * @Date: 2021-07-04 11:58:45
+ */
 package comment
 
 import (
