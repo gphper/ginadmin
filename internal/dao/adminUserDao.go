@@ -8,6 +8,7 @@ import (
 
 type adminUserDao struct {
 	DB *gorm.DB
+	Tx *gorm.DB
 }
 
-var AuDao = adminUserDao{DB: models.Db}
+var AuDao = adminUserDao{DB: models.Db, Tx: models.Db.Begin()}

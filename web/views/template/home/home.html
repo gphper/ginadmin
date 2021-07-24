@@ -1,5 +1,5 @@
 {{define "head"}}
-    <link rel="stylesheet" href="/statics/js/plugins/metismenu/metismenu.min.css">
+    
 {{end}}
 
 {{define "body"}}
@@ -17,12 +17,12 @@
           <nav class="sidebar-main">
             <ul class="nav nav-drawer">
                 {{range .menuList}}
-                    {{if judgeContainPriv $.userPrivs .MenuPriv}}
+                    {{if judgeContainPriv $.userInfo.username .MenuPriv "get"}}
                     <li class="nav-item nav-item-has-subnav">
                         <a href="javascript:void(0)"><i class="{{.MenuIcon}}"></i> <span>{{.MenuText}}</span></a>
                         <ul class="nav nav-subnav">
                             {{range .Nodes}}
-                                {{if judgeContainPriv $.userPrivs .NodePriv}}
+                                {{if judgeContainPriv $.userInfo.username .NodePriv "get"}}
                                 <li> <a class="multitabs" href="{{.NodeUrl}}">{{.NodeText}}</a> </li>
                                 {{end}}
                             {{end}}

@@ -157,3 +157,30 @@ func StrFirstToUpper(str string) (string, string) {
 	}
 	return upperStr, firstStr
 }
+
+/*
+*比较第二个slice一第一个slice的区别
+ */
+func CompareSlice(first []string, second []string) (add []string, incre []string) {
+
+	secondMap := make(map[string]struct{})
+
+	for _, v := range second {
+		secondMap[v] = struct{}{}
+	}
+
+	for _, v := range first {
+		_, ok := secondMap[v]
+		if !ok {
+			incre = append(incre, v)
+		} else {
+			delete(secondMap, v)
+		}
+	}
+
+	for k, _ := range secondMap {
+		add = append(add, k)
+	}
+
+	return
+}

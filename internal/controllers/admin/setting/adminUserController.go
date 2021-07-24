@@ -4,6 +4,7 @@ import (
 	"ginadmin/internal/controllers/admin"
 	"ginadmin/internal/models"
 	"ginadmin/internal/services"
+	"ginadmin/pkg/casbinauth"
 	"ginadmin/pkg/comment"
 	"net/http"
 
@@ -24,7 +25,7 @@ func (con *adminUserController) Index() gin.HandlerFunc {
 		var (
 			err           error
 			req           models.AdminUserIndexReq
-			adminUserList []models.AdminUserInfo
+			adminUserList []models.AdminUsers
 		)
 
 		err = con.FormBind(c, &req)
@@ -48,9 +49,8 @@ func (con *adminUserController) Index() gin.HandlerFunc {
 */
 func (con *adminUserController) AddIndex() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		adminGroups, _ := services.AgService.GetAllGroup()
 		c.HTML(http.StatusOK, "setting/adminuser_form.html", gin.H{
-			"adminGroups": adminGroups,
+			"adminGroups": casbinauth.GetGroups(),
 		})
 	}
 }

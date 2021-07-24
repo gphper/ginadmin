@@ -28,10 +28,10 @@
           
           <div class="card-body">
             <form action="/admin/setting/admingroup/save" method="post" class="ajaxForm">
-              <input type="hidden" name="groupid" value="{{.adminGroup.GroupId}}">
+              <input type="hidden" name="groupid" value="{{.id}}">
               <div class="form-group">
                 <label for="example-text-input">角色名称</label>
-                <input class="form-control" type="text" name="groupname" placeholder="角色名称" value="{{.adminGroup.GroupName}}">
+                <input class="form-control" type="text" name="groupname" placeholder="角色名称" value="{{.id}}">
               </div>
               <div class="table-responsive">
               <table class="table table-striped">
@@ -40,7 +40,7 @@
                   <tr>
                     <td>
                       <label class="lyear-checkbox checkbox-primary">
-                        <input name="privs[]" type="checkbox" class="checkbox-parent" dataid="id-{{$k}}" {{if judgeContainPriv $.jsonPrivs .MenuPriv}}checked{{end}} value="{{.MenuPriv}}">
+                        <input name="privs[]" type="checkbox" class="checkbox-parent" dataid="id-{{$k}}" {{if judgeContainPriv $.id .MenuPriv .MenuPrivAct}}checked{{end}} value="{{.MenuPriv}}:{{.MenuPrivAct}}">
                         <span> {{.MenuText}}</span>
                       </label>
                     </td>
@@ -49,7 +49,7 @@
                   <tr>
                     <td class="p-l-20">
                       <label class="lyear-checkbox checkbox-primary">
-                        <input name="privs[]" type="checkbox" class="checkbox-parent checkbox-child" dataid="id-{{$k}}-{{$kk}}" {{if judgeContainPriv $.jsonPrivs .NodePriv}}checked{{end}} value="{{.NodePriv}}">
+                        <input name="privs[]" type="checkbox" class="checkbox-parent checkbox-child" dataid="id-{{$k}}-{{$kk}}" {{if judgeContainPriv $.id .NodePriv .NodePrivAct}}checked{{end}} value="{{.NodePriv}}:{{.NodePrivAct}}">
                         <span> {{.NodeText}}</span>
                       </label>
                     </td>
@@ -59,7 +59,7 @@
                     <td class="p-l-40">
                       {{range $kkk,$vvv := .PrivChild}}
                       <label class="lyear-checkbox checkbox-primary checkbox-inline">
-                        <input name="privs[]" type="checkbox" class="checkbox-child" dataid="id-{{$k}}-{{$kk}}-{{$kkk}}" {{if judgeContainPriv $.jsonPrivs .NodeSonPriv}}checked{{end}} value="{{.NodeSonPriv}}">
+                        <input name="privs[]" type="checkbox" class="checkbox-child" dataid="id-{{$k}}-{{$kk}}-{{$kkk}}" {{if judgeContainPriv $.id .NodeSonPriv .NodeSonPrivAct}}checked{{end}} value="{{.NodeSonPriv}}:{{.NodeSonPrivAct}}">
                         <span> {{.NodeSonText}}</span>
                       </label>
                       {{end}}

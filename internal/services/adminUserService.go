@@ -1,9 +1,10 @@
 package services
 
 import (
-	"errors"
+	"encoding/json"
 	"ginadmin/internal/dao"
 	"ginadmin/internal/models"
+	"ginadmin/pkg/casbinauth"
 	"ginadmin/pkg/comment"
 	"strings"
 
@@ -17,7 +18,7 @@ var AuService = adminUserService{}
 //获取管理员
 func (ser *adminUserService) GetAdminUsers(req models.AdminUserIndexReq) (db *gorm.DB) {
 
-	db = dao.AuDao.DB.Table("admin_users").Joins("join admin_groups on admin_groups.group_id = admin_users.group_id").Select("admin_users.*,admin_groups.group_name").Where("uid != ?", 1)
+	db = dao.AuDao.DB.Table("admin_users").Where("uid != ?", 1)
 
 	if req.Nickname != "" {
 		db = db.Where("nickname like ?", "%"+req.Nickname+"%")
@@ -34,34 +35,31 @@ func (ser *adminUserService) GetAdminUsers(req models.AdminUserIndexReq) (db *go
 }
 
 //添加或保存管理员信息
-func (ser *adminUserService) SaveAdminUser(req models.AdminUserSaveReq) error {
-	if req.Uid == 0 {
-		if len(req.Password) == 0 {
-			return errors.New("请填写密码")
+func (ser *adminUserService) SaveAdminUser(req models.AdminUserSaveReq) (err error) {
+
+	var (
+		adminUser models.AdminUsers
+		ok        bool
+	)
+	groupnameStr, _ := json.Marshal(req.GroupName)
+
+	var rules = make([][]string, 0)
+	for _, v := range req.GroupName {
+		rules = append(rules, []string{req.Username, v})
+	}
+
+	if req.Uid > 0 {
+		err = dao.AuDao.Tx.Table("admin_users").Where("uid = ?", req.Uid).First(&adminUser).Error
+		if err != nil {
+			return
 		}
-		var count int64
-		//验证用户唯一性
-		dao.AuDao.DB.Table("admin_users").Where("username", req.Username).Count(&count)
-		if count != 0 {
-			return errors.New("当前用户名已存在")
-		}
-		salt := comment.RandString(6)
-		passwordSalt := comment.Encryption(req.Password, salt)
-		adminUser := models.AdminUsers{
-			GroupId:   req.GroupId,
-			Username:  req.Username,
-			Nickname:  req.Nickname,
-			Password:  passwordSalt,
-			Phone:     req.Phone,
-			LastLogin: "",
-			Salt:      salt,
-			ApiToken:  "",
-		}
-		return dao.AuDao.DB.Save(&adminUser).Error
-	} else {
+
+		var groupOldName []string
+		json.Unmarshal([]byte(adminUser.GroupName), &groupOldName)
+
 		adminUser := models.AdminUsers{
 			Uid:       req.Uid,
-			GroupId:   req.GroupId,
+			GroupName: string(groupnameStr),
 			Nickname:  req.Nickname,
 			Password:  "",
 			Phone:     req.Phone,
@@ -69,15 +67,50 @@ func (ser *adminUserService) SaveAdminUser(req models.AdminUserSaveReq) error {
 			Salt:      "",
 			ApiToken:  "",
 		}
-		if len(req.Password) != 0 {
+		if req.Password != "" {
 			salt := comment.RandString(6)
 			adminUser.Salt = salt
 			passwordSalt := comment.Encryption(req.Password, salt)
 			adminUser.Password = passwordSalt
 		}
-		return dao.AuDao.DB.Model(&adminUser).Updates(adminUser).Error
+		err = dao.AuDao.Tx.Model(&adminUser).Updates(adminUser).Error
+
+		if err != nil {
+			dao.AuDao.Tx.Rollback()
+			return
+		}
+
+		_, err = casbinauth.UpdateGroups(req.Username, groupOldName, req.GroupName, dao.AuDao.Tx)
+		if err != nil {
+			dao.AuDao.Tx.Rollback()
+			return
+		}
+
+	} else {
+		salt := comment.RandString(6)
+		passwordSalt := comment.Encryption(req.Password, salt)
+		adminUser := models.AdminUsers{
+			GroupName: string(groupnameStr),
+			Nickname:  req.Nickname,
+			Password:  passwordSalt,
+			Phone:     req.Phone,
+			Salt:      salt,
+		}
+		err = dao.AuDao.Tx.Save(&adminUser).Error
+		if err != nil {
+			dao.AuDao.Tx.Rollback()
+			return
+		}
+		//将权限添加到casbin中
+		ok, err = casbinauth.AddGroups("g", rules, dao.AuDao.Tx)
+		if err != nil || !ok {
+			dao.AuDao.Tx.Rollback()
+			return
+		}
 	}
 
+	dao.AuDao.Tx.Commit()
+	return
 }
 
 //获取单个管理员用户信息

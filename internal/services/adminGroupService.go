@@ -1,9 +1,9 @@
 package services
 
 import (
-	"encoding/json"
 	"ginadmin/internal/dao"
 	"ginadmin/internal/models"
+	"ginadmin/pkg/casbinauth"
 )
 
 type adminGroupService struct{}
@@ -18,26 +18,24 @@ func (ser *adminGroupService) GetList() (adminGroups []models.AdminGroup, err er
 
 //保存角色
 func (ser *adminGroupService) SaveGroup(req models.AdminGroupSaveReq) error {
-	var privsJsonStr string
-	privMap := make(map[string]struct{})
-	//将数组转为map便于提高后面的判断效率
-	for _, v := range req.Privs {
-		privMap[v] = struct{}{}
+	oldGroup := casbinauth.GetPoliceByGroup(req.GroupName)
+	oldLen := len(oldGroup)
+	oldSlice := make([]string, oldLen)
+	if oldLen > 0 {
+		for oldk, oldv := range oldGroup {
+			oldSlice[oldk] = oldv[1] + ":" + oldv[2]
+		}
 	}
 
-	privsJson, err := json.Marshal(privMap)
-	if err == nil {
-		privsJsonStr = string(privsJson)
-	} else {
-		privsJsonStr = `[]`
+	tx := models.Db.Begin()
+
+	_, err := casbinauth.UpdatePolices(req.GroupName, oldSlice, req.Privs, tx)
+	if err != nil {
+		tx.Rollback()
+		return err
 	}
 
-	adminGroup := models.AdminGroup{
-		GroupId:   req.GroupId,
-		GroupName: req.GroupName,
-		Privs:     privsJsonStr,
-	}
-	return dao.AgDao.DB.Save(&adminGroup).Error
+	return nil
 }
 
 //获取角色信息
@@ -53,7 +51,8 @@ func (ser *adminGroupService) GetAllGroup() (adminGroups []models.AdminGroup, er
 }
 
 //删除角色
-func (ser *adminGroupService) DelGroup(id string) (err error) {
-	err = dao.AgDao.DB.Where("group_id = ?", id).Delete(models.AdminGroup{}).Error
+func (ser *adminGroupService) DelGroup(id string) (ok bool, err error) {
+	polices := casbinauth.GetPoliceByGroup(id)
+	ok, err = casbinauth.DelGroups("p", polices)
 	return
 }

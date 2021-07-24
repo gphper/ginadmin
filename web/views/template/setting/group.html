@@ -33,20 +33,16 @@
                 <thead>
                   <tr>
                     <th>角色名称</th>
-                    <th>添加时间</th>
-                    <th>更新时间</th>
                     <th>操作</th>
                   </tr>
                 </thead>
                 <tbody>
                   {{range .adminGroups}}
                     <tr>
-                        <td>{{.GroupName}}</td>
-                        <td>{{formatAsDate .CreatedAt "2006-01-02 15:04:05"}}</td>
-                        <td>{{formatAsDate .UpdatedAt "2006-01-02 15:04:05"}}</td>
+                        <td>{{.}}</td>
                         <td>
-                            <a class="btn btn-xs btn-default" href="/admin/setting/admingroup/edit?id={{.GroupId}}" title="编辑" data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
-                            <a class="btn btn-xs btn-default ajaxBtn" href="javascript:void(0);" uri="/admin/setting/admingroup/del?id={{.GroupId}}" msg="是否删除该内容？" title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
+                            <a class="btn btn-xs btn-default" href="/admin/setting/admingroup/edit?id={{.}}" title="编辑" data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
+                            <a class="btn btn-xs btn-default ajaxBtn" href="javascript:void(0);" uri="/admin/setting/admingroup/del?id={{.}}" msg="是否删除该内容？" title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
                         </td>
                     </tr>
                   {{end}}

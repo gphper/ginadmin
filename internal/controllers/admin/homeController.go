@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"ginadmin/internal/menu"
 	"ginadmin/internal/models"
+	"ginadmin/pkg/casbinauth"
 	"ginadmin/pkg/comment"
 	"net/http"
+	"strings"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -24,19 +26,23 @@ func (con *homeController) Home() gin.HandlerFunc {
 		userInfoJson := session.Get("userInfo")
 		userData := make(map[string]interface{})
 		err := json.Unmarshal([]byte(userInfoJson.(string)), &userData)
-		privs := make(map[string]struct{})
-		json.Unmarshal([]byte(userData["privs"].(string)), &privs)
 		if err != nil {
 			// 取不到就是没有登录
 			c.Header("Content-Type", "text/html; charset=utf-8")
 			c.String(200, `<script type="text/javascript">top.location.href="/admin/login"</script>`)
 			return
 		}
+
+		privs, err := casbinauth.GetGroupByUser(userData["username"].(string))
+		var groupname string
+		if err == nil {
+			groupname = strings.Join(privs, ",")
+		}
+
 		c.HTML(http.StatusOK, "home/home.html", gin.H{
 			"menuList":  menuList,
 			"userInfo":  userData,
-			"userPrivs": privs,
-			"title":     "GinAdmin管理平台",
+			"groupName": groupname,
 		})
 	}
 }

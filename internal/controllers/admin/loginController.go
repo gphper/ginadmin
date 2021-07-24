@@ -31,21 +31,11 @@ func (con *loginController) Login() gin.HandlerFunc {
 			}
 			//判断密码是否正确
 			if comment.Encryption(password, adminUser.Salt) == adminUser.Password {
-				//获取用户组信息
-				var adminGroup models.AdminGroup
-				adminGroup.GroupId = adminUser.GroupId
-				err = models.Db.Find(&adminGroup).Error
-				if err != nil {
-					con.Error(c, "账号密码错误")
-				}
-				//var jsonPrivs map[string]int
-				//json.Unmarshal([]byte(adminGroup.Privs), &jsonPrivs)
+
 				userInfo := make(map[string]interface{})
 				userInfo["uid"] = adminUser.Uid
 				userInfo["username"] = adminUser.Username
-				userInfo["groupname"] = adminGroup.GroupName
-				//userInfo["privs"] = jsonPrivs
-				userInfo["privs"] = adminGroup.Privs
+				userInfo["groupname"] = adminUser.GroupName
 				//session 存储数据
 				session := sessions.Default(c)
 				userstr, _ := json.Marshal(userInfo)
@@ -53,8 +43,8 @@ func (con *loginController) Login() gin.HandlerFunc {
 				session.Set("userInfo", string(userstr))
 				session.Save()
 
-				uio := make(map[string]interface{})
-				json.Unmarshal([]byte(session.Get("userInfo").(string)), &uio)
+				// uio := make(map[string]interface{})
+				// json.Unmarshal([]byte(session.Get("userInfo").(string)), &uio)
 				con.Success(c, "/admin/home", "登录成功")
 			} else {
 				con.Error(c, "账号密码错误")

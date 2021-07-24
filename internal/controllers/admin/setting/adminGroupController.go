@@ -1,11 +1,11 @@
 package setting
 
 import (
-	"encoding/json"
 	"ginadmin/internal/controllers/admin"
 	"ginadmin/internal/menu"
 	"ginadmin/internal/models"
 	"ginadmin/internal/services"
+	"ginadmin/pkg/casbinauth"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -22,9 +22,8 @@ var Agc = adminGroupController{}
 */
 func (con *adminGroupController) Index() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		adminGroups, _ := services.AgService.GetList()
 		c.HTML(http.StatusOK, "setting/group.html", gin.H{
-			"adminGroups": adminGroups,
+			"adminGroups": casbinauth.GetGroups(),
 		})
 	}
 }
@@ -36,6 +35,7 @@ func (con *adminGroupController) AddIndex() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.HTML(http.StatusOK, "setting/group_form.html", gin.H{
 			"menuList": menu.GetMenu(),
+			"id":       "",
 		})
 	}
 }
@@ -68,13 +68,9 @@ func (con *adminGroupController) Save() gin.HandlerFunc {
 func (con *adminGroupController) Edit() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Query("id")
-		adminGroup, _ := services.AgService.GetGroup(id)
-		var jsonPrivs map[string]struct{}
-		json.Unmarshal([]byte(adminGroup.Privs), &jsonPrivs)
 		c.HTML(http.StatusOK, "setting/group_form.html", gin.H{
-			"adminGroup": adminGroup,
-			"jsonPrivs":  jsonPrivs,
-			"menuList":   menu.GetMenu(),
+			"menuList": menu.GetMenu(),
+			"id":       id,
 		})
 	}
 }
@@ -85,8 +81,8 @@ func (con *adminGroupController) Edit() gin.HandlerFunc {
 func (con *adminGroupController) Del() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Query("id")
-		dbErr := services.AgService.DelGroup(id)
-		if dbErr != nil {
+		dbOk, dbErr := services.AgService.DelGroup(id)
+		if dbErr != nil || !dbOk {
 			con.Error(c, "删除失败")
 		} else {
 			con.Success(c, "", "删除成功")
