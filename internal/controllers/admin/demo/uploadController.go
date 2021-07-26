@@ -22,35 +22,34 @@ type uploadController struct {
 
 var Uc = uploadController{}
 
-func (con *uploadController) Show() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.HTML(http.StatusOK, "demo/upload.html", gin.H{})
-	}
+func (con *uploadController) Show(c *gin.Context) {
+
+	c.HTML(http.StatusOK, "demo/upload.html", gin.H{})
+
 }
 
-func (con *uploadController) Upload() gin.HandlerFunc {
-	return func(c *gin.Context) {
+func (con *uploadController) Upload(c *gin.Context) {
 
-		var (
-			err error
-			req models.UploadReq
-		)
-		err = con.FormBind(c, &req)
-		if err != nil {
-			con.Error(c, err.Error())
-			return
-		}
-		req.Dst = "uploadfile"
-
-		stor := uploader.LocalStorage{}
-
-		filepath, err := services.UpService.Save(stor, req)
-		if err != nil {
-			con.Error(c, err.Error())
-		}
-
-		c.JSON(http.StatusOK, gin.H{
-			"path": filepath,
-		})
+	var (
+		err error
+		req models.UploadReq
+	)
+	err = con.FormBind(c, &req)
+	if err != nil {
+		con.Error(c, err.Error())
+		return
 	}
+	req.Dst = "uploadfile"
+
+	stor := uploader.LocalStorage{}
+
+	filepath, err := services.UpService.Save(stor, req)
+	if err != nil {
+		con.Error(c, err.Error())
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"path": filepath,
+	})
+
 }

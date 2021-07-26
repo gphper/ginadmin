@@ -26,93 +26,86 @@ var Auc = adminUserController{}
 /**
 管理员列表
 */
-func (con *adminUserController) Index() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		var (
-			err           error
-			req           models.AdminUserIndexReq
-			adminUserList []models.AdminUsers
-		)
+func (con *adminUserController) Index(c *gin.Context) {
 
-		err = con.FormBind(c, &req)
-		if err != nil {
-			con.Error(c, err.Error())
-			return
-		}
+	var (
+		err           error
+		req           models.AdminUserIndexReq
+		adminUserList []models.AdminUsers
+	)
 
-		adminDb := services.AuService.GetAdminUsers(req)
-		adminUserData := comment.PageOperation(c, adminDb, 1, &adminUserList)
-		c.HTML(http.StatusOK, "setting/adminuser.html", gin.H{
-			"adminUserData": adminUserData,
-			"created_at":    c.Query("created_at"),
-			"nickname":      c.Query("nickname"),
-		})
+	err = con.FormBind(c, &req)
+	if err != nil {
+		con.Error(c, err.Error())
+		return
 	}
+
+	adminDb := services.AuService.GetAdminUsers(req)
+	adminUserData := comment.PageOperation(c, adminDb, 1, &adminUserList)
+	c.HTML(http.StatusOK, "setting/adminuser.html", gin.H{
+		"adminUserData": adminUserData,
+		"created_at":    c.Query("created_at"),
+		"nickname":      c.Query("nickname"),
+	})
+
 }
 
 /**
 添加
 */
-func (con *adminUserController) AddIndex() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.HTML(http.StatusOK, "setting/adminuser_form.html", gin.H{
-			"adminGroups": casbinauth.GetGroups(),
-		})
-	}
+func (con *adminUserController) AddIndex(c *gin.Context) {
+	c.HTML(http.StatusOK, "setting/adminuser_form.html", gin.H{
+		"adminGroups": casbinauth.GetGroups(),
+	})
 }
 
 /**
 保存
 */
-func (con *adminUserController) Save() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		var (
-			err error
-			req models.AdminUserSaveReq
-		)
+func (con *adminUserController) Save(c *gin.Context) {
 
-		err = con.FormBind(c, &req)
-		if err != nil {
-			con.Error(c, err.Error())
-			return
-		}
-		err = services.AuService.SaveAdminUser(req)
-		if err == nil {
-			con.Success(c, "/admin/setting/adminuser/index", "操作成功")
-		} else {
-			con.Error(c, err.Error())
-		}
+	var (
+		err error
+		req models.AdminUserSaveReq
+	)
+
+	err = con.FormBind(c, &req)
+	if err != nil {
+		con.Error(c, err.Error())
+		return
+	}
+	err = services.AuService.SaveAdminUser(req)
+	if err == nil {
+		con.Success(c, "/admin/setting/adminuser/index", "操作成功")
+	} else {
+		con.Error(c, err.Error())
 	}
 }
 
 /**
 编辑
 */
-func (con *adminUserController) Edit() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		id := c.Query("id")
-		adminGroup, _ := services.AgService.GetAllGroup()
-		adminUser, _ := services.AuService.GetAdminUser(id)
+func (con *adminUserController) Edit(c *gin.Context) {
+	id := c.Query("id")
+	adminGroup, _ := services.AgService.GetAllGroup()
+	adminUser, _ := services.AuService.GetAdminUser(id)
 
-		c.HTML(http.StatusOK, "setting/adminuser_form.html", gin.H{
-			"adminGroups": adminGroup,
-			"adminUser":   adminUser,
-		})
-	}
+	c.HTML(http.StatusOK, "setting/adminuser_form.html", gin.H{
+		"adminGroups": adminGroup,
+		"adminUser":   adminUser,
+	})
 }
 
 /**
 删除
 */
-func (con *adminUserController) Del() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		id := c.Query("id")
-		err := services.AuService.DelAdminUser(id)
-		if err != nil {
-			con.Error(c, "删除失败")
-		} else {
-			con.Success(c, "", "删除成功")
-		}
-
+func (con *adminUserController) Del(c *gin.Context) {
+	id := c.Query("id")
+	err := services.AuService.DelAdminUser(id)
+	if err != nil {
+		con.Error(c, "删除失败")
+	} else {
+		con.Success(c, "", "删除成功")
 	}
+
 }

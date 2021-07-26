@@ -1,3 +1,8 @@
+/*
+ * @Description:
+ * @Author: gphper
+ * @Date: 2021-07-13 19:45:35
+ */
 package router
 
 import (
@@ -11,7 +16,7 @@ func ApiRouter(apiRouter *gin.RouterGroup) {
 	{
 		apiUserRouter := apiRouter.Group("user")
 		{
-			apiUserRouter.GET("/list", user.Uc.UserList())
+			apiUserRouter.GET("/list", user.Uc.UserList)
 		}
 	}
 }
