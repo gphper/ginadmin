@@ -1,3 +1,8 @@
+/*
+ * @Description:
+ * @Author: gphper
+ * @Date: 2021-07-10 09:59:02
+ */
 package loggers
 
 import (
@@ -28,8 +33,8 @@ func init() {
 		},
 	})
 	// 获取 info、error日志文件的io.Writer 抽象 getWriter() 在下方实现
-	infoWriter := getWriter("demo_info.log")
-	errorWriter := getWriter("demo_error.log")
+	infoWriter := getWriter("./logs/%Y%m%d/admin/demo_info.log")
+	errorWriter := getWriter("./logs/%Y%m%d/admin/demo_error.log")
 
 	// 最后创建具体的Logger
 	core := zapcore.NewTee(
