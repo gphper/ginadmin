@@ -7,7 +7,6 @@
 
 ## 依赖
 * golang > 1.8
-## 依赖
 * Gin
 * BootStrap
 * LayUi
@@ -39,6 +38,8 @@
 - [配置文件](#配置文件)
 - [模板页面](#模板页面)
 - [用户权限](#用户权限)
+- [API文档](#API文档)
+- [线上部署](#线上部署)
 
 ### :small_blue_diamond:<a name="开始使用">开始使用</a>
 
@@ -148,18 +149,21 @@
    }
    ```
 
-2. 数据库迁移,先使用`go install cmd\ginadmin-cli`安装ginadmin-cli 命令，执行命令行工具
+2. model需要继承 BaseModle 并且实现 TableName 方法，如果需要初始化填充数据的话，需要实现 FillData() 方法，并将数据填充需要执行的代码写到函数体里。详情参照 AdminUsers
+
+3. 数据库迁移,先使用`go install cmd\ginadmin-cli`安装ginadmin-cli 命令，执行命令行工具
 
    ```go
    ginadmin-cli db migrate
    ```
 
-3. 数据填充，需在相应目录下实现 `FillData()` 方法执行如下命令
+4. 数据填充，需在相应目录下实现 `FillData()` 方法执行如下命令
 
    ```go
    ginadmin-cli db seed
    ```
-4. 可以通过设置 ini 配置文件中的 `fill_data`和`migrate_table` 分别控制程序重启时自动迁移数据表和填充数据
+
+5. 可以通过设置 ini 配置文件中的 `fill_data`和`migrate_table` 分别控制程序重启时自动迁移数据表和填充数据
 
 ### :small_blue_diamond:<a name="定时任务">定时任务</a>
 
@@ -224,4 +228,16 @@
   		return true
   },
   ```
+
+### :small_blue_diamond:<a name="API文档">API文档</a>
+
+- 使用 swagg 生成api文档，生成文件再docs目录下
+
+  ```swag init -g cmd/ginadmin/main.go```
+  
+- 在根目录执行  `go build .\cmd\ginadmin\` 然后啊访问 http://localhost:20010/swagger/index.html
+
+### :small_blue_diamond:<a name="线上部署">线上部署</a>
+
+- 使用 `go build -tags=release .\cmd\ginadmin`  生成二进制文件
 

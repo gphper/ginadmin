@@ -16,7 +16,7 @@ func ApiRouter(apiRouter *gin.RouterGroup) {
 	{
 		apiUserRouter := apiRouter.Group("user")
 		{
-			apiUserRouter.GET("/list", user.Uc.UserList)
+			apiUserRouter.POST("/example", user.Uc.UserExample)
 		}
 	}
 }

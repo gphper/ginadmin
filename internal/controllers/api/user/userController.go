@@ -7,6 +7,7 @@ package user
 
 import (
 	"ginadmin/internal/controllers/api"
+	"ginadmin/internal/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -18,15 +19,18 @@ type userController struct {
 
 var Uc = userController{}
 
-// @Summary 获取用户信息
+// @Summary 展示用户信息
 // @Id 1
-// @Tags 用户
+// @Tags 示例
 // @version 1.0
-// @Accept application/x-json-stream
-// @Param id path int true "Account ID"
-// @Router /article [post]
-func (apicon *userController) UserList(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"hello": "world",
-	})
+// @Accept multipart/form-data
+// @Produce json
+// @Param authorization header string true "token" default(Bearer)
+// @Param info formData models.UserReq true "User info"
+// @Success 200 {object} models.UserReq
+// @Router /user/example [post]
+func (apicon *userController) UserExample(c *gin.Context) {
+	var userReq models.UserReq
+	c.ShouldBind(&userReq)
+	c.JSON(http.StatusOK, userReq)
 }
