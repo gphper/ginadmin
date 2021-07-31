@@ -7,6 +7,7 @@
 package setting
 
 import (
+	"encoding/json"
 	"ginadmin/internal/controllers/admin"
 	"ginadmin/internal/models"
 	"ginadmin/internal/services"
@@ -87,12 +88,17 @@ func (con *adminUserController) Save(c *gin.Context) {
 */
 func (con *adminUserController) Edit(c *gin.Context) {
 	id := c.Query("id")
-	adminGroup, _ := services.AgService.GetAllGroup()
 	adminUser, _ := services.AuService.GetAdminUser(id)
-
+	var groupName []string
+	json.Unmarshal([]byte(adminUser.GroupName), &groupName)
+	var groupMap = make(map[string]struct{})
+	for _, v := range groupName {
+		groupMap[v] = struct{}{}
+	}
 	c.HTML(http.StatusOK, "setting/adminuser_form.html", gin.H{
-		"adminGroups": adminGroup,
+		"adminGroups": casbinauth.GetGroups(),
 		"adminUser":   adminUser,
+		"groupMap":    groupMap,
 	})
 }
 

@@ -15,6 +15,7 @@
                 <label for="title">用户名</label>
                 {{if .adminUser.Username}}
                     <p class="form-control-static">{{.adminUser.Username}}</p>
+                    <input type="hidden" name="username" value="{{.adminUser.Username}}">
                 {{else}}
                     <input type="text" class="form-control" name="username" value="" autocomplete="off" />
                 {{end}}
@@ -28,21 +29,18 @@
             <div class="form-group col-md-12">
                 <label for="type">角色</label>
                 <div class="form-controls">
-                  <select class="form-control" name="groupid" id="type">
-                    <option value="">请选择角色</option>
-                        {{range .adminGroups}}
-                            {{if $.adminUser}}
-                                {{if eq $.adminUser.GroupId .GroupId}}
-                                    <option selected value="{{.GroupId}}">{{.GroupName}}</option>
-                                {{else}}
-                                    <option value="{{.GroupId}}">{{.GroupName}}</option>
-                                {{end}}
-                            {{else}}
-                                <option value="{{.GroupId}}">{{.GroupName}}</option>
-                            {{end}}
 
+                  <div class="col-xs-12">
+                    {{range .adminGroups}}
+                      <label class="checkbox-inline" for="example-inline-checkbox3">
+                        {{if judegInMap . $.groupMap}}
+                        <input type="checkbox" checked id="example-inline-checkbox3" name="groupname[]" value="{{.}}">{{.}}
+                        {{else}}
+                        <input type="checkbox" id="example-inline-checkbox3" name="groupname[]" value="{{.}}">{{.}}
                         {{end}}
-                  </select>
+                      </label>
+                    {{end}}
+                  </div>
                 </div>
               </div>
 
