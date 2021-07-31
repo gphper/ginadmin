@@ -25,7 +25,11 @@
 
 :white_check_mark:Docker部署
 
-:black_square_button:命令行操作​
+:white_check_mark:静态资源打包
+
+:black_square_button:性能监控
+
+:black_square_button:命令行操作
 
 ## 使用文档
 - [开始使用](#开始使用)
@@ -240,4 +244,5 @@
 ### :small_blue_diamond:<a name="线上部署">线上部署</a>
 
 - 使用 `go build -tags=release .\cmd\ginadmin`  生成二进制文件
+- 打包静态资源部署 `go build -tags=embed .\cmd\ginadmin` 
 

@@ -30,7 +30,11 @@ func RootPath() (path string, err error) {
 	if err != nil {
 		fmt.Printf("path err %v", err)
 	}
-	path = strings.Split(path, "ginadmin")[0] + "ginadmin"
+
+	if strings.Contains(path, "ginadmin") {
+		path = strings.Split(path, "ginadmin")[0] + "ginadmin"
+	}
+
 	return
 }
 

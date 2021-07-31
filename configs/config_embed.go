@@ -1,16 +1,17 @@
-//+build !embed
+//+build embed
 
 /*
  * @Description:
  * @Author: gphper
- * @Date: 2021-07-04 11:58:45
+ * @Date: 2021-07-29 19:47:42
  */
 
 package configs
 
 import (
+	"bytes"
+	_ "embed"
 	"fmt"
-	"ginadmin/pkg/comment"
 
 	"gopkg.in/ini.v1"
 )
@@ -44,14 +45,12 @@ type BaseConf struct {
 
 var App = new(AppConf)
 
+//go:embed config.ini
+var iniStr string
+
 //初始化配置文件
 func init() {
-	path, err := comment.RootPath()
-	if err != nil {
-		fmt.Printf("get root path err:%v", err)
-	}
-
-	err = ini.MapTo(App, path+"/configs/config.ini")
+	err := ini.MapTo(App, bytes.NewReader([]byte(iniStr)))
 	if err != nil {
 		fmt.Printf("load ini err:%v", err)
 	}

@@ -46,6 +46,7 @@ func (con *uploadController) Upload(c *gin.Context) {
 	filepath, err := services.UpService.Save(stor, req)
 	if err != nil {
 		con.Error(c, err.Error())
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{

@@ -12,16 +12,14 @@ import (
 	"ginadmin/internal/router"
 	"ginadmin/pkg/comment"
 	_ "ginadmin/pkg/cron"
-	template2 "ginadmin/pkg/template"
+	"ginadmin/web"
+
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
-	"path/filepath"
-	"strings"
 	"time"
 
-	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
 )
 
@@ -39,27 +37,45 @@ var (
 
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
-// @host localhost:20010
+// @host localhost:20011
 // @basepath /api
 func main() {
+
+	var (
+		rootPath   string
+		separator  string
+		uploadPath string
+		err        error
+	)
 
 	//判断是否编译线上版本
 	if release {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	rootPath, _ := comment.RootPath()
-	separator := comment.GetLine()
-	r := router.Init()
+	rootPath, _ = comment.RootPath()
+	separator = comment.GetLine()
+	uploadPath = rootPath + separator + "uploadfile"
 
+	r := router.Init()
 	//判断是否添加api文档
 	if swagHandler != nil {
 		r.GET("/swagger/*any", swagHandler)
 	}
 
-	r.HTMLRender = loadTemplates(rootPath + "/web/views")
-	r.StaticFS("/statics", http.Dir(rootPath+separator+"web"+separator+"statics"))
-	r.StaticFS("/uploadfile", http.Dir(rootPath+separator+"uploadfile"))
+	r.HTMLRender = web.LoadTemplates()
+	r.StaticFS("/statics", web.StaticsFs)
+
+	_, err = os.Stat(uploadPath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			err = os.Mkdir(uploadPath, os.ModeDir)
+			if err != nil {
+				panic(err.Error())
+			}
+		}
+	}
+	r.StaticFS("/uploadfile", http.Dir(uploadPath))
 	// pprof路由
 	//pprof.Register(r)
 	srv := &http.Server{
@@ -85,26 +101,4 @@ func main() {
 	}
 	log.Println("Server exiting")
 
-}
-
-func loadTemplates(templatesDir string) multitemplate.Renderer {
-	r := multitemplate.NewRenderer()
-
-	layouts, err := filepath.Glob(templatesDir + "/layout/*.html")
-	if err != nil {
-		panic(err.Error())
-	}
-	includes, err := filepath.Glob(templatesDir + "/template/*/*.html")
-	if err != nil {
-		panic(err.Error())
-	}
-	for _, include := range includes {
-		layoutCopy := make([]string, len(layouts))
-		copy(layoutCopy, layouts)
-		files := append(layoutCopy, include)
-		dirSlice := strings.Split(include, comment.GetLine())
-		fileName := strings.Join(dirSlice[len(dirSlice)-2:], "/")
-		r.AddFromFilesFuncs(fileName, template2.GlobalTemplateFun, files...)
-	}
-	return r
 }
