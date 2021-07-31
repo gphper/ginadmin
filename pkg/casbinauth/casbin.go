@@ -245,6 +245,7 @@ func UpdateGroups(username string, old []string, new []string, tx *gorm.DB) (ok 
 func UpdatePolices(groupname string, old []string, new []string, tx *gorm.DB) (ok bool, err error) {
 	addPolice, increPolice := comment.CompareSlice(old, new)
 	en := newEnforceObj(tx)
+	defer loadPolicy()
 
 	addLen := len(addPolice)
 	if addLen > 0 {
@@ -279,6 +280,7 @@ func UpdatePolices(groupname string, old []string, new []string, tx *gorm.DB) (o
 			return
 		}
 	}
+
 	return
 }
 

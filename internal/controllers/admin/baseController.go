@@ -37,13 +37,14 @@ func (Base *BaseController) Error(c *gin.Context, message string) {
 func (Base *BaseController) FormBind(c *gin.Context, obj interface{}) error {
 
 	trans, err := comment.InitTrans("zh")
+
 	if err != nil {
 		return err
 	}
 
 	if err := c.ShouldBind(obj); err != nil {
 		errs, ok := err.(validator.ValidationErrors)
-		if !ok {
+		if !ok && errs != nil {
 			return errs
 		}
 
