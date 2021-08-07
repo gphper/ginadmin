@@ -6,7 +6,7 @@
 package router
 
 import (
-	"ginadmin/internal/controllers/api/user"
+	"github/gphper/ginadmin/internal/controllers/api/user"
 
 	"github.com/gin-gonic/gin"
 )

@@ -8,8 +8,8 @@ package admin
 
 import (
 	"encoding/json"
-	"ginadmin/internal/models"
-	"ginadmin/pkg/comment"
+	"github/gphper/ginadmin/internal/models"
+	"github/gphper/ginadmin/pkg/comment"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"

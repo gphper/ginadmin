@@ -6,8 +6,8 @@
 package services
 
 import (
-	"ginadmin/internal/models"
-	"ginadmin/pkg/uploader"
+	"github/gphper/ginadmin/internal/models"
+	"github/gphper/ginadmin/pkg/uploader"
 )
 
 type uploadService struct{}

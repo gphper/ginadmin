@@ -7,8 +7,8 @@ package casbinauth
 
 import (
 	"fmt"
-	"ginadmin/internal/models"
-	"ginadmin/pkg/comment"
+	"github/gphper/ginadmin/internal/models"
+	"github/gphper/ginadmin/pkg/comment"
 	"strings"
 	"sync"
 

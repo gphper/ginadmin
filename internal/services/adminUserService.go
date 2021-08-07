@@ -8,10 +8,10 @@ package services
 import (
 	"encoding/json"
 	"errors"
-	"ginadmin/internal/dao"
-	"ginadmin/internal/models"
-	"ginadmin/pkg/casbinauth"
-	"ginadmin/pkg/comment"
+	"github/gphper/ginadmin/internal/dao"
+	"github/gphper/ginadmin/internal/models"
+	"github/gphper/ginadmin/pkg/casbinauth"
+	"github/gphper/ginadmin/pkg/comment"
 	"strconv"
 	"strings"
 

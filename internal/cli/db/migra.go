@@ -1,10 +1,15 @@
+/*
+ * @Description:
+ * @Author: gphper
+ * @Date: 2021-07-04 15:11:11
+ */
 package db
 
 import (
 	"errors"
 	"fmt"
-	"ginadmin/internal/models"
-	"ginadmin/pkg/comment"
+	"github/gphper/ginadmin/internal/models"
+	"github/gphper/ginadmin/pkg/comment"
 	"os"
 	"os/exec"
 
@@ -61,7 +66,7 @@ func execSelf() error {
 	var out []byte
 	var err error
 	rootPath, _ := comment.RootPath()
-	cmd := exec.Command("go", "run", rootPath+"\\cli\\cmd\\ginadmin-cli.go", "db", "migrate", "real")
+	cmd := exec.Command("go", "run", rootPath+"\\cmd\\ginadmin-cli\\ginadmin-cli.go", "db", "migrate", "real")
 	if out, err = cmd.CombinedOutput(); err != nil {
 		fmt.Println(err.Error())
 		os.Exit(2)

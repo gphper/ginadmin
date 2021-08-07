@@ -2,7 +2,7 @@ package models
 
 import (
 	"fmt"
-	"ginadmin/configs"
+	"github/gphper/ginadmin/configs"
 	"os"
 
 	"gorm.io/driver/mysql"

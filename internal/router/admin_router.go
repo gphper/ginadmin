@@ -6,10 +6,10 @@
 package router
 
 import (
-	"ginadmin/internal/controllers/admin"
-	"ginadmin/internal/controllers/admin/demo"
-	"ginadmin/internal/controllers/admin/setting"
-	"ginadmin/internal/middleware"
+	"github/gphper/ginadmin/internal/controllers/admin"
+	"github/gphper/ginadmin/internal/controllers/admin/demo"
+	"github/gphper/ginadmin/internal/controllers/admin/setting"
+	"github/gphper/ginadmin/internal/middleware"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"

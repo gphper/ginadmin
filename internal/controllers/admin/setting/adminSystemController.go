@@ -9,9 +9,9 @@ package setting
 import (
 	"bufio"
 	"fmt"
-	"ginadmin/internal/controllers/admin"
-	"ginadmin/pkg/comment"
-	"ginadmin/pkg/loggers"
+	"github/gphper/ginadmin/internal/controllers/admin"
+	"github/gphper/ginadmin/pkg/comment"
+	"github/gphper/ginadmin/pkg/loggers"
 	"io/ioutil"
 	"net/http"
 	"os"

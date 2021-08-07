@@ -7,12 +7,12 @@ package main
 
 import (
 	"context"
-	"ginadmin/configs"
-	_ "ginadmin/internal/models"
-	"ginadmin/internal/router"
-	"ginadmin/pkg/comment"
-	_ "ginadmin/pkg/cron"
-	"ginadmin/web"
+	"github/gphper/ginadmin/configs"
+	_ "github/gphper/ginadmin/internal/models"
+	"github/gphper/ginadmin/internal/router"
+	"github/gphper/ginadmin/pkg/comment"
+	_ "github/gphper/ginadmin/pkg/cron"
+	"github/gphper/ginadmin/web"
 
 	"log"
 	"net/http"

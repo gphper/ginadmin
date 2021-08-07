@@ -1,7 +1,7 @@
 package template
 
 import (
-	"ginadmin/pkg/casbinauth"
+	"github/gphper/ginadmin/pkg/casbinauth"
 	"html/template"
 	"time"
 )

@@ -6,7 +6,7 @@
 package models
 
 import (
-	"ginadmin/pkg/comment"
+	"github/gphper/ginadmin/pkg/comment"
 	"time"
 )
 

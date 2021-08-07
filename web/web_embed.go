@@ -11,7 +11,7 @@ package web
 import (
 	"embed"
 	"fmt"
-	template2 "ginadmin/pkg/template"
+	template2 "github/gphper/ginadmin/pkg/template"
 	"github.com/gphper/multitemplate"
 	"io/fs"
 	"net/http"

@@ -7,10 +7,10 @@
 package demo
 
 import (
-	"ginadmin/internal/controllers/admin"
-	"ginadmin/internal/models"
-	"ginadmin/internal/services"
-	"ginadmin/pkg/uploader"
+	"github/gphper/ginadmin/internal/controllers/admin"
+	"github/gphper/ginadmin/internal/models"
+	"github/gphper/ginadmin/internal/services"
+	"github/gphper/ginadmin/pkg/uploader"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

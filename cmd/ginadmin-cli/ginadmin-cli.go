@@ -1,8 +1,13 @@
+/*
+ * @Description:
+ * @Author: gphper
+ * @Date: 2021-07-04 15:11:10
+ */
 package main
 
 import (
-	"ginadmin/internal/cli/db"
-	files "ginadmin/internal/cli/file"
+	"github/gphper/ginadmin/internal/cli/db"
+	files "github/gphper/ginadmin/internal/cli/file"
 
 	"github.com/spf13/cobra"
 )

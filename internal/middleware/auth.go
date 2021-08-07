@@ -7,7 +7,7 @@ package middleware
 
 import (
 	"encoding/json"
-	"ginadmin/pkg/casbinauth"
+	"github/gphper/ginadmin/pkg/casbinauth"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"

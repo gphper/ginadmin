@@ -6,7 +6,7 @@
 package router
 
 import (
-	"ginadmin/pkg/loggers"
+	"github/gphper/ginadmin/pkg/loggers"
 	"time"
 
 	ginzap "github.com/gin-contrib/zap"

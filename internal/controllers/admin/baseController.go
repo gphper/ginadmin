@@ -8,7 +8,7 @@ package admin
 
 import (
 	"errors"
-	"ginadmin/pkg/comment"
+	"github/gphper/ginadmin/pkg/comment"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

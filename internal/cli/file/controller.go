@@ -2,7 +2,7 @@ package file
 
 import (
 	"fmt"
-	"ginadmin/pkg/comment"
+	"github/gphper/ginadmin/pkg/comment"
 	"html/template"
 	"os"
 	"strings"
@@ -19,7 +19,7 @@ type CParams struct {
 var controllerStr string = `package {{.Pagename}}
 
 import (
-	"ginadmin/controllers"
+	"github/gphper/ginadmin/controllers"
 	"github.com/gin-gonic/gin"
 )
 

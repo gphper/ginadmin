@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"ginadmin/pkg/comment"
+	"github/gphper/ginadmin/pkg/comment"
 	"html/template"
 	"io"
 	"os"

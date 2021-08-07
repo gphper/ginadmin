@@ -8,11 +8,11 @@ package setting
 
 import (
 	"encoding/json"
-	"ginadmin/internal/controllers/admin"
-	"ginadmin/internal/models"
-	"ginadmin/internal/services"
-	"ginadmin/pkg/casbinauth"
-	"ginadmin/pkg/comment"
+	"github/gphper/ginadmin/internal/controllers/admin"
+	"github/gphper/ginadmin/internal/models"
+	"github/gphper/ginadmin/internal/services"
+	"github/gphper/ginadmin/pkg/casbinauth"
+	"github/gphper/ginadmin/pkg/comment"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

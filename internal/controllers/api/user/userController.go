@@ -6,8 +6,8 @@
 package user
 
 import (
-	"ginadmin/internal/controllers/api"
-	"ginadmin/internal/models"
+	"github/gphper/ginadmin/internal/controllers/api"
+	"github/gphper/ginadmin/internal/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
