@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"github/gphper/ginadmin/internal/menu"
 	"github/gphper/ginadmin/internal/models"
-	"github/gphper/ginadmin/internal/services"
+	services "github/gphper/ginadmin/internal/services/admin"
 	"github/gphper/ginadmin/pkg/casbinauth"
 	"net/http"
 	"strings"

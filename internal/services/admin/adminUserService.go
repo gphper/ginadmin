@@ -3,7 +3,7 @@
  * @Author: gphper
  * @Date: 2021-07-18 13:59:07
  */
-package services
+package admin
 
 import (
 	"encoding/json"

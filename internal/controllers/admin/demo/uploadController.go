@@ -9,7 +9,7 @@ package demo
 import (
 	"github/gphper/ginadmin/internal/controllers/admin"
 	"github/gphper/ginadmin/internal/models"
-	"github/gphper/ginadmin/internal/services"
+	services "github/gphper/ginadmin/internal/services/admin"
 	"github/gphper/ginadmin/pkg/uploader"
 	"net/http"
 

@@ -3,7 +3,7 @@
  * @Author: gphper
  * @Date: 2021-07-17 21:03:55
  */
-package services
+package admin
 
 import (
 	"github/gphper/ginadmin/internal/dao"

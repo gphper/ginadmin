@@ -3,7 +3,7 @@
  * @Author: gphper
  * @Date: 2021-07-18 17:52:20
  */
-package services
+package admin
 
 import (
 	"github/gphper/ginadmin/internal/models"
