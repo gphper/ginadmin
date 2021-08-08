@@ -8,7 +8,6 @@ package user
 import (
 	"github/gphper/ginadmin/internal/controllers/api"
 	"github/gphper/ginadmin/internal/models"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,10 +26,21 @@ var Uc = userController{}
 // @Produce json
 // @Param authorization header string true "token" default(Bearer)
 // @Param info formData models.UserReq true "User info"
-// @Success 200 {object} models.UserReq
+// @Success 200 {object} api.SuccessResponse{data=models.UserReq}
+// @response default {object} api.DefaultResponse
 // @Router /user/example [post]
 func (apicon *userController) UserExample(c *gin.Context) {
-	var userReq models.UserReq
-	c.ShouldBind(&userReq)
-	c.JSON(http.StatusOK, userReq)
+
+	var (
+		err     error
+		userReq models.UserReq
+	)
+	err = apicon.FormBind(c, &userReq)
+
+	if err != nil {
+		apicon.Error(c, err)
+		return
+	}
+
+	apicon.Success(c, userReq)
 }

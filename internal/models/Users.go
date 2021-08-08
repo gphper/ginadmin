@@ -6,7 +6,7 @@
 package models
 
 type UserReq struct {
-	Username string `json:"username" form:"username" binding:"required"` //用户名
-	Sex      uint   `json:"sex" form:"sex" binding:"required"`           //性别
-	Age      uint   `json:"age" form:"age" binding:"required"`           //年龄
+	Username string `json:"username" form:"username" binding:"required" label:"用户名"` //用户名
+	Sex      uint   `json:"sex" form:"sex" binding:"required" label:"性别"`            //性别
+	Age      uint   `json:"age" form:"age" binding:"required" label:"年龄"`            //年龄
 }
