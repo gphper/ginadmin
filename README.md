@@ -128,17 +128,25 @@
     ```
 
 ### :small_blue_diamond:<a name="日志">日志</a>
-1.  自定义日志 在 `pkg/loggers` 目录下新建logger
+1.  系统日志
+    
+    设置路由中间件来收集系统日志和错误日志，设置 `internal/router/default.go` 文件
+    
+2.  自定义日志
+    
+    使用 loggers.LogInfo()` 方法记录日志  `github/gphper/ginadmin/pkg/loggers`
+    
+    ```golang
+    loggers.LogInfo("admin", "this is a info message", map[string]string{
+    		"user_info": "this is a user info",
+    })
     ```
-    参考 userlog.go 文件
-    ```
-2.  调用自定义的的logger写日志
-    ```go
-    loggers.UserLogger.Info("无法获取网址",
-    zap.String("url", "http://www.baidu.com"),
-    zap.Int("attempt", 3),
-    zap.Duration("backoff", time.Second),)
-    ```
+    
+3. 切换存储介质
+
+   * 系统日志在 `internal/router/default.go` 文件更换中间件切换日志存储介质
+
+   * 自定义日志在loggers.LogInfo 方法使用`facade.NewZaplog` 和 `facade.NewRedislog` 切换
 
 ### :small_blue_diamond:<a name="数据库">数据库</a>
 

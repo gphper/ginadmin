@@ -6,7 +6,7 @@
 package facade
 
 import (
-	loggers "github/gphper/ginadmin/pkg/loggers"
+	"github/gphper/ginadmin/pkg/loggers/newer"
 
 	"go.uber.org/zap"
 )
@@ -16,11 +16,8 @@ type ZapLog struct {
 }
 
 func NewZaplog(path string) *ZapLog {
-	// return &ZapLog{
-	// 	logger: loggers.AdminLogger,
-	// }
 	return &ZapLog{
-		logger: loggers.NewZapLogger(path),
+		logger: newer.NewZapLogger(path),
 	}
 }
 

@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"github/gphper/ginadmin/internal/controllers/admin"
 	"github/gphper/ginadmin/pkg/comment"
+	"github/gphper/ginadmin/pkg/loggers"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -38,7 +39,7 @@ func (con *adminSystemController) Index(c *gin.Context) {
 
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
-		comment.LogError("admin", "读取目录失败", map[string]string{"error": err.Error()})
+		loggers.LogError("admin", "读取目录失败", map[string]string{"error": err.Error()})
 	}
 	c.HTML(http.StatusOK, "setting/systemlog.html", gin.H{
 		"log_path": path,

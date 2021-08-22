@@ -6,16 +6,17 @@
 package facade
 
 import (
-	loggers "github/gphper/ginadmin/pkg/loggers"
+	"github/gphper/ginadmin/pkg/loggers/newer"
 )
 
 type RedisLog struct {
-	logger *loggers.RedisLogger
+	logger *newer.RedisLogger
 }
 
 func NewRedisLog(path string) *RedisLog {
+
 	return &RedisLog{
-		logger: loggers.NewRedisLogger(path),
+		logger: newer.NewRedisLogger(path),
 	}
 }
 

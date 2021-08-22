@@ -3,7 +3,7 @@
  * @Author: gphper
  * @Date: 2021-07-10 09:59:02
  */
-package loggers
+package newer
 
 import (
 	"io"

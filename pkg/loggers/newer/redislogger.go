@@ -4,11 +4,13 @@
  * @Date: 2021-08-22 15:03:08
  */
 
-package loggers
+package newer
 
 import (
 	"encoding/json"
 	"time"
+
+	globalRedis "github/gphper/ginadmin/internal/redis"
 
 	"github.com/go-redis/redis"
 )
@@ -19,12 +21,10 @@ type RedisLogger struct {
 }
 
 func NewRedisLogger(path string) *RedisLogger {
+
 	return &RedisLogger{
-		Client: redis.NewClient(&redis.Options{
-			Addr: "localhost:6379",
-			DB:   0,
-		}),
-		Path: path,
+		Client: globalRedis.RedisClient,
+		Path:   path,
 	}
 }
 
