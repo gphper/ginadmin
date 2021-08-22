@@ -14,9 +14,7 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-var AdminLogger *zap.Logger
-
-func init() {
+func NewZapLogger(path string) *zap.Logger {
 	// 设置一些基本日志格式 具体含义还比较好理解，直接看zap源码也不难懂
 	encoder := zapcore.NewJSONEncoder(zapcore.EncoderConfig{
 		MessageKey:  "msg",
@@ -33,16 +31,15 @@ func init() {
 		},
 	})
 	// 获取 info、error日志文件的io.Writer 抽象 getWriter() 在下方实现
-	infoWriter := getWriter("./logs/%Y%m%d/admin/demo_info.log")
-	errorWriter := getWriter("./logs/%Y%m%d/admin/demo_error.log")
+	infoWriter := getWriter("./logs/%Y%m%d/" + path + "/demo_info.log")
+	errorWriter := getWriter("./logs/%Y%m%d/" + path + "/demo_error.log")
 
 	// 最后创建具体的Logger
 	core := zapcore.NewTee(
 		zapcore.NewCore(encoder, zapcore.AddSync(infoWriter), zapcore.InfoLevel),
 		zapcore.NewCore(encoder, zapcore.AddSync(errorWriter), zapcore.ErrorLevel),
 	)
-
-	AdminLogger = zap.New(core, zap.AddCaller())
+	return zap.New(core, zap.AddCaller())
 }
 
 func getWriter(filename string) io.Writer {

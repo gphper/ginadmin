@@ -6,10 +6,11 @@
 package router
 
 import (
-	"github/gphper/ginadmin/pkg/loggers"
 	"time"
 
-	ginzap "github.com/gin-contrib/zap"
+	"github/gphper/ginadmin/pkg/loggers/facade"
+	"github/gphper/ginadmin/pkg/loggers/medium"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,7 +18,8 @@ func Init() *gin.Engine {
 
 	router := gin.Default()
 
-	router.Use(ginzap.Ginzap(loggers.AdminLogger, time.RFC3339, true), ginzap.RecoveryWithZap(loggers.AdminLogger, true))
+	// router.Use(medium.GinLog(facade.NewZaplog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewZaplog("admin"), true))
+	router.Use(medium.GinLog(facade.NewRedisLog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewRedisLog("admin"), true))
 	/*****admin路由定义******/
 	adminRouter := router.Group("/admin")
 	AdminRouter(adminRouter)

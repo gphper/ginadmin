@@ -7,7 +7,6 @@ require (
 	github.com/casbin/casbin/v2 v2.31.2 // direct
 	github.com/casbin/gorm-adapter/v3 v3.2.12
 	github.com/gin-contrib/sessions v0.0.3
-	github.com/gin-contrib/zap v0.0.1
 	github.com/gin-gonic/gin v1.7.0
 	github.com/go-openapi/jsonreference v0.19.6 // indirect
 	github.com/go-openapi/spec v0.20.3 // indirect
@@ -15,12 +14,14 @@ require (
 	github.com/go-playground/locales v0.13.0
 	github.com/go-playground/universal-translator v0.17.0
 	github.com/go-playground/validator/v10 v10.7.0
+	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/gphper/multitemplate v0.1.0
 	github.com/jonboulle/clockwork v0.2.2 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/lestrrat-go/strftime v1.0.4 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
+	github.com/onsi/gomega v1.16.0 // indirect
 	github.com/robfig/cron v1.2.0
 	github.com/spf13/cobra v1.2.1
 	github.com/swaggo/gin-swagger v1.3.0

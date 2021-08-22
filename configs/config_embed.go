@@ -18,6 +18,7 @@ import (
 
 type AppConf struct {
 	MysqlConf   `ini:"mysql"`
+	RedisConf   `ini:"redis"`
 	SessionConf `ini:"session"`
 	BaseConf    `ini:"base"`
 }
@@ -30,6 +31,12 @@ type MysqlConf struct {
 	Database    string `ini:"database"`
 	MaxOpenConn int    `ini:"max_open_conn"`
 	MaxIdleConn int    `ini:"max_idle_conn"`
+}
+
+type RedisConf struct {
+	Addr     string `ini:"addr"`
+	Db       string `ini:"db"`
+	Password string `ini:"password"`
 }
 
 type SessionConf struct {

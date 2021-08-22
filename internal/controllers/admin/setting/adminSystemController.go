@@ -11,14 +11,12 @@ import (
 	"fmt"
 	"github/gphper/ginadmin/internal/controllers/admin"
 	"github/gphper/ginadmin/pkg/comment"
-	"github/gphper/ginadmin/pkg/loggers"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 )
 
 type adminSystemController struct {
@@ -40,7 +38,7 @@ func (con *adminSystemController) Index(c *gin.Context) {
 
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
-		loggers.AdminLogger.Error("读取目录失败", zap.Error(err))
+		comment.LogError("admin", "读取目录失败", map[string]string{"error": err.Error()})
 	}
 	c.HTML(http.StatusOK, "setting/systemlog.html", gin.H{
 		"log_path": path,

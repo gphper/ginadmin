@@ -28,7 +28,6 @@ var Auc = adminUserController{}
 管理员列表
 */
 func (con *adminUserController) Index(c *gin.Context) {
-
 	var (
 		err           error
 		req           models.AdminUserIndexReq
