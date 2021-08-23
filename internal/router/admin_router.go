@@ -63,6 +63,10 @@ func AdminRouter(adminRouter *gin.RouterGroup) {
 				adminSystem.GET("/index", setting.Asc.Index)
 				adminSystem.GET("/getdir", setting.Asc.GetDir)
 				adminSystem.GET("/view", setting.Asc.View)
+
+				adminSystem.GET("/index_redis", setting.Asc.IndexRedis)
+				adminSystem.GET("/getdir_redis", setting.Asc.GetDirRedis)
+				adminSystem.GET("/view_redis", setting.Asc.ViewRedis)
 			}
 
 		}

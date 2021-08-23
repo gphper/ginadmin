@@ -102,6 +102,24 @@ func GetMenu() []Menu {
 						},
 					},
 				},
+				{
+					NodeText:    "系统日志[redis]",
+					NodeUrl:     "/admin/setting/system/index_redis",
+					NodePriv:    "/admin/setting/system/index_redis",
+					NodePrivAct: "get",
+					PrivChild: []NodeSon{
+						{
+							NodeSonText:    "获取目录[redis]",
+							NodeSonPriv:    "/admin/setting/system/getdir_redis",
+							NodeSonPrivAct: "get",
+						},
+						{
+							NodeSonText:    "读取日志[redis]",
+							NodeSonPriv:    "/admin/setting/system/view_redis",
+							NodeSonPrivAct: "get",
+						},
+					},
+				},
 			},
 		},
 		{
