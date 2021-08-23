@@ -70,6 +70,10 @@
    port=3306
    max_open_conn=50
    max_idle_conn=20
+   [redis]
+   addr=localhost:6379
+   db=0
+   password=""
    [session]
    session_name=gosession_id
    [base]
