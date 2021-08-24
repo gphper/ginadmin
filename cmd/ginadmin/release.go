@@ -4,6 +4,7 @@ package main
 
 import (
 	_ "github/gphper/ginadmin/docs"
+	"github/gphper/ginadmin/internal/router"
 
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
@@ -11,5 +12,5 @@ import (
 
 func init() {
 	release = false
-	swagHandler = ginSwagger.WrapHandler(swaggerFiles.Handler)
+	router.SwagHandler = ginSwagger.WrapHandler(swaggerFiles.Handler)
 }

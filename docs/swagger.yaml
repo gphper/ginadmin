@@ -1,0 +1,98 @@
+basePath: /api
+definitions:
+  api.DefaultResponse:
+    properties:
+      code:
+        description: code 为1表示正常 0表示业务请求错误
+        type: integer
+      msg:
+        description: 错误提示信息
+        type: string
+    type: object
+  api.SuccessResponse:
+    properties:
+      code:
+        description: code 为1表示正常 0表示业务请求错误
+        type: integer
+      data:
+        description: 接口返回的业务数据
+        type: object
+      msg:
+        description: 错误提示信息
+        type: string
+    type: object
+  models.UserReq:
+    properties:
+      age:
+        description: 年龄
+        type: integer
+      sex:
+        description: 性别
+        type: integer
+      username:
+        description: 用户名
+        type: string
+    required:
+    - age
+    - sex
+    - username
+    type: object
+host: localhost:20011
+info:
+  contact:
+    name: gphper
+    url: https://github.com/gphper/ginadmin
+  description: GinAdmin 示例项目
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: GinAdmin Api
+  version: "1.0"
+paths:
+  /user/example:
+    post:
+      consumes:
+      - multipart/form-data
+      operationId: "1"
+      parameters:
+      - default: Bearer
+        description: token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 年龄
+        in: formData
+        name: age
+        required: true
+        type: integer
+      - description: 性别
+        in: formData
+        name: sex
+        required: true
+        type: integer
+      - description: 用户名
+        in: formData
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/api.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.UserReq'
+              type: object
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/api.DefaultResponse'
+      summary: 展示用户信息
+      tags:
+      - 示例
+swagger: "2.0"

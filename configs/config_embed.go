@@ -35,7 +35,7 @@ type MysqlConf struct {
 
 type RedisConf struct {
 	Addr     string `ini:"addr"`
-	Db       string `ini:"db"`
+	Db       int    `ini:"db"`
 	Password string `ini:"password"`
 }
 
