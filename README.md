@@ -27,7 +27,7 @@
 
 :white_check_mark:静态资源打包
 
-:black_square_button:性能监控
+:white_check_mark:性能监控
 
 :black_square_button:命令行操作
 
@@ -44,6 +44,7 @@
 - [用户权限](#用户权限)
 - [API文档](#API文档)
 - [线上部署](#线上部署)
+- [性能监控](#性能监控)
 
 ### :small_blue_diamond:<a name="开始使用">开始使用</a>
 
@@ -257,4 +258,8 @@
 
 - 使用 `go build -tags=release .\cmd\ginadmin`  生成二进制文件
 - 打包静态资源部署 `go build -tags=embed .\cmd\ginadmin` 
+
+### :small_blue_diamond:<a name="性能监控">性能监控</a>
+
+* 推荐使用 prometheus + grafana 进行性能监控，参考示例  https://github.com/gphper/ginmonitor
 
