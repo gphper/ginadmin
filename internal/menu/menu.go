@@ -85,7 +85,7 @@ func GetMenu() []Menu {
 					},
 				},
 				{
-					NodeText:    "系统日志",
+					NodeText:    "系统日志[文件]",
 					NodeUrl:     "/admin/setting/system/index",
 					NodePriv:    "/admin/setting/system/index",
 					NodePrivAct: "get",
