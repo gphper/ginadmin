@@ -7,13 +7,19 @@
 package admin
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"github/gphper/ginadmin/internal/models"
+	"github/gphper/ginadmin/pkg/captcha/store"
 	"github/gphper/ginadmin/pkg/comment"
+	"io"
+	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/mojocn/base64Captcha"
 )
 
 type loginController struct {
@@ -22,12 +28,24 @@ type loginController struct {
 
 var Lc = loginController{}
 
+/**
+* 登录
+ */
 func (con *loginController) Login(c *gin.Context) {
 	if c.Request.Method == "GET" {
 		c.HTML(http.StatusOK, "home/login.html", gin.H{})
 	} else {
 		username := c.PostForm("username")
 		password := c.PostForm("password")
+		captch := c.PostForm("captcha")
+
+		var store = store.NewSessionStore(c, 20)
+		verify := store.Verify("", captch, true)
+		if !verify {
+			con.Error(c, "验证码错误")
+			return
+		}
+
 		var adminUser models.AdminUsers
 		err := models.Db.Table("admin_users").Where("username = ?", username).First(&adminUser).Error
 		if err != nil {
@@ -48,8 +66,6 @@ func (con *loginController) Login(c *gin.Context) {
 			session.Set("userInfo", string(userstr))
 			session.Save()
 
-			// uio := make(map[string]interface{})
-			// json.Unmarshal([]byte(session.Get("userInfo").(string)), &uio)
 			con.Success(c, "/admin/home", "登录成功")
 		} else {
 			con.Error(c, "账号密码错误")
@@ -59,9 +75,40 @@ func (con *loginController) Login(c *gin.Context) {
 
 }
 
+/**
+* 登出
+ */
 func (con *loginController) LoginOut(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Delete("userInfo")
 	session.Save()
 	c.Redirect(http.StatusFound, "/admin/login")
+}
+
+/*
+* 验证码
+ */
+func (con *loginController) Captcha(c *gin.Context) {
+
+	var store = store.NewSessionStore(c, 20)
+	driver := &base64Captcha.DriverString{
+		Height: 40,
+		Width:  120,
+		Length: 4,
+		Source: "abcdefghijklmnopqr234509867",
+	}
+	draw := base64Captcha.NewCaptcha(driver, store)
+	_, b64s, err := draw.Generate()
+	if err != nil {
+		con.Error(c, "获取验证码失败")
+	}
+
+	i := strings.Index(b64s, ",")
+	if i < 0 {
+		log.Fatal("no comma")
+	}
+	// pass reader to NewDecoder
+	dec := base64.NewDecoder(base64.StdEncoding, strings.NewReader(b64s[i+1:]))
+
+	io.Copy(c.Writer, dec)
 }

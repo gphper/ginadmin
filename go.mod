@@ -21,6 +21,7 @@ require (
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/lestrrat-go/strftime v1.0.4 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
+	github.com/mojocn/base64Captcha v1.3.5 // indirect
 	github.com/onsi/gomega v1.16.0 // indirect
 	github.com/robfig/cron v1.2.0
 	github.com/spf13/cobra v1.2.1
@@ -29,6 +30,7 @@ require (
 	github.com/ugorji/go v1.2.4 // indirect
 	go.uber.org/zap v1.17.0
 	golang.org/x/crypto v0.0.0-20210220033148-5ea612d1eb83 // indirect
+	golang.org/x/image v0.0.0-20210628002857-a66eb6448b8d // indirect
 	golang.org/x/net v0.0.0-20210716203947-853a461950ff // indirect
 	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c // indirect
 	golang.org/x/tools v0.1.5 // indirect

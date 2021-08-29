@@ -22,6 +22,7 @@ func AdminRouter(adminRouter *gin.RouterGroup) {
 	store := cookie.NewStore([]byte("secret11111"))
 	adminRouter.Use(sessions.Sessions("mysession", store))
 	{
+		adminRouter.GET("/captcha", admin.Lc.Captcha)
 		/*******登录路由**********/
 		adminRouter.GET("/login", admin.Lc.Login)
 		adminRouter.POST("/login", admin.Lc.Login)
