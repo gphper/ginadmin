@@ -33,7 +33,9 @@ var Lc = loginController{}
  */
 func (con *loginController) Login(c *gin.Context) {
 	if c.Request.Method == "GET" {
-		c.HTML(http.StatusOK, "home/login.html", gin.H{})
+		c.HTML(http.StatusOK, "home/login.html", gin.H{
+			"title": "GinAdmin管理平台",
+		})
 	} else {
 		username := c.PostForm("username")
 		password := c.PostForm("password")
@@ -93,7 +95,7 @@ func (con *loginController) Captcha(c *gin.Context) {
 	var store = store.NewSessionStore(c, 20)
 	driver := &base64Captcha.DriverString{
 		Height: 40,
-		Width:  120,
+		Width:  150,
 		Length: 4,
 		Source: "abcdefghijklmnopqr234509867",
 	}
