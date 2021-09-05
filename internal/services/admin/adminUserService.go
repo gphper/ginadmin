@@ -159,3 +159,22 @@ func (ser *adminUserService) EditPass(req models.AdminUserEditPassReq) (err erro
 
 	return
 }
+
+//根究用户保存自定义皮肤
+func (ser *adminUserService) EditSkin(req models.AdminUserSkinReq) (err error) {
+	var adminUser models.AdminUsers
+	var skinMap = map[string]string{
+		"data-logobg":    "logo",
+		"data-sidebarbg": "side",
+		"data-headerbg":  "header",
+	}
+
+	adminUser, err = ser.GetAdminUser(strconv.Itoa(req.Uid))
+	if err != nil {
+		return
+	}
+
+	err = dao.AuDao.DB.Model(&adminUser).UpdateColumn(skinMap[req.Type], req.Color).Error
+
+	return
+}

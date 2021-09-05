@@ -8,11 +8,13 @@ package admin
 
 import (
 	"encoding/json"
+	"fmt"
 	"github/gphper/ginadmin/internal/menu"
 	"github/gphper/ginadmin/internal/models"
 	services "github/gphper/ginadmin/internal/services/admin"
 	"github/gphper/ginadmin/pkg/casbinauth"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gin-contrib/sessions"
@@ -45,10 +47,18 @@ func (con *homeController) Home(c *gin.Context) {
 		groupname = strings.Join(privs, ",")
 	}
 
+	//获取当前用户的皮肤
+	uid, _ := userData["uid"].(float64)
+
+	adminUser, _ := services.AuService.GetAdminUser(strconv.Itoa(int(uid)))
+
 	c.HTML(http.StatusOK, "home/home.html", gin.H{
 		"menuList":  menuList,
 		"userInfo":  userData,
 		"groupName": groupname,
+		"header":    adminUser.Header,
+		"logo":      adminUser.Logo,
+		"sider":     adminUser.Side,
 	})
 }
 
@@ -78,4 +88,27 @@ func (con *homeController) SavePassword(c *gin.Context) {
 		con.Success(c, "", "修改成功")
 		return
 	}
+}
+
+func (con *homeController) SaveSkin(c *gin.Context) {
+
+	var skinReq models.AdminUserSkinReq
+
+	con.FormBind(c, &skinReq)
+
+	value, _ := c.Get("userInfo")
+
+	userData := make(map[string]interface{})
+
+	fmt.Println(value.(string))
+
+	json.Unmarshal([]byte(value.(string)), &userData)
+
+	v, _ := userData["uid"].(float64)
+
+	skinReq.Uid = int(v)
+
+	services.AuService.EditSkin(skinReq)
+
+	c.JSON(http.StatusOK, skinReq)
 }

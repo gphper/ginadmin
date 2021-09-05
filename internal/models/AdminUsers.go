@@ -21,6 +21,9 @@ type AdminUsers struct {
 	LastLogin string `gorm:"size:30;comment:'最后登录ip地址'"`
 	Salt      string `gorm:"size:32;comment:'密码盐'"`
 	ApiToken  string `gorm:"size:32;comment:'用户登录凭证'"`
+	Header    string `gorm:"size:20;comment:'头部皮肤'"`
+	Logo      string `gorm:"size:20;comment:'logo皮肤'"`
+	Side      string `gorm:"size:20;comment:'侧边栏皮肤'"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -46,6 +49,12 @@ type AdminUserEditPassReq struct {
 	SubPassword string `form:"sub_password" label:"确认密码" binding:"required"`
 }
 
+type AdminUserSkinReq struct {
+	Type  string `form:"type" json:"type"`
+	Color string `form:"color" json:"color"`
+	Uid   int
+}
+
 func (au *AdminUsers) TableName() string {
 	return "admin_users"
 }
@@ -64,6 +73,9 @@ func (au *AdminUsers) FillData() {
 		LastLogin: "",
 		Salt:      salt,
 		ApiToken:  "",
+		Header:    "default",
+		Logo:      "default",
+		Side:      "default",
 	}
 	Db.Save(&adminUser)
 }

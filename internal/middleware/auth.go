@@ -21,7 +21,7 @@ func AdminUserAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
 		userInfoJson := session.Get("userInfo")
-		// fmt.Println(userInfoJson)
+
 		if userInfoJson == nil {
 			// 取不到就是没有登录
 			c.Header("Content-Type", "text/html; charset=utf-8")

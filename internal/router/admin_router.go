@@ -36,6 +36,7 @@ func AdminRouter(adminRouter *gin.RouterGroup) {
 			adminHomeRouter.GET("/welcome", admin.Hc.Welcome)
 			adminHomeRouter.GET("/edit_password", admin.Hc.EditPassword)
 			adminHomeRouter.POST("/save_password", admin.Hc.SavePassword)
+			adminHomeRouter.POST("/save_skin", admin.Hc.SaveSkin)
 		}
 
 		adminSettingRouter := adminRouter.Group("/setting")
