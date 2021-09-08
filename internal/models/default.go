@@ -27,7 +27,7 @@ type BaseModle struct {
 
 func init() {
 	var err error
-	dns := fmt.Sprintf("%s:%s@(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", configs.App.MysqlConf.UserName, configs.App.MysqlConf.Password, configs.App.MysqlConf.Host, configs.App.MysqlConf.Database)
+	dns := fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", configs.App.MysqlConf.UserName, configs.App.MysqlConf.Password, configs.App.MysqlConf.Host, configs.App.MysqlConf.Port, configs.App.MysqlConf.Database)
 	Db, err = gorm.Open(mysql.Open(dns), &gorm.Config{})
 	if err != nil {
 		fmt.Println(err)
