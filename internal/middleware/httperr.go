@@ -17,7 +17,7 @@ func NotHttpStatusOk() gin.HandlerFunc {
 
 		c.Next()
 
-		if c.Writer.Status() > 299 {
+		if c.Writer.Status() > 399 {
 			if ok := strings.Contains(c.Request.RequestURI, "/api"); ok {
 				//TODO 接口处理
 
