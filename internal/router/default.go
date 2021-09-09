@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 )
 
@@ -25,6 +26,8 @@ var (
 func Init() *gin.Engine {
 
 	router := gin.Default()
+
+	router.Use(gzip.Gzip(gzip.DefaultCompression))
 
 	prep(router)
 
