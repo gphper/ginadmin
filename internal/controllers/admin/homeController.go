@@ -112,3 +112,9 @@ func (con *homeController) SaveSkin(c *gin.Context) {
 
 	c.JSON(http.StatusOK, skinReq)
 }
+
+func (con *homeController) GinMon(c *gin.Context) {
+	c.HTML(http.StatusOK, "home/ginmon.html", gin.H{
+		"title": "",
+	})
+}

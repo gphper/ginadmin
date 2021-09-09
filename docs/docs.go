@@ -172,7 +172,7 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
-	Host:        "localhost:20011",
+	Host:        "122.152.196.83",
 	BasePath:    "/api",
 	Schemes:     []string{},
 	Title:       "GinAdmin Api",

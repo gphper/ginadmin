@@ -8,6 +8,7 @@
 package web
 
 import (
+	"fmt"
 	"github/gphper/ginadmin/pkg/comment"
 	"net/http"
 	"path/filepath"
@@ -46,6 +47,7 @@ func LoadTemplates() multitemplate.Renderer {
 		files := append(layoutCopy, include)
 		dirSlice := strings.Split(include, comment.GetLine())
 		fileName := strings.Join(dirSlice[len(dirSlice)-2:], "/")
+		fmt.Println(files)
 		r.AddFromFilesFuncs(fileName, template2.GlobalTemplateFun, files...)
 	}
 	return r

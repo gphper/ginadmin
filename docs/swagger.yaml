@@ -37,7 +37,7 @@ definitions:
     - sex
     - username
     type: object
-host: localhost:20011
+host: 122.152.196.83
 info:
   contact:
     name: gphper

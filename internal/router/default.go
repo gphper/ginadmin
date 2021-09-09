@@ -17,6 +17,8 @@ import (
 	"os"
 
 	"github.com/gin-contrib/gzip"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -28,14 +30,16 @@ func Init() *gin.Engine {
 
 	router := gin.Default()
 
-	router.Use(gzip.Gzip(gzip.DefaultCompression))
-
+	router.Use(gzip.Gzip(gzip.DefaultCompression, gzip.WithExcludedPaths([]string{"/api/", "/metrics"})))
+	router.Use(middleware.Metrics())
 	prep(router)
 
 	router.Use(medium.GinLog(facade.NewZaplog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewZaplog("admin"), true))
 	router.Use(middleware.NotHttpStatusOk())
 	// router.Use(medium.GinLog(facade.NewRedisLog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewRedisLog("admin"), true))
 	/*****admin路由定义******/
+	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
+
 	adminRouter := router.Group("/admin")
 
 	AdminRouter(adminRouter)

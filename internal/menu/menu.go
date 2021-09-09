@@ -143,6 +143,36 @@ func GetMenu() []Menu {
 				},
 			},
 		},
+		{
+			MenuText:    "性能监控",
+			MenuPriv:    "ginmonitor",
+			MenuPrivAct: "get",
+			MenuIcon:    "mdi mdi-elevation-rise",
+			Nodes: []Node{
+				{
+					NodeText:    "监控说明",
+					NodeUrl:     "/admin/home/ginmonitor",
+					NodePriv:    "/admin/home/ginmonitor",
+					NodePrivAct: "get",
+					PrivChild:   []NodeSon{},
+				},
+			},
+		},
+		{
+			MenuText:    "API文档",
+			MenuPriv:    "apidoc",
+			MenuPrivAct: "get",
+			MenuIcon:    "mdi mdi-json",
+			Nodes: []Node{
+				{
+					NodeText:    "地址链接",
+					NodeUrl:     "/swagger/index.html",
+					NodePriv:    "/swagger/index.html",
+					NodePrivAct: "get",
+					PrivChild:   []NodeSon{},
+				},
+			},
+		},
 	}
 	return MenuList
 }
