@@ -8,6 +8,7 @@ package router
 import (
 	"time"
 
+	"github/gphper/ginadmin/internal/middleware"
 	"github/gphper/ginadmin/pkg/comment"
 	"github/gphper/ginadmin/pkg/loggers/facade"
 	"github/gphper/ginadmin/pkg/loggers/medium"
@@ -32,6 +33,7 @@ func Init() *gin.Engine {
 	prep(router)
 
 	router.Use(medium.GinLog(facade.NewZaplog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewZaplog("admin"), true))
+	router.Use(middleware.NotHttpStatusOk())
 	// router.Use(medium.GinLog(facade.NewRedisLog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewRedisLog("admin"), true))
 	/*****admin路由定义******/
 	adminRouter := router.Group("/admin")
