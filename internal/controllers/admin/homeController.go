@@ -79,6 +79,12 @@ func (con *homeController) SavePassword(c *gin.Context) {
 		err error
 	)
 	con.FormBind(c, &req)
+
+	if req.Uid == 1 {
+		con.Error(c, "演示站点禁止修改测试账号密码")
+		return
+	}
+
 	err = services.AuService.EditPass(req)
 
 	if err != nil {
