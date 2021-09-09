@@ -46,6 +46,9 @@
 - [线上部署](#线上部署)
 - [性能监控](#性能监控)
 
+### :small_blue_diamond:<a name="演示地址">演示地址</a>
+* http://122.152.196.83/admin/login  账号：admin 密码： 111111
+
 ### :small_blue_diamond:<a name="开始使用">开始使用</a>
 
 1. git 克隆地址 
