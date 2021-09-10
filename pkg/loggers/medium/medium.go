@@ -26,34 +26,39 @@ func GinLog(logger facade.Log, timeFormat string, utc bool) gin.HandlerFunc {
 
 		path := c.Request.URL.Path
 		query := c.Request.URL.RawQuery
+
 		c.Next()
 
-		end := time.Now()
-		latency := end.Sub(start)
-		if utc {
-			end = end.UTC()
-		}
-
-		if len(c.Errors) > 0 {
-			infoMap := make(map[string]string, len(c.Errors))
-			for ek, e := range c.Errors.Errors() {
-				infoMap[strconv.Itoa(ek)] = e
+		ok := strings.Contains(path, "/statics")
+		if c.ClientIP() != "127.0.0.1" && !ok {
+			end := time.Now()
+			latency := end.Sub(start)
+			if utc {
+				end = end.UTC()
 			}
-			logger.Error("error msg", infoMap)
-		} else {
 
-			logger.Info(path, map[string]string{
-				"status":     strconv.Itoa(c.Writer.Status()),
-				"method":     c.Request.Method,
-				"path":       path,
-				"query":      query,
-				"ip":         c.ClientIP(),
-				"user-agent": c.Request.UserAgent(),
-				"time":       end.Format(timeFormat),
-				"latency":    latency.String(),
-			})
+			if len(c.Errors) > 0 {
+				infoMap := make(map[string]string, len(c.Errors))
+				for ek, e := range c.Errors.Errors() {
+					infoMap[strconv.Itoa(ek)] = e
+				}
+				logger.Error("error msg", infoMap)
+			} else {
 
+				logger.Info(path, map[string]string{
+					"status":     strconv.Itoa(c.Writer.Status()),
+					"method":     c.Request.Method,
+					"path":       path,
+					"query":      query,
+					"ip":         c.ClientIP(),
+					"user-agent": c.Request.UserAgent(),
+					"time":       end.Format(timeFormat),
+					"latency":    latency.String(),
+				})
+
+			}
 		}
+
 	}
 }
 

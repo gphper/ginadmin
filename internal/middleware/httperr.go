@@ -6,14 +6,19 @@
 package middleware
 
 import (
+	"github/gphper/ginadmin/internal/redis"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 func NotHttpStatusOk() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		key := time.Now().Format("20060102")
+		redis.RedisClient.SAdd(key, c.ClientIP()).Result()
 
 		c.Next()
 
