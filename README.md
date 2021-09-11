@@ -32,6 +32,8 @@
 :black_square_button:命令行操作
 
 ## 使用文档
+- [演示地址](#演示地址)
+
 - [开始使用](#开始使用)
 - [docker-compose构建环境](#docker-compose)
 - [项目目录](#结构)
@@ -47,8 +49,7 @@
 - [性能监控](#性能监控)
 
 ### :small_blue_diamond:<a name="演示地址">演示地址</a>
-
-http://122.152.196.83/admin/login  admin  111111
+* http://122.152.196.83/admin/login  账号：admin 密码： 111111
 
 ### :small_blue_diamond:<a name="开始使用">开始使用</a>
 
