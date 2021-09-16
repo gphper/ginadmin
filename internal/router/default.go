@@ -19,6 +19,7 @@ import (
 	"github.com/gin-contrib/gzip"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
+	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 )
 
@@ -48,6 +49,8 @@ func Init() *gin.Engine {
 	apiRouter := router.Group("/api")
 
 	ApiRouter(apiRouter)
+
+	pprof.Register(router)
 
 	return router
 }
