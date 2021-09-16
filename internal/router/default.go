@@ -6,6 +6,7 @@
 package router
 
 import (
+	"path/filepath"
 	"time"
 
 	"github/gphper/ginadmin/internal/middleware"
@@ -35,9 +36,9 @@ func Init() *gin.Engine {
 	router.Use(middleware.Metrics())
 	prep(router)
 
-	router.Use(medium.GinLog(facade.NewZaplog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewZaplog("admin"), true))
+	// router.Use(medium.GinLog(facade.NewZaplog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewZaplog("admin"), true))
 	router.Use(middleware.NotHttpStatusOk())
-	// router.Use(medium.GinLog(facade.NewRedisLog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewRedisLog("admin"), true))
+	router.Use(medium.GinLog(facade.NewRedisLog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewRedisLog("admin"), true))
 	/*****admin路由定义******/
 	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
 
@@ -58,16 +59,13 @@ func Init() *gin.Engine {
 func prep(router *gin.Engine) {
 	var (
 		rootPath   string
-		separator  string
 		uploadPath string
 		err        error
 	)
 
 	rootPath, _ = comment.RootPath()
 
-	separator = comment.GetLine()
-
-	uploadPath = rootPath + separator + "uploadfile"
+	uploadPath = rootPath + string(filepath.Separator) + "uploadfile"
 
 	if SwagHandler != nil {
 		router.GET("/swagger/*any", SwagHandler)

@@ -24,8 +24,8 @@ var StaticsFs http.FileSystem
 
 func init() {
 	rootPath, _ = comment.RootPath()
-	separator := comment.GetLine()
-	StaticsFs = http.Dir(rootPath + separator + "web" + separator + "statics")
+
+	StaticsFs = http.Dir(rootPath + string(filepath.Separator) + "web" + string(filepath.Separator) + "statics")
 }
 
 func LoadTemplates() multitemplate.Renderer {
@@ -45,7 +45,7 @@ func LoadTemplates() multitemplate.Renderer {
 		layoutCopy := make([]string, len(layouts))
 		copy(layoutCopy, layouts)
 		files := append(layoutCopy, include)
-		dirSlice := strings.Split(include, comment.GetLine())
+		dirSlice := strings.Split(include, string(filepath.Separator))
 		fileName := strings.Join(dirSlice[len(dirSlice)-2:], "/")
 		fmt.Println(files)
 		r.AddFromFilesFuncs(fileName, template2.GlobalTemplateFun, files...)

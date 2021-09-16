@@ -16,6 +16,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -37,7 +38,7 @@ func (con *adminSystemController) Index(c *gin.Context) {
 	if err != nil {
 		fmt.Printf("get root path err:%v", err)
 	}
-	path = path + comment.GetLine() + "logs"
+	path = path + string(filepath.Separator) + "logs"
 
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
@@ -46,7 +47,7 @@ func (con *adminSystemController) Index(c *gin.Context) {
 	c.HTML(http.StatusOK, "setting/systemlog.html", gin.H{
 		"log_path": path,
 		"files":    files,
-		"line":     comment.GetLine(),
+		"line":     string(filepath.Separator),
 	})
 }
 
@@ -76,7 +77,7 @@ func (con *adminSystemController) GetDir(c *gin.Context) {
 		}
 		fileSlice = append(fileSlice, FileNode{
 			Name: v.Name(),
-			Path: path + comment.GetLine() + v.Name(),
+			Path: path + string(filepath.Separator) + v.Name(),
 			Type: fileType,
 		})
 	}
