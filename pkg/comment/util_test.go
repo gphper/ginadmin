@@ -19,3 +19,7 @@ func TestRandString(t *testing.T) {
 		t.Error("测试失败")
 	}
 }
+
+func TestCreatFullFile(t *testing.T) {
+	CreatFullFile("F:/ginadmin/logs/20210914/admin/demo.log")
+}

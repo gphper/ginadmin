@@ -36,9 +36,9 @@ func Init() *gin.Engine {
 	router.Use(middleware.Metrics())
 	prep(router)
 
-	// router.Use(medium.GinLog(facade.NewZaplog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewZaplog("admin"), true))
+	router.Use(medium.GinLog(facade.NewZaplog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewZaplog("admin"), true))
 	router.Use(middleware.NotHttpStatusOk())
-	router.Use(medium.GinLog(facade.NewRedisLog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewRedisLog("admin"), true))
+	// router.Use(medium.GinLog(facade.NewRedisLog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewRedisLog("admin"), true))
 	/*****admin路由定义******/
 	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
 

@@ -67,17 +67,6 @@ func getCurrentAbPathByCaller() string {
 	return abPath
 }
 
-func GetLine() (line string) {
-	sys := runtime.GOOS
-	if sys == "linux" {
-		line = "/"
-	}
-	if sys == "windows" {
-		line = "\\"
-	}
-	return
-}
-
 /**
 生成随机字符串
 */
@@ -220,5 +209,40 @@ func CompareSlice(first []string, second []string) (add []string, incre []string
 		add = append(add, k)
 	}
 
+	return
+}
+
+/*
+* 按照全路径创建文件
+ */
+func CreatFullFile(filePath string) (file *os.File, err error) {
+
+	_, err = os.Stat(filePath)
+	if err == nil {
+		file, err = os.Open(filePath)
+		return
+	}
+
+	// filepath := filepath.Dir(filePath)
+
+	//目录操作
+	if os.IsNotExist(err) {
+		//创建文件
+		basepath := filepath.Dir(filePath)
+		_, err = os.Stat(basepath)
+		if err != nil {
+			if os.IsNotExist(err) {
+				err = os.MkdirAll(basepath, os.ModeDir)
+				if err != nil {
+					return nil, err
+				}
+
+				//目录不存在文件肯定不存在,创建文件
+				file, err = os.Create(filePath)
+				return
+			}
+		}
+
+	}
 	return
 }

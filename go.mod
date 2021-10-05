@@ -7,6 +7,7 @@ require (
 	github.com/casbin/casbin/v2 v2.31.2 // direct
 	github.com/casbin/gorm-adapter/v3 v3.2.12
 	github.com/gin-contrib/gzip v0.0.3
+	github.com/gin-contrib/pprof v1.3.0 // indirect
 	github.com/gin-contrib/sessions v0.0.3
 	github.com/gin-gonic/gin v1.7.3
 	github.com/go-openapi/jsonreference v0.19.6 // indirect
