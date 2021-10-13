@@ -29,6 +29,10 @@
 
 :white_check_mark:性能监控
 
+:black_square_button:API JWT
+
+:black_square_button:redis日志落盘保存
+
 :black_square_button:命令行操作
 
 ## 使用文档
