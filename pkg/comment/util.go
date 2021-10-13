@@ -10,6 +10,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"html/template"
+	"io/fs"
 	"log"
 	"math"
 	"math/rand"
@@ -220,5 +221,32 @@ func CompareSlice(first []string, second []string) (add []string, incre []string
 		add = append(add, k)
 	}
 
+	return
+}
+
+/**
+* 打开文件句柄
+**/
+func OpenFile(filepath string) (file *os.File, err error) {
+
+	file, err = os.OpenFile(filepath, os.O_CREATE, 0666)
+	if err == nil {
+		return
+	}
+
+	dir := path.Dir(filepath)
+	_, err = os.Stat(dir)
+	if err != nil {
+		if os.IsNotExist(err) {
+			err = os.MkdirAll(dir, fs.FileMode(os.O_CREATE))
+			if err != nil {
+				return
+			}
+		}
+	}
+	file, err = os.OpenFile(filepath, os.O_CREATE, 0666)
+	if err != nil {
+		return
+	}
 	return
 }

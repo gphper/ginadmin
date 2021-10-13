@@ -19,3 +19,10 @@ func TestRandString(t *testing.T) {
 		t.Error("测试失败")
 	}
 }
+
+func TestOpenFile(t *testing.T) {
+	_, err := OpenFile("./hello/a.txt")
+	if err != nil {
+		t.Errorf("err:%s", err.Error())
+	}
+}
