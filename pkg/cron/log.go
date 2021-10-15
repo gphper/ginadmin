@@ -19,7 +19,8 @@ import (
 * 创建目录
 **/
 func WriteLog() {
-	date := time.Now().Local().Format("20060102")
+
+	date := time.Now().AddDate(0, 0, -2).Local().Format("20060102")
 
 	pattern := "logs:" + date + ":*"
 	keys, _ := globalRedis.RedisClient.Keys(pattern).Result()
