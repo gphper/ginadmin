@@ -129,9 +129,9 @@ func (con *adminSystemController) View(c *gin.Context) {
 */
 func (con *adminSystemController) IndexRedis(c *gin.Context) {
 
-	path := "log"
+	path := "logs"
 
-	dateSlice, err := redis.RedisClient.Keys("log:*").Result()
+	dateSlice, err := redis.RedisClient.Keys("logs:*").Result()
 
 	if err != nil {
 		loggers.LogError("admin", "读取目录失败", map[string]string{"error": err.Error()})

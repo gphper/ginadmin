@@ -68,17 +68,6 @@ func getCurrentAbPathByCaller() string {
 	return abPath
 }
 
-func GetLine() (line string) {
-	sys := runtime.GOOS
-	if sys == "linux" {
-		line = "/"
-	}
-	if sys == "windows" {
-		line = "\\"
-	}
-	return
-}
-
 /**
 生成随机字符串
 */
@@ -229,7 +218,7 @@ func CompareSlice(first []string, second []string) (add []string, incre []string
 **/
 func OpenFile(filepath string) (file *os.File, err error) {
 
-	file, err = os.OpenFile(filepath, os.O_CREATE, 0666)
+	file, err = os.OpenFile(filepath, os.O_WRONLY|os.O_CREATE, 0666)
 	if err == nil {
 		return
 	}
@@ -244,7 +233,7 @@ func OpenFile(filepath string) (file *os.File, err error) {
 			}
 		}
 	}
-	file, err = os.OpenFile(filepath, os.O_CREATE, 0666)
+	file, err = os.OpenFile(filepath, os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
 		return
 	}
