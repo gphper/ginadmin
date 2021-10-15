@@ -10,6 +10,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"html/template"
+	"io/fs"
 	"log"
 	"math"
 	"math/rand"
@@ -212,37 +213,29 @@ func CompareSlice(first []string, second []string) (add []string, incre []string
 	return
 }
 
-/*
-* 按照全路径创建文件
- */
-func CreatFullFile(filePath string) (file *os.File, err error) {
+/**
+* 打开文件句柄
+**/
+func OpenFile(filepath string) (file *os.File, err error) {
 
-	_, err = os.Stat(filePath)
+	file, err = os.OpenFile(filepath, os.O_WRONLY|os.O_CREATE, 0666)
 	if err == nil {
-		file, err = os.Open(filePath)
 		return
 	}
 
-	// filepath := filepath.Dir(filePath)
-
-	//目录操作
-	if os.IsNotExist(err) {
-		//创建文件
-		basepath := filepath.Dir(filePath)
-		_, err = os.Stat(basepath)
-		if err != nil {
-			if os.IsNotExist(err) {
-				err = os.MkdirAll(basepath, os.ModeDir)
-				if err != nil {
-					return nil, err
-				}
-
-				//目录不存在文件肯定不存在,创建文件
-				file, err = os.Create(filePath)
+	dir := path.Dir(filepath)
+	_, err = os.Stat(dir)
+	if err != nil {
+		if os.IsNotExist(err) {
+			err = os.MkdirAll(dir, fs.FileMode(os.O_CREATE))
+			if err != nil {
 				return
 			}
 		}
-
+	}
+	file, err = os.OpenFile(filepath, os.O_WRONLY|os.O_CREATE, 0666)
+	if err != nil {
+		return
 	}
 	return
 }

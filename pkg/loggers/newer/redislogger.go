@@ -36,7 +36,7 @@ func (logger *RedisLogger) Info(msg string, info map[string]string) {
 	str, _ := json.Marshal(info)
 	time := time.Now().Format("20060102")
 
-	logger.Client.LPush("log:"+time+":"+logger.Path+":info", string(str))
+	logger.Client.LPush("logs:"+time+":"+logger.Path+":info", string(str))
 }
 
 func (logger *RedisLogger) Error(msg string, info map[string]string) {
@@ -47,5 +47,5 @@ func (logger *RedisLogger) Error(msg string, info map[string]string) {
 	str, _ := json.Marshal(info)
 	time := time.Now().Format("20060102")
 
-	logger.Client.LPush("log:"+time+":"+logger.Path+":error", string(str))
+	logger.Client.LPush("logs:"+time+":"+logger.Path+":error", string(str))
 }

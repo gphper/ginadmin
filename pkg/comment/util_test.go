@@ -20,6 +20,9 @@ func TestRandString(t *testing.T) {
 	}
 }
 
-func TestCreatFullFile(t *testing.T) {
-	CreatFullFile("F:/ginadmin/logs/20210914/admin/demo.log")
+func TestOpenFile(t *testing.T) {
+	_, err := OpenFile("./hello/a.txt")
+	if err != nil {
+		t.Errorf("err:%s", err.Error())
+	}
 }
