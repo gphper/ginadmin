@@ -123,6 +123,27 @@ func GetMenu() []Menu {
 			},
 		},
 		{
+			MenuText:    "文章管理",
+			MenuPriv:    "article",
+			MenuPrivAct: "get",
+			MenuIcon:    "mdi mdi-file-word",
+			Nodes: []Node{
+				{
+					NodeText:    "文章列表",
+					NodeUrl:     "/admin/article/list",
+					NodePriv:    "/admin/article/list",
+					NodePrivAct: "get",
+					PrivChild: []NodeSon{
+						{
+							NodeSonText:    "文章保存",
+							NodeSonPriv:    "/admin/article/save",
+							NodeSonPrivAct: "post",
+						},
+					},
+				},
+			},
+		},
+		{
 			MenuText:    "示例",
 			MenuPriv:    "demo",
 			MenuPrivAct: "get",

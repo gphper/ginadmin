@@ -30,7 +30,7 @@ func init() {
 	dns := fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", configs.App.MysqlConf.UserName, configs.App.MysqlConf.Password, configs.App.MysqlConf.Host, configs.App.MysqlConf.Port, configs.App.MysqlConf.Database)
 	Db, err = gorm.Open(mysql.Open(dns), &gorm.Config{})
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 	sqlDb, _ := Db.DB()
 	sqlDb.SetMaxOpenConns(configs.App.MaxOpenConn)
@@ -59,6 +59,8 @@ func GetModels() []interface{} {
 	return []interface{}{
 		&AdminUsers{},
 		&AdminGroup{},
+		&Article{},
+		&UploadType{},
 	}
 }
 

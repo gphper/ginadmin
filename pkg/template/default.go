@@ -1,3 +1,8 @@
+/*
+ * @Description:
+ * @Author: gphper
+ * @Date: 2021-07-04 11:58:44
+ */
 package template
 
 import (
@@ -26,6 +31,9 @@ func init() {
 		"judegInMap": func(find string, items map[string]struct{}) bool {
 			_, ok := items[find]
 			return ok
+		},
+		"isset": func(param string) bool {
+			return param != ""
 		},
 	}
 }

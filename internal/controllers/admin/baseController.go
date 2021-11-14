@@ -55,3 +55,25 @@ func (Base *BaseController) FormBind(c *gin.Context, obj interface{}) error {
 	}
 	return nil
 }
+
+func (Base *BaseController) UriBind(c *gin.Context, obj interface{}) error {
+
+	trans, err := comment.InitTrans("zh")
+
+	if err != nil {
+		return err
+	}
+
+	if err := c.ShouldBindUri(obj); err != nil {
+		errs, ok := err.(validator.ValidationErrors)
+		if !ok && errs != nil {
+			return errs
+		}
+
+		for _, v := range errs.Translate(trans) {
+			return errors.New(v)
+		}
+
+	}
+	return nil
+}

@@ -7,8 +7,10 @@ package router
 
 import (
 	"github/gphper/ginadmin/internal/controllers/admin"
+	"github/gphper/ginadmin/internal/controllers/admin/article"
 	"github/gphper/ginadmin/internal/controllers/admin/demo"
 	"github/gphper/ginadmin/internal/controllers/admin/setting"
+	"github/gphper/ginadmin/internal/controllers/admin/upload"
 	"github/gphper/ginadmin/internal/middleware"
 
 	"github.com/gin-contrib/sessions"
@@ -79,6 +81,25 @@ func AdminRouter(adminRouter *gin.RouterGroup) {
 		{
 			adminDemoRouter.GET("/show", demo.Uc.Show)
 			adminDemoRouter.POST("/upload", demo.Uc.Upload)
+		}
+
+		//Article文章管理
+		adminArticleRouter := adminRouter.Group("/article")
+		adminArticleRouter.Use(middleware.AdminUserAuth(), middleware.AdminUserPrivs())
+		{
+			adminArticleRouter.GET("/list", article.Arc.List)
+			adminArticleRouter.GET("/add", article.Arc.Add)
+			adminArticleRouter.GET("/edit", article.Arc.Edit)
+			adminArticleRouter.POST("/save", article.Arc.Save)
+			adminArticleRouter.GET("/del", article.Arc.Del)
+		}
+
+		//文件上传
+		adminUploadRouter := adminRouter.Group("/upload")
+		adminUploadRouter.Use(middleware.AdminUserAuth())
+		{
+			adminUploadRouter.GET("/upload_html/:type_name/:id/:type/:now_num", upload.Upc.UploadHtml)
+			adminUploadRouter.POST("/upload", upload.Upc.Upload)
 		}
 
 	}

@@ -1,7 +1,7 @@
 <!--
  * @Description: 
  * @Author: gphper
- * @Date: 2021-04-18 19:07:55
+ * @Date: 2021-10-19 20:03:26
 -->
 {{define "head"}}
 <link rel="stylesheet" href="/statics/js/layui/css/layui.css">
@@ -13,6 +13,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
+         
           <div class="card-toolbar clearfix">
             <form role="form" class="form-inline pull-right" method="get">
                 <div class="form-group">
@@ -25,49 +26,50 @@
                            autocomplete="off">
                 </div>
                 <button type="submit" class="btn btn-primary">搜索</button>
-                <button type="button" class="btn btn-white" onclick="location.href='/admin/setting/adminuser/index'">重置</button>
+                <button type="button" class="btn btn-white" onclick="location.href='/admin/article/list'">重置</button>
             </form>
             <div class="toolbar-btn-action">
-              <a class="btn btn-primary m-r-5" href="/admin/setting/adminuser/add"><i class="mdi mdi-plus"></i> 新增</a>
+              <a class="btn btn-primary m-r-5" href="/admin/article/add"><i class="mdi mdi-plus"></i> 新增</a>
             </div>
           </div>
+
+
+
+
+
           <div class="card-body">
             
             <div class="table-responsive">
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th>用户ID</th>
-                    <th>用户名</th>
-                    <th>昵称</th>
-                    <th>注册时间</th>
-                    <th>角色</th>
+                    <th>文章ID</th>
+                    <th>标题</th>
+                    <th>简介</th>
+                    <th>添加时间</th>
                     <th>操作</th>
                   </tr>
                 </thead>
                 <tbody>
-                    {{range .adminUserData.Data}}
-                    <tr>
-                        <td>{{.Uid}}</td>
-                        <td>{{.Username}}</td>
-                        <td>{{.Nickname}}</td>
-                        <td>{{formatAsDate .CreatedAt "2006-01-02 15:04:05"}}</td>
-                        <td>{{.GroupName}}</td>
-                        <td>
-                            <a class="btn btn-xs btn-default" href="/admin/setting/adminuser/edit?id={{.Uid}}" title="编辑" data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
-                            <a class="btn btn-xs btn-default ajaxBtn" href="javascript:void(0);" uri="/admin/setting/adminuser/del?id={{.Uid}}" msg="是否删除该内容？" title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
-                        </td>
-                    </tr>
-                    {{end}}
+                  {{range .articleData.Data}}
+                  <tr>
+                      <td>{{.ArticleId}}</td>
+                      <td>{{.Title}}</td>
+                      <td>{{.Desc}}</td>
+                      <td>{{formatAsDate .CreatedAt "2006-01-02 15:04:05"}}</td>
+                      <td>
+                          <a class="btn btn-xs btn-default" href="/admin/article/edit?article_id={{.ArticleId}}" title="编辑" data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
+                          <a class="btn btn-xs btn-default ajaxBtn" href="javascript:void(0);" uri="/admin/article/del?article_id={{.ArticleId}}" msg="是否删除该内容？" title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
+                      </td>
+                  </tr>
+                  {{end}}
                 </tbody>
               </table>
             </div>
-            {{ .adminUserData.PageHtml }}
+            {{ .articleData.PageHtml }}
           </div>
-          
         </div>
       </div>
-      
     </div>
     
   </div>

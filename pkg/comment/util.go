@@ -104,11 +104,16 @@ type PageData struct {
 
 func PageOperation(c *gin.Context, db *gorm.DB, limit int, data interface{}) PageData {
 	var count int64
-	p := c.Query("p")
+	p := c.DefaultQuery("p", "1")
+
 	page, _ := strconv.Atoi(p)
-	db.Offset((page - 1) * limit).Limit(limit).Find(data)
+
 	db.Count(&count)
+
+	db.Offset((page - 1) * limit).Limit(limit).Find(data)
+
 	pageCount := int(math.Ceil(float64(count) / float64(limit)))
+
 	url := c.FullPath()
 
 	paramUrl := ""
@@ -122,12 +127,20 @@ func PageOperation(c *gin.Context, db *gorm.DB, limit int, data interface{}) Pag
 
 	if pageCount < 5 {
 		for i := 1; i <= pageCount; i++ {
-			pageHtml += "<li><a href='" + url + "?p=" + strconv.Itoa(i) + paramUrl + "'>" + strconv.Itoa(i) + "</a></li>"
+			if page == i {
+				pageHtml += "<li class='active'><a href='" + url + "?p=" + strconv.Itoa(i) + paramUrl + "'>" + strconv.Itoa(i) + "</a></li>"
+			} else {
+				pageHtml += "<li><a href='" + url + "?p=" + strconv.Itoa(i) + paramUrl + "'>" + strconv.Itoa(i) + "</a></li>"
+			}
 		}
 	} else {
 		if page > 2 && page < pageCount-2 {
 			for i := page - 2; i <= page+2; i++ {
-				pageHtml += "<li><a href='" + url + "?p=" + strconv.Itoa(i) + paramUrl + "'>" + strconv.Itoa(i) + "</a></li>"
+				if page == i {
+					pageHtml += "<li class='active'><a href='" + url + "?p=" + strconv.Itoa(i) + paramUrl + "'>" + strconv.Itoa(i) + "</a></li>"
+				} else {
+					pageHtml += "<li><a href='" + url + "?p=" + strconv.Itoa(i) + paramUrl + "'>" + strconv.Itoa(i) + "</a></li>"
+				}
 			}
 		}
 
@@ -139,13 +152,25 @@ func PageOperation(c *gin.Context, db *gorm.DB, limit int, data interface{}) Pag
 				maxPage = pageCount
 			}
 			for i := 1; i <= maxPage; i++ {
-				pageHtml += "<li><a href='" + url + "?p=" + strconv.Itoa(i) + paramUrl + "'>" + strconv.Itoa(i) + "</a></li>"
+
+				if page == i {
+					pageHtml += "<li class='active'><a href='" + url + "?p=" + strconv.Itoa(i) + paramUrl + "'>" + strconv.Itoa(i) + "</a></li>"
+				} else {
+					pageHtml += "<li><a href='" + url + "?p=" + strconv.Itoa(i) + paramUrl + "'>" + strconv.Itoa(i) + "</a></li>"
+				}
+
 			}
 		}
 
 		if page >= pageCount-2 {
 			for i := pageCount - 4; i <= pageCount; i++ {
-				pageHtml += "<li><a href='" + url + "?p=" + strconv.Itoa(i) + paramUrl + "'>" + strconv.Itoa(i) + "</a></li>"
+
+				if page == i {
+					pageHtml += "<li class='active'><a href='" + url + "?p=" + strconv.Itoa(i) + paramUrl + "'>" + strconv.Itoa(i) + "</a></li>"
+				} else {
+					pageHtml += "<li><a href='" + url + "?p=" + strconv.Itoa(i) + paramUrl + "'>" + strconv.Itoa(i) + "</a></li>"
+				}
+
 			}
 		}
 	}
