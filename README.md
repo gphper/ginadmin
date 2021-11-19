@@ -90,7 +90,7 @@
    port=:8091
    ```
 
-4. 运行 `go run main.go`访问地址 http://localhost:端口地址/admin/login。默认账户：admin  密码：111111
+4. 运行 `go run .\cmd\ginadmin`访问地址 http://localhost:端口地址/admin/login。默认账户：admin  密码：111111
 
 ### :small_blue_diamond:<a name="docker-compose">docker-compose构建环境</a>
 
