@@ -1,6 +1,12 @@
+/*
+ * @Description:
+ * @Author: gphper
+ * @Date: 2021-07-18 18:30:28
+ */
 package uploader
 
 import (
+	"github/gphper/ginadmin/pkg/comment"
 	"io"
 	"mime/multipart"
 	"os"
@@ -10,7 +16,17 @@ type LocalStorage struct {
 }
 
 func (stor LocalStorage) Save(file *multipart.FileHeader, dst string) (string, error) {
-	var dstFull = dst + "/" + file.Filename
+
+	var (
+		root     string
+		dstFull  string
+		filePath string
+	)
+
+	root, _ = comment.RootPath()
+	filePath = dst + "/" + file.Filename
+	dstFull = root + "/" + filePath
+
 	src, err := file.Open()
 	if err != nil {
 		return dstFull, err
@@ -24,5 +40,5 @@ func (stor LocalStorage) Save(file *multipart.FileHeader, dst string) (string, e
 	defer out.Close()
 
 	_, err = io.Copy(out, src)
-	return dstFull, err
+	return filePath, err
 }

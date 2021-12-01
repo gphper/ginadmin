@@ -51,7 +51,7 @@ func writeFile(key string, file io.Writer, wg *sync.WaitGroup) {
 	var start int64 = 0
 	var end int64 = 2
 	for {
-		// end := start + page*limit
+
 		logs, _ := globalRedis.RedisClient.LRange(key, start, end).Result()
 		fmt.Println(logs)
 		if len(logs) > 0 {

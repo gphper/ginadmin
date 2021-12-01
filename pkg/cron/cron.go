@@ -11,7 +11,7 @@ import (
 
 func init() {
 	crontab := cron.New()
-	crontab.AddFunc("* * * * * *", WriteLog)
+	// crontab.AddFunc("0 0 23 * *", WriteLog)
 	crontab.Start()
 }
 
