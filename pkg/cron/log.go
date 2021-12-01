@@ -13,6 +13,7 @@ import (
 	"io"
 	"strings"
 	"sync"
+	"time"
 )
 
 /**
@@ -22,8 +23,7 @@ func WriteLog() {
 
 	var wg sync.WaitGroup
 
-	// date := time.Now().Local().Format("20060102")
-	date := "20211201"
+	date := time.Now().Local().Format("20060102")
 
 	pattern := "logs:" + date + ":*"
 	keys, _ := globalRedis.RedisClient.Keys(pattern).Result()
