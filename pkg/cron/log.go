@@ -12,14 +12,18 @@ import (
 	"github/gphper/ginadmin/pkg/comment"
 	"io"
 	"strings"
-	"time"
+	"sync"
 )
 
 /**
 * 创建目录
 **/
 func WriteLog() {
-	date := time.Now().Local().Format("20060102")
+
+	var wg sync.WaitGroup
+
+	// date := time.Now().Local().Format("20060102")
+	date := "20211201"
 
 	pattern := "logs:" + date + ":*"
 	keys, _ := globalRedis.RedisClient.Keys(pattern).Result()
@@ -30,22 +34,26 @@ func WriteLog() {
 		path := strings.ReplaceAll(key, ":", "/")
 		file, err := comment.OpenFile(rootPath + "/" + path + ".log")
 		if err == nil {
-			go writeFile(key, file)
+			wg.Add(1)
+			go writeFile(key, file, &wg)
 		}
 	}
 
+	wg.Wait()
 }
 
 /**
 * 内容写入到文件中
 **/
-func writeFile(key string, file io.Writer) {
+func writeFile(key string, file io.Writer, wg *sync.WaitGroup) {
+	defer wg.Done()
+
 	var start int64 = 0
-	var limit int64 = 100
-	var page int64 = 1
+	var end int64 = 2
 	for {
-		end := start + page*limit
+		// end := start + page*limit
 		logs, _ := globalRedis.RedisClient.LRange(key, start, end).Result()
+		fmt.Println(logs)
 		if len(logs) > 0 {
 			w := bufio.NewWriter(file)
 			for _, log := range logs {
@@ -57,13 +65,10 @@ func writeFile(key string, file io.Writer) {
 			finishErr := w.Flush()
 			if finishErr == nil {
 				//删除redis中已写完数据
-				globalRedis.RedisClient.LTrim(key, end, -1)
+				globalRedis.RedisClient.LTrim(key, end+1, -1).Result()
 			}
 		} else {
 			break
 		}
-
-		page++
-		start = end
 	}
 }

@@ -31,9 +31,13 @@
 
 :black_square_button:API JWT
 
-:black_square_button:redis日志落盘保存
+:white_check_mark:redis日志落盘保存
 
 :black_square_button:命令行操作
+
+:black_square_button:登录日志
+
+:black_square_button:操作日志
 
 ## 使用文档
 - [演示地址](#演示地址)

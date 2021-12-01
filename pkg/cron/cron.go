@@ -1,3 +1,8 @@
+/*
+ * @Description:
+ * @Author: gphper
+ * @Date: 2021-10-19 19:51:15
+ */
 package cron
 
 import (
@@ -6,7 +11,7 @@ import (
 
 func init() {
 	crontab := cron.New()
-	//crontab.AddFunc("* * * * * *", myfunc)
+	crontab.AddFunc("* * * * * *", WriteLog)
 	crontab.Start()
 }
 
