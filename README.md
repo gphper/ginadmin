@@ -29,7 +29,7 @@
 
 :white_check_mark:性能监控
 
-:black_square_button:API JWT
+:white_check_mark:API JWT
 
 :white_check_mark:redis日志落盘保存
 
