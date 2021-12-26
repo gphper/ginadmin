@@ -7,12 +7,13 @@ package router
 
 import (
 	"github/gphper/ginadmin/internal/controllers/api/user"
+	"github/gphper/ginadmin/internal/middleware"
 
 	"github.com/gin-gonic/gin"
 )
 
 func ApiRouter(apiRouter *gin.RouterGroup) {
-	// apiRouter.Use()
+
 	{
 		apiUserRouter := apiRouter.Group("user")
 		{
@@ -20,6 +21,12 @@ func ApiRouter(apiRouter *gin.RouterGroup) {
 			apiUserRouter.POST("/register", user.Uc.Register)
 			apiUserRouter.POST("/login", user.Uc.Login)
 			apiUserRouter.POST("/refresh", user.Uc.RefreshToken)
+		}
+
+		apiExampleRouter := apiRouter.Group("example")
+		apiExampleRouter.Use(middleware.JwtAuth())
+		{
+			apiExampleRouter.POST("/index", user.Uc.UserExample)
 		}
 	}
 }
