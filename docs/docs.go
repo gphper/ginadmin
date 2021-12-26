@@ -31,6 +31,43 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/user//refresh": {
+            "post": {
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户"
+                ],
+                "summary": "刷新jtoken",
+                "operationId": "4",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "retoken",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "code\":1,\"msg\":\"success\",\"data\":{\"jtoken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFeHAiOiIyMDIxLTEyLTI2VDE5OjI1OjI4Ljg0OTIzNzUrMDg6MDAiLCJOYW1lIjoiZ3BocGVyIiwiVWlkIjo0fQ==.ab81bb7134978afe976df55b45789aefd10f6c3edb969bae283c32c080083b89\"}}",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/api.DefaultResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/user/example": {
             "post": {
                 "consumes": [
@@ -112,7 +149,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "用户登录"
+                    "用户"
                 ],
                 "summary": "用户登录",
                 "operationId": "3",
@@ -155,7 +192,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "用户注册"
+                    "用户"
                 ],
                 "summary": "用户注册",
                 "operationId": "2",

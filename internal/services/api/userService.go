@@ -58,7 +58,7 @@ func (ser *userService) Login(req models.UserLoginReq) (jtoken string, retoken s
 
 	err = dao.UserDao.DB.Find(&user, "email = ?", req.Email).Error
 	if err != nil {
-		return jtoken, retoken, err
+		return
 	}
 
 	if user.Uid == 0 {
@@ -77,7 +77,7 @@ func (ser *userService) Login(req models.UserLoginReq) (jtoken string, retoken s
 	payload.Exp = time.Now().Local().Add(5 * time.Minute)
 	jtoken, err = jwt.Generate("HS256", payload)
 	if err != nil {
-		return jtoken, retoken, err
+		return
 	}
 
 	//生成refresh_token
@@ -87,5 +87,40 @@ func (ser *userService) Login(req models.UserLoginReq) (jtoken string, retoken s
 	user.ExpirTime.Time = time.Now().Add(7 * time.Hour)
 	dao.UserDao.DB.Save(&user)
 
-	return jtoken, retoken, err
+	return
+}
+
+/**
+* 使用refresh token 更换jtoken
+ */
+func (ser *userService) RefreshToken(req models.UserRefreshTokenReq) (jtoken string, err error) {
+	var (
+		user    models.User
+		payload jwt.Payload
+	)
+
+	err = dao.UserDao.DB.Find(&user, "refresh_token = ?", req.Retoken).Error
+	if err != nil {
+		return
+	}
+
+	if user.Uid == 0 {
+		return jtoken, errors.New("refresh token 错误")
+	}
+
+	//校验过期时间
+	if time.Until(user.ExpirTime.Time).Hours() < 0 {
+		return jtoken, errors.New("refresh token 已过期请重新登录")
+	}
+
+	//生成jtoken
+	payload.Name = user.Nickname
+	payload.Uid = user.Uid
+	payload.Exp = time.Now().Local().Add(5 * time.Minute)
+	jtoken, err = jwt.Generate("HS256", payload)
+	if err != nil {
+		return jtoken, err
+	}
+
+	return
 }

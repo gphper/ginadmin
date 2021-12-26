@@ -41,6 +41,10 @@ type UserLoginRes struct {
 	Retoken string `json:"retoken"` //retoken 刷新token
 }
 
+type UserRefreshTokenReq struct {
+	Retoken string `json:"retoken" form:"retoken" binding:"required"`
+}
+
 func (user *User) TableName() string {
 	return "users"
 }

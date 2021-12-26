@@ -48,7 +48,7 @@ func (apicon *userController) UserExample(c *gin.Context) {
 
 // @Summary 用户注册
 // @Id 2
-// @Tags 用户注册
+// @Tags 用户
 // @version 1.0
 // @Accept multipart/form-data
 // @Produce json
@@ -79,7 +79,7 @@ func (apicon *userController) Register(c *gin.Context) {
 
 // @Summary 用户登录
 // @Id 3
-// @Tags 用户登录
+// @Tags 用户
 // @version 1.0
 // @Accept multipart/form-data
 // @Produce json
@@ -114,6 +114,36 @@ func (apicon *userController) Login(c *gin.Context) {
 	apicon.Success(c, resp)
 }
 
+// @Summary 刷新jtoken
+// @Id 4
+// @Tags 用户
+// @version 1.0
+// @Accept multipart/form-data
+// @Produce json
+// @Param info formData models.UserRefreshTokenReq true "info"
+// @Success 200 {json} {"code":1,"msg":"success","data":{"jtoken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFeHAiOiIyMDIxLTEyLTI2VDE5OjI1OjI4Ljg0OTIzNzUrMDg6MDAiLCJOYW1lIjoiZ3BocGVyIiwiVWlkIjo0fQ==.ab81bb7134978afe976df55b45789aefd10f6c3edb969bae283c32c080083b89"}}
+// @response default {object} api.DefaultResponse
+// @Router /user//refresh [post]
 func (apicon *userController) RefreshToken(c *gin.Context) {
+	var (
+		err    error
+		req    models.UserRefreshTokenReq
+		jtoken string
+	)
 
+	err = apicon.FormBind(c, &req)
+	if err != nil {
+		apicon.Error(c, err)
+		return
+	}
+
+	jtoken, err = apiservice.UserService.RefreshToken(req)
+	if err != nil {
+		apicon.Error(c, err)
+		return
+	}
+
+	apicon.Success(c, gin.H{
+		"jtoken": jtoken,
+	})
 }

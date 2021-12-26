@@ -58,6 +58,30 @@ info:
   title: GinAdmin Api
   version: "1.0"
 paths:
+  /user//refresh:
+    post:
+      consumes:
+      - multipart/form-data
+      operationId: "4"
+      parameters:
+      - in: formData
+        name: retoken
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: code":1,"msg":"success","data":{"jtoken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFeHAiOiIyMDIxLTEyLTI2VDE5OjI1OjI4Ljg0OTIzNzUrMDg6MDAiLCJOYW1lIjoiZ3BocGVyIiwiVWlkIjo0fQ==.ab81bb7134978afe976df55b45789aefd10f6c3edb969bae283c32c080083b89"}}
+          schema:
+            type: json
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/api.DefaultResponse'
+      summary: 刷新jtoken
+      tags:
+      - 用户
   /user/example:
     post:
       consumes:
@@ -131,7 +155,7 @@ paths:
             $ref: '#/definitions/api.DefaultResponse'
       summary: 用户登录
       tags:
-      - 用户登录
+      - 用户
   /user/register:
     post:
       consumes:
@@ -167,5 +191,5 @@ paths:
             $ref: '#/definitions/api.DefaultResponse'
       summary: 用户注册
       tags:
-      - 用户注册
+      - 用户
 swagger: "2.0"

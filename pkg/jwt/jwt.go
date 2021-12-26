@@ -10,7 +10,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"math"
 	"strings"
 	"time"
 )
@@ -66,7 +65,6 @@ func Check(jtoken string) (payload Payload, err error) {
 		header   Header
 		jsonByte []byte
 		sign     string
-		diff     float64
 	)
 	secs = strings.Split(jtoken, ".")
 
@@ -103,8 +101,7 @@ func Check(jtoken string) (payload Payload, err error) {
 	}
 
 	//校验是否过期
-	diff = math.Abs(time.Until(payload.Exp).Minutes())
-	if diff > 5 {
+	if time.Until(payload.Exp).Minutes() < 0 {
 		return payload, errors.New("token已失效")
 	}
 
