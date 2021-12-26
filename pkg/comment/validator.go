@@ -25,13 +25,15 @@ func InitTrans(locale string) (ut.Translator, error) {
 	// 修改gin框架中的Validator引擎属性，实现自定制
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 
-		v.RegisterTagNameFunc(func(fld reflect.StructField) string {
-			name := strings.SplitN(fld.Tag.Get("label"), ",", 2)[0]
-			if name == "-" {
-				return ""
-			}
-			return name
-		})
+		if locale == "zh" {
+			v.RegisterTagNameFunc(func(fld reflect.StructField) string {
+				name := strings.SplitN(fld.Tag.Get("label"), ",", 2)[0]
+				if name == "-" {
+					return ""
+				}
+				return name
+			})
+		}
 
 		zhT := zh.New()
 		enT := en.New()

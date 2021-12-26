@@ -61,6 +61,7 @@ func GetModels() []interface{} {
 		&AdminGroup{},
 		&Article{},
 		&UploadType{},
+		&User{},
 	}
 }
 

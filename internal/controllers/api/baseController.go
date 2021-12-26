@@ -46,7 +46,7 @@ func (Base *BaseController) Error(c *gin.Context, err error) {
 
 func (Base *BaseController) FormBind(c *gin.Context, obj interface{}) error {
 
-	trans, err := comment.InitTrans("zh")
+	trans, err := comment.InitTrans("en")
 
 	if err != nil {
 		return err
@@ -60,8 +60,10 @@ func (Base *BaseController) FormBind(c *gin.Context, obj interface{}) error {
 		}
 
 		for _, v := range errs.Translate(trans) {
+
 			return errors.New(v)
 		}
+		return err
 
 	}
 	return nil

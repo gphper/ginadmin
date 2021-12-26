@@ -12,11 +12,14 @@ import (
 )
 
 func ApiRouter(apiRouter *gin.RouterGroup) {
-	apiRouter.Use()
+	// apiRouter.Use()
 	{
 		apiUserRouter := apiRouter.Group("user")
 		{
 			apiUserRouter.POST("/example", user.Uc.UserExample)
+			apiUserRouter.POST("/register", user.Uc.Register)
+			apiUserRouter.POST("/login", user.Uc.Login)
+			apiUserRouter.POST("/refresh", user.Uc.RefreshToken)
 		}
 	}
 }
