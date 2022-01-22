@@ -115,6 +115,10 @@
    host=0.0.0.0
    port=20010
    fill_data=true
+   [redis]
+   addr=localredis:6379
+   db=0
+   password=ginadmin
    ```
 
 2. 执行命令 docker-compose up
@@ -180,18 +184,6 @@
    ```
 
 2. model需要继承 BaseModle 并且实现 TableName 方法，如果需要初始化填充数据的话，需要实现 FillData() 方法，并将数据填充需要执行的代码写到函数体里。详情参照 AdminUsers
-
-3. 数据库迁移,先使用`go install cmd\ginadmin-cli`安装ginadmin-cli 命令，执行命令行工具
-
-   ```go
-   ginadmin-cli db migrate
-   ```
-
-4. 数据填充，需在相应目录下实现 `FillData()` 方法执行如下命令
-
-   ```go
-   ginadmin-cli db seed
-   ```
 
 5. 可以通过设置 ini 配置文件中的 `fill_data`和`migrate_table` 分别控制程序重启时自动迁移数据表和填充数据
 

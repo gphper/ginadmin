@@ -1,12 +1,26 @@
 version: '3'
 services:
+  redis:
+      container_name: ginadmin-redis
+      image: ginadmin-redis
+      build:
+        context: ..
+        dockerfile: build/DockerfileRedis
+      volumes:
+        - .\conf\redis\redis.conf:/usr/local/etc/redis/redis.conf
+      ports:
+        - "6380:6379"
+      command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+      restart: on-failure:5
   mysql:
     container_name: ginadmin-mysql
     image: ginadmin-mysql
     build:
       context: ..
       dockerfile: build/DockerfileMysql
-
+    volumes:
+       - .\mysqldata:/var/lib/mysql
+       - .\conf\mysql\my.cnf:/etc/mysql/my.cnf
   web:
     container_name: ginadmin-web
     image: ginadmin-web
@@ -17,6 +31,8 @@ services:
       - 20010:20010
     depends_on:
       - mysql
+      - redis
     links:
       - mysql:localmysql
+      - redis:localredis
     restart: always
