@@ -21,12 +21,16 @@ services:
     volumes:
        - .\mysqldata:/var/lib/mysql
        - .\conf\mysql\my.cnf:/etc/mysql/my.cnf
+    ports:
+        - "3310:3306"
   web:
     container_name: ginadmin-web
     image: ginadmin-web
     build:
       context: ..
       dockerfile: build/DockerfileWeb
+    volumes:
+       - ..\:/home/ginadmin  
     ports:
       - 20010:20010
     depends_on:
@@ -35,4 +39,3 @@ services:
     links:
       - mysql:localmysql
       - redis:localredis
-    restart: always

@@ -43,7 +43,7 @@
 - [演示地址](#演示地址)
 
 - [开始使用](#开始使用)
-- [docker-compose构建环境](#docker-compose)
+- [构建环境](#docker-compose)
 - [项目目录](#结构)
 - [分页](#分页)
 - [日志](#日志)
@@ -96,7 +96,7 @@
 
 4. 运行 `go run .\cmd\ginadmin`访问地址 http://localhost:端口地址/admin/login。默认账户：admin  密码：111111
 
-### :small_blue_diamond:<a name="docker-compose">docker-compose构建环境</a>
+### :small_blue_diamond:<a name="docker-compose">构建开发环境</a>
 
 1. 替换conf目录下的配置项
 
@@ -121,7 +121,30 @@
    password=ginadmin
    ```
 
-2. 执行命令 docker-compose up
+2. 执行命令 `docker-compose up`
+
+3. 进入到容器中 `docker exec -it ginadmin-web bash`
+
+4. 下载扩展 `go mod tidy`
+
+5. 运行项目 ` go run ./cmd/ginadmin/`  访问地址 `http://localhost:20010/admin/login`
+
+6. 桌面连接redis地址
+
+   ```
+   地址：127.0.0.1
+   端口：6380
+   密码：ginadmin
+   ```
+
+7. 桌面连接mysql地址
+
+   ```
+   地址：localhost
+   端口：3310
+   用户名：docker
+   密码：123456
+   ```
 
 ### :small_blue_diamond:<a name="结构">项目目录</a>
 

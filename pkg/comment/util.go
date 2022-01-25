@@ -44,6 +44,10 @@ func getTmpDir() string {
 	if dir == "" {
 		dir = os.Getenv("TMP")
 	}
+	if dir == "" {
+		dir = "tmp"
+	}
+
 	res, _ := filepath.EvalSymlinks(dir)
 	return res
 }

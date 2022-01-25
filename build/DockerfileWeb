@@ -1,11 +1,8 @@
 FROM golang
 MAINTAINER gphper
-COPY . /$GOPATH/src/ginadmin/
-WORKDIR /$GOPATH/src/ginadmin/
+WORKDIR /home/ginadmin/
 RUN go env -w GO111MODULE=on && \
-    go env -w GOPROXY=https://goproxy.cn,direct && \
-    go mod tidy && \
-    go build ./cmd/ginadmin
+    go env -w GOPROXY=https://goproxy.cn,direct
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' > /etc/timezone
 EXPOSE 20010
-ENTRYPOINT ["./ginadmin"]
+CMD ["top","-b"]
