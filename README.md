@@ -121,7 +121,7 @@
    password=ginadmin
    ```
 
-2. 执行命令 `docker-compose up`
+2. 执行命令 `docker-compose up -d`
 
 3. 进入到容器中 `docker exec -it ginadmin-web bash`
 
