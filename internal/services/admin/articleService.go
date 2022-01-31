@@ -58,6 +58,7 @@ func (ser *articleService) SaveArticle(req models.ArticleReq) (err error) {
 		dao.ArticleDao.DB.First(&article)
 
 		article.Title = req.Title
+		article.Desc = req.Desc
 		article.Content = req.Content
 		article.CoverImg = req.CoverImg
 

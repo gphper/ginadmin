@@ -5,13 +5,16 @@
  */
 package loggers
 
-import "github/gphper/ginadmin/pkg/loggers/facade"
+import (
+	"github/gphper/ginadmin/pkg/loggers/facade"
+)
 
 /*
 * 通用info日志
  */
 func LogInfo(path string, msg string, info map[string]string) {
-	log := facade.NewZaplog(path)
+	// log := facade.NewZaplog(path)
+	log := facade.NewRedisLog(path)
 	log.Info(msg, info)
 }
 
@@ -19,6 +22,6 @@ func LogInfo(path string, msg string, info map[string]string) {
 * 通用error日志
  */
 func LogError(path string, msg string, info map[string]string) {
-	log := facade.NewZaplog(path)
+	log := facade.NewRedisLog(path)
 	log.Error(msg, info)
 }

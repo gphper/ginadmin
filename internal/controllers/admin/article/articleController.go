@@ -77,7 +77,6 @@ func (con *articleController) Save(c *gin.Context) {
 	)
 
 	con.FormBind(c, &req)
-
 	err = services.ArticleService.SaveArticle(req)
 	if err != nil {
 		con.Error(c, err.Error())

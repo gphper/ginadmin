@@ -8,6 +8,7 @@ package models
 import (
 	"fmt"
 	"github/gphper/ginadmin/configs"
+	"github/gphper/ginadmin/pkg/loggers"
 	"os"
 
 	"gorm.io/driver/mysql"
@@ -68,14 +69,27 @@ func GetModels() []interface{} {
 func RegisterCallback() {
 	//注册创建数据回调
 	Db.Callback().Create().After("gorm:create").Register("my_plugin:after_create", func(db *gorm.DB) {
-		str := fmt.Sprintf("sql语句：%s 参数：%s", db.Statement.SQL.String(), db.Statement.Vars)
-		fmt.Println(str)
+		str := db.Dialector.Explain(db.Statement.SQL.String(), db.Statement.Vars...)
+		loggers.LogInfo("sql", "create sql", map[string]string{
+			"info": str,
+		})
 	})
 	// Db.Callback().Query().After("gorm:query").Register("my_plugin:after_select", func(db *gorm.DB) {
 	// 	str := fmt.Sprintf("sql语句：%s 参数：%s", db.Statement.SQL.String(), db.Statement.Vars)
 	// 	fmt.Println(str)
 	// })
 	//TODO 注册删除数据回调
-
+	Db.Callback().Delete().After("gorm:delete").Register("my_plugin:after_delete", func(db *gorm.DB) {
+		str := db.Dialector.Explain(db.Statement.SQL.String(), db.Statement.Vars...)
+		loggers.LogInfo("sql", "delete sql", map[string]string{
+			"info": str,
+		})
+	})
 	//TODO 注册更新数据回调
+	Db.Callback().Update().After("gorm:update").Register("my_plugin:after_update", func(db *gorm.DB) {
+		str := db.Dialector.Explain(db.Statement.SQL.String(), db.Statement.Vars...)
+		loggers.LogInfo("sql", "update sql", map[string]string{
+			"info": str,
+		})
+	})
 }

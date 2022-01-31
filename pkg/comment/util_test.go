@@ -26,3 +26,10 @@ func TestOpenFile(t *testing.T) {
 		t.Errorf("err:%s", err.Error())
 	}
 }
+
+func TestJoinStr(t *testing.T) {
+	str := JoinStr("hello", "world")
+	if str != "helloworld" {
+		t.Error("test fail")
+	}
+}
