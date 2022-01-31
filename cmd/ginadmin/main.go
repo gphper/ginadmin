@@ -6,6 +6,7 @@
 package main
 
 import (
+	"fmt"
 	"github/gphper/ginadmin/internal/router"
 	_ "github/gphper/ginadmin/pkg/cron"
 
@@ -30,6 +31,7 @@ var (
 // @host localhost:20011
 // @basepath /api
 func main() {
+	showLogo()
 
 	//判断是否编译线上版本
 	if release {
@@ -41,4 +43,13 @@ func main() {
 	}
 	app.Run()
 
+}
+
+func showLogo() {
+	fmt.Println("   _____ _                   _           _       ")
+	fmt.Println("  / ____(_)         /\\      | |         (_)      ")
+	fmt.Println(" | |  __ _ _ __    /  \\   __| |_ __ ___  _ _ __  ")
+	fmt.Println(" | | |_ | | '_ \\  / /\\ \\ / _` | '_ ` _ \\| | '_ \\ ")
+	fmt.Println(" | |__| | | | | |/ _____\\ (_| | | | | | | | | | |")
+	fmt.Println("  \\_____|_|_| |_/_/    \\_\\__,_|_| |_| |_|_|_| |_| \n")
 }
