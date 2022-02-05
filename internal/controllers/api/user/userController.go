@@ -123,7 +123,7 @@ func (apicon *userController) Login(c *gin.Context) {
 // @Param info formData models.UserRefreshTokenReq true "info"
 // @Success 200 {json} {"code":1,"msg":"success","data":{"jtoken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFeHAiOiIyMDIxLTEyLTI2VDE5OjI1OjI4Ljg0OTIzNzUrMDg6MDAiLCJOYW1lIjoiZ3BocGVyIiwiVWlkIjo0fQ==.ab81bb7134978afe976df55b45789aefd10f6c3edb969bae283c32c080083b89"}}
 // @response default {object} api.DefaultResponse
-// @Router /user//refresh [post]
+// @Router /user/refresh [post]
 func (apicon *userController) RefreshToken(c *gin.Context) {
 	var (
 		err    error
