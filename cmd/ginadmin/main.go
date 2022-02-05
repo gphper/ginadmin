@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"github/gphper/ginadmin/internal/router"
 	_ "github/gphper/ginadmin/pkg/cron"
+	"io/ioutil"
 
 	"github/gphper/ginadmin/internal"
 
@@ -36,6 +37,7 @@ func main() {
 	//判断是否编译线上版本
 	if release {
 		gin.SetMode(gin.ReleaseMode)
+		gin.DefaultWriter = ioutil.Discard
 	}
 
 	app := internal.Application{
