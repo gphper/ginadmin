@@ -9,13 +9,14 @@ package admin
 import (
 	"encoding/json"
 	"fmt"
-	"github/gphper/ginadmin/internal/menu"
-	"github/gphper/ginadmin/internal/models"
-	services "github/gphper/ginadmin/internal/services/admin"
-	"github/gphper/ginadmin/pkg/casbinauth"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/gphper/ginadmin/internal/menu"
+	"github.com/gphper/ginadmin/internal/models"
+	services "github.com/gphper/ginadmin/internal/services/admin"
+	"github.com/gphper/ginadmin/pkg/casbinauth"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"

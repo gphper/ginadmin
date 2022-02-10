@@ -6,9 +6,9 @@
 package admin
 
 import (
-	"github/gphper/ginadmin/internal/dao"
-	"github/gphper/ginadmin/internal/models"
-	"github/gphper/ginadmin/pkg/casbinauth"
+	"github.com/gphper/ginadmin/internal/dao"
+	"github.com/gphper/ginadmin/internal/models"
+	"github.com/gphper/ginadmin/pkg/casbinauth"
 )
 
 type adminGroupService struct{}

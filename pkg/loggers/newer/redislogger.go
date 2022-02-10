@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"time"
 
-	globalRedis "github/gphper/ginadmin/internal/redis"
+	globalRedis "github.com/gphper/ginadmin/internal/redis"
 
 	"github.com/go-redis/redis"
 )

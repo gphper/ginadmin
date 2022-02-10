@@ -7,12 +7,13 @@
 package setting
 
 import (
-	"github/gphper/ginadmin/internal/controllers/admin"
-	"github/gphper/ginadmin/internal/menu"
-	"github/gphper/ginadmin/internal/models"
-	services "github/gphper/ginadmin/internal/services/admin"
-	"github/gphper/ginadmin/pkg/casbinauth"
 	"net/http"
+
+	"github.com/gphper/ginadmin/internal/controllers/admin"
+	"github.com/gphper/ginadmin/internal/menu"
+	"github.com/gphper/ginadmin/internal/models"
+	services "github.com/gphper/ginadmin/internal/services/admin"
+	"github.com/gphper/ginadmin/pkg/casbinauth"
 
 	"github.com/gin-gonic/gin"
 )

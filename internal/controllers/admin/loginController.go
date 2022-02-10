@@ -9,13 +9,14 @@ package admin
 import (
 	"encoding/base64"
 	"encoding/json"
-	"github/gphper/ginadmin/internal/models"
-	"github/gphper/ginadmin/pkg/captcha/store"
-	"github/gphper/ginadmin/pkg/comment"
 	"io"
 	"log"
 	"net/http"
 	"strings"
+
+	"github.com/gphper/ginadmin/internal/models"
+	"github.com/gphper/ginadmin/pkg/captcha/store"
+	"github.com/gphper/ginadmin/pkg/comment"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"

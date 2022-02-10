@@ -6,8 +6,8 @@
 package admin
 
 import (
-	"github/gphper/ginadmin/internal/models"
-	"github/gphper/ginadmin/pkg/uploader"
+	"github.com/gphper/ginadmin/internal/models"
+	"github.com/gphper/ginadmin/pkg/uploader"
 )
 
 type uploadService struct{}

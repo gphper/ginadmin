@@ -8,12 +8,13 @@
 package web
 
 import (
-	"github/gphper/ginadmin/pkg/comment"
 	"net/http"
 	"path/filepath"
 	"strings"
 
-	template2 "github/gphper/ginadmin/pkg/template"
+	"github.com/gphper/ginadmin/pkg/comment"
+
+	template2 "github.com/gphper/ginadmin/pkg/template"
 
 	"github.com/gphper/multitemplate"
 )

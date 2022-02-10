@@ -6,13 +6,14 @@
 package upload
 
 import (
-	"github/gphper/ginadmin/internal/controllers/admin"
-	"github/gphper/ginadmin/internal/dao"
-	"github/gphper/ginadmin/internal/models"
-	adminServ "github/gphper/ginadmin/internal/services/admin"
-	"github/gphper/ginadmin/pkg/uploader"
 	"net/http"
 	"strings"
+
+	"github.com/gphper/ginadmin/internal/controllers/admin"
+	"github.com/gphper/ginadmin/internal/dao"
+	"github.com/gphper/ginadmin/internal/models"
+	adminServ "github.com/gphper/ginadmin/internal/services/admin"
+	"github.com/gphper/ginadmin/pkg/uploader"
 
 	"github.com/gin-gonic/gin"
 )

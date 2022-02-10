@@ -6,8 +6,9 @@
 package middleware
 
 import (
-	"github/gphper/ginadmin/pkg/jwt"
 	"net/http"
+
+	"github.com/gphper/ginadmin/pkg/jwt"
 
 	"github.com/gin-gonic/gin"
 )

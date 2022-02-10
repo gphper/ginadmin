@@ -1,4 +1,4 @@
-module github/gphper/ginadmin
+module github.com/gphper/ginadmin
 
 go 1.16
 

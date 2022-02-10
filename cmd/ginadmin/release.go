@@ -3,8 +3,8 @@
 package main
 
 import (
-	_ "github/gphper/ginadmin/docs"
-	"github/gphper/ginadmin/internal/router"
+	_ "github.com/gphper/ginadmin/docs"
+	"github.com/gphper/ginadmin/internal/router"
 
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"

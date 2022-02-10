@@ -7,12 +7,13 @@ package internal
 
 import (
 	"context"
-	"github/gphper/ginadmin/configs"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
+
+	"github.com/gphper/ginadmin/configs"
 
 	"github.com/gin-gonic/gin"
 )

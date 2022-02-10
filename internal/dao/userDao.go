@@ -6,7 +6,7 @@
 package dao
 
 import (
-	"github/gphper/ginadmin/internal/models"
+	"github.com/gphper/ginadmin/internal/models"
 
 	"gorm.io/gorm"
 )

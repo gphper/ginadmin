@@ -6,9 +6,10 @@
 package admin
 
 import (
-	"github/gphper/ginadmin/internal/dao"
-	"github/gphper/ginadmin/internal/models"
 	"strings"
+
+	"github.com/gphper/ginadmin/internal/dao"
+	"github.com/gphper/ginadmin/internal/models"
 
 	"gorm.io/gorm"
 )

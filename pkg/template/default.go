@@ -6,9 +6,10 @@
 package template
 
 import (
-	"github/gphper/ginadmin/pkg/casbinauth"
 	"html/template"
 	"time"
+
+	"github.com/gphper/ginadmin/pkg/casbinauth"
 )
 
 var GlobalTemplateFun template.FuncMap

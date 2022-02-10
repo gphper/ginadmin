@@ -6,7 +6,7 @@
 package facade
 
 import (
-	"github/gphper/ginadmin/pkg/loggers/newer"
+	"github.com/gphper/ginadmin/pkg/loggers/newer"
 )
 
 type RedisLog struct {

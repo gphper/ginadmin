@@ -6,7 +6,7 @@
 package loggers
 
 import (
-	"github/gphper/ginadmin/pkg/loggers/facade"
+	"github.com/gphper/ginadmin/pkg/loggers/facade"
 )
 
 /*

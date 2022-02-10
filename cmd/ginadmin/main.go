@@ -7,11 +7,12 @@ package main
 
 import (
 	"fmt"
-	"github/gphper/ginadmin/internal/router"
-	_ "github/gphper/ginadmin/pkg/cron"
 	"io/ioutil"
 
-	"github/gphper/ginadmin/internal"
+	"github.com/gphper/ginadmin/internal/router"
+	_ "github.com/gphper/ginadmin/pkg/cron"
+
+	"github.com/gphper/ginadmin/internal"
 
 	"github.com/gin-gonic/gin"
 )

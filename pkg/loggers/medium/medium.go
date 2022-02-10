@@ -15,7 +15,7 @@ import (
 	"strings"
 	"time"
 
-	"github/gphper/ginadmin/pkg/loggers/facade"
+	"github.com/gphper/ginadmin/pkg/loggers/facade"
 
 	"github.com/gin-gonic/gin"
 )

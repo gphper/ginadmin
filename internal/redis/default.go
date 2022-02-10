@@ -6,7 +6,7 @@
 package redis
 
 import (
-	"github/gphper/ginadmin/configs"
+	"github.com/gphper/ginadmin/configs"
 
 	"github.com/go-redis/redis"
 )

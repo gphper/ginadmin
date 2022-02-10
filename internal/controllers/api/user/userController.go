@@ -6,9 +6,9 @@
 package user
 
 import (
-	"github/gphper/ginadmin/internal/controllers/api"
-	"github/gphper/ginadmin/internal/models"
-	apiservice "github/gphper/ginadmin/internal/services/api"
+	"github.com/gphper/ginadmin/internal/controllers/api"
+	"github.com/gphper/ginadmin/internal/models"
+	apiservice "github.com/gphper/ginadmin/internal/services/api"
 
 	"github.com/gin-gonic/gin"
 )

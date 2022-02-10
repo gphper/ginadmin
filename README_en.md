@@ -142,7 +142,7 @@ The project is a background management platform based on gin framework. Although
     
 2.  Custom Log
     
-    Use  `loggers.LogInfo()`   in  `github/gphper/ginadmin/pkg/loggers`
+    Use  `loggers.LogInfo()`   in  `github.com/gphper/ginadmin/pkg/loggers`
     
     ```golang
     loggers.LogInfo("admin", "this is a info message", map[string]string{

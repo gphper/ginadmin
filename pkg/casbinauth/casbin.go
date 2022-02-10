@@ -7,10 +7,11 @@ package casbinauth
 
 import (
 	"fmt"
-	"github/gphper/ginadmin/internal/models"
-	"github/gphper/ginadmin/pkg/comment"
 	"strings"
 	"sync"
+
+	"github.com/gphper/ginadmin/internal/models"
+	"github.com/gphper/ginadmin/pkg/comment"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"

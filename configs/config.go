@@ -10,7 +10,8 @@ package configs
 
 import (
 	"fmt"
-	"github/gphper/ginadmin/pkg/comment"
+
+	"github.com/gphper/ginadmin/pkg/comment"
 
 	"gopkg.in/ini.v1"
 )

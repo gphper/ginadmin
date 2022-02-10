@@ -7,12 +7,13 @@ package api
 
 import (
 	"errors"
-	"github/gphper/ginadmin/internal/dao"
-	"github/gphper/ginadmin/internal/models"
-	"github/gphper/ginadmin/pkg/comment"
-	"github/gphper/ginadmin/pkg/jwt"
 	"strconv"
 	"time"
+
+	"github.com/gphper/ginadmin/internal/dao"
+	"github.com/gphper/ginadmin/internal/models"
+	"github.com/gphper/ginadmin/pkg/comment"
+	"github.com/gphper/ginadmin/pkg/jwt"
 )
 
 type userService struct{}

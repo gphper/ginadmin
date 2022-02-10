@@ -7,9 +7,10 @@ package models
 
 import (
 	"fmt"
-	"github/gphper/ginadmin/configs"
-	"github/gphper/ginadmin/pkg/loggers"
 	"os"
+
+	"github.com/gphper/ginadmin/configs"
+	"github.com/gphper/ginadmin/pkg/loggers"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

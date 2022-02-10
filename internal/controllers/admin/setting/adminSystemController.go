@@ -9,16 +9,17 @@ package setting
 import (
 	"bufio"
 	"fmt"
-	"github/gphper/ginadmin/internal/controllers/admin"
-	"github/gphper/ginadmin/internal/redis"
-	"github/gphper/ginadmin/pkg/comment"
-	"github/gphper/ginadmin/pkg/loggers"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
+
+	"github.com/gphper/ginadmin/internal/controllers/admin"
+	"github.com/gphper/ginadmin/internal/redis"
+	"github.com/gphper/ginadmin/pkg/comment"
+	"github.com/gphper/ginadmin/pkg/loggers"
 
 	"github.com/gin-gonic/gin"
 )

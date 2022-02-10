@@ -179,7 +179,7 @@
     
 2.  自定义日志
     
-    使用 loggers.LogInfo()` 方法记录日志  `github/gphper/ginadmin/pkg/loggers`
+    使用 loggers.LogInfo()` 方法记录日志  `github.com/gphper/ginadmin/pkg/loggers`
     
     ```golang
     loggers.LogInfo("admin", "this is a info message", map[string]string{

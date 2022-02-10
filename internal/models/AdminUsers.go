@@ -6,8 +6,9 @@
 package models
 
 import (
-	"github/gphper/ginadmin/pkg/comment"
 	"time"
+
+	"github.com/gphper/ginadmin/pkg/comment"
 )
 
 type AdminUsers struct {

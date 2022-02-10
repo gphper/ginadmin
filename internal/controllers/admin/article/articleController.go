@@ -7,12 +7,13 @@ package article
 
 import (
 	"fmt"
-	"github/gphper/ginadmin/internal/controllers/admin"
-	"github/gphper/ginadmin/internal/models"
-	services "github/gphper/ginadmin/internal/services/admin"
-	"github/gphper/ginadmin/pkg/comment"
 	"net/http"
 	"strconv"
+
+	"github.com/gphper/ginadmin/internal/controllers/admin"
+	"github.com/gphper/ginadmin/internal/models"
+	services "github.com/gphper/ginadmin/internal/services/admin"
+	"github.com/gphper/ginadmin/pkg/comment"
 
 	"github.com/gin-gonic/gin"
 )

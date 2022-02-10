@@ -6,8 +6,8 @@
 package router
 
 import (
-	"github/gphper/ginadmin/internal/controllers/api/user"
-	"github/gphper/ginadmin/internal/middleware"
+	"github.com/gphper/ginadmin/internal/controllers/api/user"
+	"github.com/gphper/ginadmin/internal/middleware"
 
 	"github.com/gin-gonic/gin"
 )
