@@ -48,6 +48,7 @@ type BaseConf struct {
 	Host         string `ini:"host"`
 	FillData     bool   `ini:"fill_data"`
 	MigrateTable bool   `ini:"migrate_table"`
+	LogMedia     string `ini:"log_media"`
 }
 
 var App = new(AppConf)

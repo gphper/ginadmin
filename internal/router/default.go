@@ -36,7 +36,8 @@ func Init() *gin.Engine {
 
 	// router.Use(medium.GinLog(facade.NewZaplog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewZaplog("admin"), true))
 	router.Use(middleware.NotHttpStatusOk())
-	router.Use(medium.GinLog(facade.NewRedisLog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewRedisLog("admin"), true))
+	// router.Use(medium.GinLog(facade.NewRedisLog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewRedisLog("admin"), true))
+	router.Use(medium.GinLog(facade.NewLogger("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewLogger("admin"), true))
 	/*****admin路由定义******/
 	adminRouter := router.Group("/admin")
 

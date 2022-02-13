@@ -15,7 +15,7 @@ type ZapLog struct {
 	logger *zap.Logger
 }
 
-func NewZaplog(path string) *ZapLog {
+func newZaplog(path string) *ZapLog {
 	return &ZapLog{
 		logger: newer.NewZapLogger(path),
 	}

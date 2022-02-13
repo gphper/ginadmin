@@ -91,7 +91,11 @@
    [session]
    session_name=gosession_id
    [base]
-   port=:8091
+   host=0.0.0.0
+   port=20011
+   fill_data=true
+   migrate_table=true
+   log_media=redis
    ```
 
 4. 运行 `go run .\cmd\ginadmin`访问地址 http://localhost:端口地址/admin/login。默认账户：admin  密码：111111
@@ -189,9 +193,7 @@
     
 3. 切换存储介质
 
-   * 系统日志在 `internal/router/default.go` 文件更换中间件切换日志存储介质
-
-   * 自定义日志在loggers.LogInfo 方法使用`facade.NewZaplog` 和 `facade.NewRedislog` 切换
+   在配置文件中修改 `log_media` 参数默认file文件存储可选redis存储
 
 ### :small_blue_diamond:<a name="数据库">数据库</a>
 

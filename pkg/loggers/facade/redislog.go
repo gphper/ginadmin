@@ -13,7 +13,7 @@ type RedisLog struct {
 	logger *newer.RedisLogger
 }
 
-func NewRedisLog(path string) *RedisLog {
+func newRedisLog(path string) *RedisLog {
 
 	return &RedisLog{
 		logger: newer.NewRedisLogger(path),
