@@ -273,8 +273,6 @@ func OpenFile(filepath string) (file *os.File, err error) {
 * 组装字符串
  */
 func JoinStr(items ...interface{}) string {
-	fmt.Println(items...)
-	fmt.Println(len(items))
 	if len(items) == 0 {
 		return ""
 	}

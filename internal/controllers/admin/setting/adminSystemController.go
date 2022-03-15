@@ -9,6 +9,7 @@ package setting
 import (
 	"bufio"
 	"fmt"
+	"io/fs"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -35,18 +36,29 @@ var Asc = adminSystemController{}
 */
 func (con *adminSystemController) Index(c *gin.Context) {
 
-	path, err := comment.RootPath()
+	var (
+		path     string
+		err      error
+		log_path string
+	)
+
+	path, err = comment.RootPath()
 	if err != nil {
 		fmt.Printf("get root path err:%v", err)
 	}
-	path = path + string(filepath.Separator) + "logs"
+
+	path = comment.JoinStr(path, string(filepath.Separator), "logs")
 
 	files, err := ioutil.ReadDir(path)
+
+	log_path = comment.JoinStr(string(filepath.Separator), "logs")
+
 	if err != nil {
 		loggers.LogError("admin", "读取目录失败", map[string]string{"error": err.Error()})
 	}
+
 	c.HTML(http.StatusOK, "setting/systemlog.html", gin.H{
-		"log_path": path,
+		"log_path": log_path,
 		"files":    files,
 		"line":     string(filepath.Separator),
 	})
@@ -62,13 +74,28 @@ func (con *adminSystemController) GetDir(c *gin.Context) {
 		Path string `json:"path"`
 		Type string `json:"type"`
 	}
-	fileSlice := make([]FileNode, 0)
-	path := c.Query("path")
-	files, err := ioutil.ReadDir(path)
+
+	var (
+		path      string
+		err       error
+		fileSlice []FileNode
+		files     []fs.FileInfo
+	)
+
+	path, err = comment.RootPath()
+	if err != nil {
+		fmt.Printf("get root path err:%v", err)
+	}
+
+	fileSlice = make([]FileNode, 0)
+	path = comment.JoinStr(path, c.Query("path"))
+
+	files, err = ioutil.ReadDir(path)
 	if err != nil {
 		con.Error(c, "获取目录失败")
 		return
 	}
+
 	for _, v := range files {
 		var fileType string
 		if v.IsDir() {
@@ -78,7 +105,7 @@ func (con *adminSystemController) GetDir(c *gin.Context) {
 		}
 		fileSlice = append(fileSlice, FileNode{
 			Name: v.Name(),
-			Path: path + string(filepath.Separator) + v.Name(),
+			Path: comment.JoinStr(c.Query("path"), string(filepath.Separator), v.Name()),
 			Type: fileType,
 		})
 	}
@@ -93,18 +120,39 @@ func (con *adminSystemController) GetDir(c *gin.Context) {
 */
 func (con *adminSystemController) View(c *gin.Context) {
 
-	startLine, _ := strconv.Atoi(c.DefaultQuery("start_line", "1"))
-	endLine, _ := strconv.Atoi(c.DefaultQuery("end_line", "20"))
+	var (
+		path      string
+		err       error
+		startLine int
+		endLine   int
+		scanner   *bufio.Scanner
+		line      int
+	)
+
+	path, err = comment.RootPath()
+	if err != nil {
+		fmt.Printf("get root path err:%v", err)
+	}
+
+	startLine, err = strconv.Atoi(c.DefaultQuery("start_line", "1"))
+	if err != nil {
+		fmt.Print(err)
+	}
+	endLine, err = strconv.Atoi(c.DefaultQuery("end_line", "20"))
+	if err != nil {
+		fmt.Print(err)
+	}
+
 	var filecontents []string
-	filePath := c.Query("path")
+	filePath := comment.JoinStr(path, c.Query("path"))
 	fi, err := os.Open(filePath)
 	if err != nil {
 		fmt.Printf("Error: %s\n", err)
 		return
 	}
 	defer fi.Close()
-	line := 0
-	scanner := bufio.NewScanner(fi)
+
+	scanner = bufio.NewScanner(fi)
 	for scanner.Scan() {
 		line++
 		if line >= startLine && line <= endLine {
@@ -116,7 +164,7 @@ func (con *adminSystemController) View(c *gin.Context) {
 	}
 
 	c.HTML(http.StatusOK, "setting/systemlog_view.html", gin.H{
-		"file_path":    filePath,
+		"file_path":    c.Query("path"),
 		"filecontents": filecontents,
 		"start_line":   startLine,
 		"end_line":     endLine,
