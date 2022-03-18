@@ -12,7 +12,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/gphper/ginadmin/internal/middleware"
+	"github.com/gphper/ginadmin/internal/controllers"
 	"github.com/gphper/ginadmin/pkg/comment"
 	"github.com/gphper/ginadmin/pkg/loggers/facade"
 	"github.com/gphper/ginadmin/pkg/loggers/medium"
@@ -31,11 +31,11 @@ func Init() *gin.Engine {
 	router := gin.Default()
 
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
-
+	router.NoRoute(controllers.Hand.Handle)
+	router.NoMethod(controllers.Hand.Handle)
 	prep(router)
 
 	// router.Use(medium.GinLog(facade.NewZaplog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewZaplog("admin"), true))
-	router.Use(middleware.NotHttpStatusOk())
 	// router.Use(medium.GinLog(facade.NewRedisLog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewRedisLog("admin"), true))
 	router.Use(medium.GinLog(facade.NewLogger("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewLogger("admin"), true))
 	/*****admin路由定义******/

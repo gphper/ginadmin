@@ -8,7 +8,7 @@ package setting
 
 import (
 	"bufio"
-	"fmt"
+	"errors"
 	"io/fs"
 	"io/ioutil"
 	"net/http"
@@ -44,7 +44,8 @@ func (con *adminSystemController) Index(c *gin.Context) {
 
 	path, err = comment.RootPath()
 	if err != nil {
-		fmt.Printf("get root path err:%v", err)
+		con.ErrorHtml(c, err)
+		return
 	}
 
 	path = comment.JoinStr(path, string(filepath.Separator), "logs")
@@ -55,6 +56,8 @@ func (con *adminSystemController) Index(c *gin.Context) {
 
 	if err != nil {
 		loggers.LogError("admin", "读取目录失败", map[string]string{"error": err.Error()})
+		con.ErrorHtml(c, err)
+		return
 	}
 
 	c.HTML(http.StatusOK, "setting/systemlog.html", gin.H{
@@ -84,7 +87,8 @@ func (con *adminSystemController) GetDir(c *gin.Context) {
 
 	path, err = comment.RootPath()
 	if err != nil {
-		fmt.Printf("get root path err:%v", err)
+		con.Error(c, err.Error())
+		return
 	}
 
 	fileSlice = make([]FileNode, 0)
@@ -131,23 +135,26 @@ func (con *adminSystemController) View(c *gin.Context) {
 
 	path, err = comment.RootPath()
 	if err != nil {
-		fmt.Printf("get root path err:%v", err)
+		con.ErrorHtml(c, errors.New("获取根路径失败"))
+		return
 	}
 
 	startLine, err = strconv.Atoi(c.DefaultQuery("start_line", "1"))
 	if err != nil {
-		fmt.Print(err)
+		con.ErrorHtml(c, err)
+		return
 	}
 	endLine, err = strconv.Atoi(c.DefaultQuery("end_line", "20"))
 	if err != nil {
-		fmt.Print(err)
+		con.ErrorHtml(c, err)
+		return
 	}
 
 	var filecontents []string
 	filePath := comment.JoinStr(path, c.Query("path"))
 	fi, err := os.Open(filePath)
 	if err != nil {
-		fmt.Printf("Error: %s\n", err)
+		con.ErrorHtml(c, err)
 		return
 	}
 	defer fi.Close()
@@ -184,6 +191,8 @@ func (con *adminSystemController) IndexRedis(c *gin.Context) {
 
 	if err != nil {
 		loggers.LogError("admin", "读取目录失败", map[string]string{"error": err.Error()})
+		con.ErrorHtml(c, err)
+		return
 	}
 
 	dates := make(map[string]struct{})
@@ -223,6 +232,8 @@ func (con *adminSystemController) GetDirRedis(c *gin.Context) {
 
 	if err != nil {
 		loggers.LogError("admin", "读取目录失败", map[string]string{"error": err.Error()})
+		con.ErrorHtml(c, err)
+		return
 	}
 
 	fileSlice := make([]FileNode, 0)

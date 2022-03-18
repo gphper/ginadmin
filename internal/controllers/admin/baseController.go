@@ -9,6 +9,8 @@ package admin
 import (
 	"errors"
 	"net/http"
+	"runtime"
+	"strconv"
 
 	"github.com/gphper/ginadmin/pkg/comment"
 
@@ -33,6 +35,22 @@ func (Base *BaseController) Error(c *gin.Context, message string) {
 		"status": false,
 		"msg":    message,
 	})
+}
+
+func (Base *BaseController) ErrorHtml(c *gin.Context, err error) {
+
+	if gin.Mode() == "debug" {
+		_, file, line, _ := runtime.Caller(1)
+		c.HTML(http.StatusOK, "home/debug.html", gin.H{
+			"title": "DEBUG",
+			"msg":   file + ":" + strconv.Itoa(line),
+			"error": err.Error(),
+		})
+	} else {
+		c.HTML(http.StatusOK, "home/error.html", gin.H{
+			"title": "出错了~",
+		})
+	}
 }
 
 func (Base *BaseController) FormBind(c *gin.Context, obj interface{}) error {
