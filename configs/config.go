@@ -9,6 +9,7 @@
 package configs
 
 import (
+	"flag"
 	"fmt"
 
 	"github.com/gphper/ginadmin/pkg/comment"
@@ -55,12 +56,18 @@ var App = new(AppConf)
 
 //初始化配置文件
 func init() {
+
+	var ConfigPath string
+
 	path, err := comment.RootPath()
 	if err != nil {
 		fmt.Printf("get root path err:%v", err)
 	}
 
-	err = ini.MapTo(App, path+"/configs/config.ini")
+	flag.StringVar(&ConfigPath, "config", path+"/configs/config.ini", "config path")
+	flag.Parse()
+
+	err = ini.MapTo(App, ConfigPath)
 	if err != nil {
 		fmt.Printf("load ini err:%v", err)
 	}
