@@ -102,6 +102,17 @@
 
 4. 运行 `go run .\cmd\ginadmin`访问地址 http://localhost:端口地址/admin/login。默认账户：admin  密码：111111
 
+5. 指定配置文件路径   `go run .\cmd\ginadmin [--config=configPath]`
+
+```shell
+PS F:\gindemo\ginadmin> .\ginadmin.exe --h
+Usage of F:\gindemo\ginadmin\ginadmin.exe:
+  -config string
+        config path (default "F:\\gindemo\\ginadmin/configs/config.ini")
+```
+
+
+
 ### :small_blue_diamond:<a name="docker-compose">构建开发环境</a>
 
 1. 替换conf目录下的配置项
