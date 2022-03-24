@@ -10,7 +10,7 @@ import (
 	"mime/multipart"
 	"os"
 
-	"github.com/gphper/ginadmin/pkg/comment"
+	"github.com/gphper/ginadmin/configs"
 )
 
 type LocalStorage struct {
@@ -19,14 +19,12 @@ type LocalStorage struct {
 func (stor LocalStorage) Save(file *multipart.FileHeader, dst string) (string, error) {
 
 	var (
-		root     string
 		dstFull  string
 		filePath string
 	)
 
-	root, _ = comment.RootPath()
 	filePath = dst + "/" + file.Filename
-	dstFull = root + "/" + filePath
+	dstFull = configs.RootPath + "/" + filePath
 
 	src, err := file.Open()
 	if err != nil {

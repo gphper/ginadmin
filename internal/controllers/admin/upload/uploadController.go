@@ -24,7 +24,7 @@ type uploadController struct {
 
 var Upc = uploadController{}
 
-func (con *uploadController) UploadHtml(c *gin.Context) {
+func (con uploadController) UploadHtml(c *gin.Context) {
 
 	var (
 		req         models.UploadHtmlReq
@@ -93,7 +93,7 @@ func (con *uploadController) UploadHtml(c *gin.Context) {
 	})
 }
 
-func (con *uploadController) Upload(c *gin.Context) {
+func (con uploadController) Upload(c *gin.Context) {
 
 	var (
 		err error

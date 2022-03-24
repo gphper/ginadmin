@@ -28,7 +28,7 @@ type homeController struct {
 
 var Hc = homeController{}
 
-func (con *homeController) Home(c *gin.Context) {
+func (con homeController) Home(c *gin.Context) {
 	menuList := menu.GetMenu()
 
 	session := sessions.Default(c)
@@ -63,18 +63,18 @@ func (con *homeController) Home(c *gin.Context) {
 	})
 }
 
-func (con *homeController) Welcome(c *gin.Context) {
+func (con homeController) Welcome(c *gin.Context) {
 	c.HTML(http.StatusOK, "home/welcome.html", gin.H{})
 }
 
-func (con *homeController) EditPassword(c *gin.Context) {
+func (con homeController) EditPassword(c *gin.Context) {
 	id := c.Query("id")
 	c.HTML(http.StatusOK, "home/password_form.html", gin.H{
 		"id": id,
 	})
 }
 
-func (con *homeController) SavePassword(c *gin.Context) {
+func (con homeController) SavePassword(c *gin.Context) {
 	var (
 		req models.AdminUserEditPassReq
 		err error
@@ -91,7 +91,7 @@ func (con *homeController) SavePassword(c *gin.Context) {
 	}
 }
 
-func (con *homeController) SaveSkin(c *gin.Context) {
+func (con homeController) SaveSkin(c *gin.Context) {
 
 	var skinReq models.AdminUserSkinReq
 

@@ -23,13 +23,13 @@ type uploadController struct {
 
 var Uc = uploadController{}
 
-func (con *uploadController) Show(c *gin.Context) {
+func (con uploadController) Show(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "demo/upload.html", gin.H{})
 
 }
 
-func (con *uploadController) Upload(c *gin.Context) {
+func (con uploadController) Upload(c *gin.Context) {
 
 	var (
 		err error

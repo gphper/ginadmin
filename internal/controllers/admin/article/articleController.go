@@ -24,14 +24,14 @@ type articleController struct {
 
 var Arc = articleController{}
 
-func (con *articleController) Add(c *gin.Context) {
+func (con articleController) Add(c *gin.Context) {
 	var article models.Article
 	c.HTML(http.StatusOK, "article/article_form.html", gin.H{
 		"article": article,
 	})
 }
 
-func (con *articleController) Edit(c *gin.Context) {
+func (con articleController) Edit(c *gin.Context) {
 	articel_id := c.Query("article_id")
 
 	id, _ := strconv.Atoi(articel_id)
@@ -47,7 +47,7 @@ func (con *articleController) Edit(c *gin.Context) {
 	})
 }
 
-func (con *articleController) List(c *gin.Context) {
+func (con articleController) List(c *gin.Context) {
 	var (
 		err         error
 		req         models.ArticleIndexReq
@@ -71,7 +71,7 @@ func (con *articleController) List(c *gin.Context) {
 	})
 }
 
-func (con *articleController) Save(c *gin.Context) {
+func (con articleController) Save(c *gin.Context) {
 	var (
 		req models.ArticleReq
 		err error
@@ -86,7 +86,7 @@ func (con *articleController) Save(c *gin.Context) {
 	con.Success(c, "/admin/article/list", "添加成功")
 }
 
-func (con *articleController) Del(c *gin.Context) {
+func (con articleController) Del(c *gin.Context) {
 	id := c.Query("article_id")
 	fmt.Println(id)
 	articleId, _ := strconv.Atoi(id)

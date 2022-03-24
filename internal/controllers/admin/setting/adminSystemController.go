@@ -8,7 +8,6 @@ package setting
 
 import (
 	"bufio"
-	"errors"
 	"io/fs"
 	"io/ioutil"
 	"net/http"
@@ -17,6 +16,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/gphper/ginadmin/configs"
 	"github.com/gphper/ginadmin/internal/controllers/admin"
 	"github.com/gphper/ginadmin/internal/redis"
 	"github.com/gphper/ginadmin/pkg/comment"
@@ -34,7 +34,7 @@ var Asc = adminSystemController{}
 /**
 日志目录页面
 */
-func (con *adminSystemController) Index(c *gin.Context) {
+func (con adminSystemController) Index(c *gin.Context) {
 
 	var (
 		path     string
@@ -42,13 +42,7 @@ func (con *adminSystemController) Index(c *gin.Context) {
 		log_path string
 	)
 
-	path, err = comment.RootPath()
-	if err != nil {
-		con.ErrorHtml(c, err)
-		return
-	}
-
-	path = comment.JoinStr(path, string(filepath.Separator), "logs")
+	path = comment.JoinStr(configs.RootPath, string(filepath.Separator), "logs")
 
 	files, err := ioutil.ReadDir(path)
 
@@ -70,7 +64,7 @@ func (con *adminSystemController) Index(c *gin.Context) {
 /**
 获取目录
 */
-func (con *adminSystemController) GetDir(c *gin.Context) {
+func (con adminSystemController) GetDir(c *gin.Context) {
 
 	type FileNode struct {
 		Name string `json:"name"`
@@ -85,14 +79,8 @@ func (con *adminSystemController) GetDir(c *gin.Context) {
 		files     []fs.FileInfo
 	)
 
-	path, err = comment.RootPath()
-	if err != nil {
-		con.Error(c, err.Error())
-		return
-	}
-
 	fileSlice = make([]FileNode, 0)
-	path = comment.JoinStr(path, c.Query("path"))
+	path = comment.JoinStr(configs.RootPath, c.Query("path"))
 
 	files, err = ioutil.ReadDir(path)
 	if err != nil {
@@ -122,22 +110,15 @@ func (con *adminSystemController) GetDir(c *gin.Context) {
 /**
 获取日志详情
 */
-func (con *adminSystemController) View(c *gin.Context) {
+func (con adminSystemController) View(c *gin.Context) {
 
 	var (
-		path      string
 		err       error
 		startLine int
 		endLine   int
 		scanner   *bufio.Scanner
 		line      int
 	)
-
-	path, err = comment.RootPath()
-	if err != nil {
-		con.ErrorHtml(c, errors.New("获取根路径失败"))
-		return
-	}
 
 	startLine, err = strconv.Atoi(c.DefaultQuery("start_line", "1"))
 	if err != nil {
@@ -151,7 +132,7 @@ func (con *adminSystemController) View(c *gin.Context) {
 	}
 
 	var filecontents []string
-	filePath := comment.JoinStr(path, c.Query("path"))
+	filePath := comment.JoinStr(configs.RootPath, c.Query("path"))
 	fi, err := os.Open(filePath)
 	if err != nil {
 		con.ErrorHtml(c, err)
@@ -183,7 +164,7 @@ func (con *adminSystemController) View(c *gin.Context) {
 /**
 日志目录页面
 */
-func (con *adminSystemController) IndexRedis(c *gin.Context) {
+func (con adminSystemController) IndexRedis(c *gin.Context) {
 
 	path := "logs"
 
@@ -214,7 +195,7 @@ func (con *adminSystemController) IndexRedis(c *gin.Context) {
 /**
 获取目录
 */
-func (con *adminSystemController) GetDirRedis(c *gin.Context) {
+func (con adminSystemController) GetDirRedis(c *gin.Context) {
 
 	path := c.Query("path")
 
@@ -273,7 +254,7 @@ func (con *adminSystemController) GetDirRedis(c *gin.Context) {
 /**
 获取日志详情
 */
-func (con *adminSystemController) ViewRedis(c *gin.Context) {
+func (con adminSystemController) ViewRedis(c *gin.Context) {
 
 	startLine, _ := strconv.Atoi(c.DefaultQuery("start_line", "1"))
 

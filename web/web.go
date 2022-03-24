@@ -12,24 +12,21 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/gphper/ginadmin/pkg/comment"
+	"github.com/gphper/ginadmin/configs"
 
 	template2 "github.com/gphper/ginadmin/pkg/template"
 
 	"github.com/gphper/multitemplate"
 )
 
-var rootPath string
 var StaticsFs http.FileSystem
 
 func init() {
-	rootPath, _ = comment.RootPath()
-
-	StaticsFs = http.Dir(rootPath + string(filepath.Separator) + "web" + string(filepath.Separator) + "statics")
+	StaticsFs = http.Dir(configs.RootPath + string(filepath.Separator) + "web" + string(filepath.Separator) + "statics")
 }
 
 func LoadTemplates() multitemplate.Renderer {
-	templatesDir := rootPath + "/web/views"
+	templatesDir := configs.RootPath + "/web/views"
 	r := multitemplate.NewRenderer()
 
 	layouts, err := filepath.Glob(templatesDir + "/layout/*.html")

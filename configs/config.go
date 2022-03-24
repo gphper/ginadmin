@@ -17,6 +17,8 @@ import (
 	"gopkg.in/ini.v1"
 )
 
+var RootPath string
+
 type AppConf struct {
 	MysqlConf   `ini:"mysql"`
 	RedisConf   `ini:"redis"`
@@ -64,7 +66,9 @@ func init() {
 		fmt.Printf("get root path err:%v", err)
 	}
 
-	flag.StringVar(&ConfigPath, "config", path+"/configs/config.ini", "config path")
+	flag.StringVar(&RootPath, "root_path", path, "root path")
+	flag.StringVar(&ConfigPath, "config", RootPath+"/configs/config.ini", "config path")
+
 	flag.Parse()
 
 	err = ini.MapTo(App, ConfigPath)

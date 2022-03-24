@@ -21,7 +21,7 @@ import (
 type BaseController struct {
 }
 
-func (Base *BaseController) Success(c *gin.Context, url string, message string) {
+func (Base BaseController) Success(c *gin.Context, url string, message string) {
 	c.JSON(http.StatusOK, gin.H{
 		"status":      true,
 		"msg":         message,
@@ -30,14 +30,14 @@ func (Base *BaseController) Success(c *gin.Context, url string, message string) 
 	})
 }
 
-func (Base *BaseController) Error(c *gin.Context, message string) {
+func (Base BaseController) Error(c *gin.Context, message string) {
 	c.JSON(http.StatusOK, gin.H{
 		"status": false,
 		"msg":    message,
 	})
 }
 
-func (Base *BaseController) ErrorHtml(c *gin.Context, err error) {
+func (Base BaseController) ErrorHtml(c *gin.Context, err error) {
 
 	if gin.Mode() == "debug" {
 		_, file, line, _ := runtime.Caller(1)
@@ -53,7 +53,7 @@ func (Base *BaseController) ErrorHtml(c *gin.Context, err error) {
 	}
 }
 
-func (Base *BaseController) FormBind(c *gin.Context, obj interface{}) error {
+func (Base BaseController) FormBind(c *gin.Context, obj interface{}) error {
 
 	trans, err := comment.InitTrans("zh")
 
@@ -75,7 +75,7 @@ func (Base *BaseController) FormBind(c *gin.Context, obj interface{}) error {
 	return nil
 }
 
-func (Base *BaseController) UriBind(c *gin.Context, obj interface{}) error {
+func (Base BaseController) UriBind(c *gin.Context, obj interface{}) error {
 
 	trans, err := comment.InitTrans("zh")
 

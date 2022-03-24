@@ -32,7 +32,7 @@ var Lc = loginController{}
 /**
 * 登录
  */
-func (con *loginController) Login(c *gin.Context) {
+func (con loginController) Login(c *gin.Context) {
 	if c.Request.Method == "GET" {
 		c.HTML(http.StatusOK, "home/login.html", gin.H{
 			"title": "GinAdmin管理平台",
@@ -81,7 +81,7 @@ func (con *loginController) Login(c *gin.Context) {
 /**
 * 登出
  */
-func (con *loginController) LoginOut(c *gin.Context) {
+func (con loginController) LoginOut(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Delete("userInfo")
 	session.Save()
@@ -91,7 +91,7 @@ func (con *loginController) LoginOut(c *gin.Context) {
 /*
 * 验证码
  */
-func (con *loginController) Captcha(c *gin.Context) {
+func (con loginController) Captcha(c *gin.Context) {
 
 	var store = store.NewSessionStore(c, 20)
 	driver := &base64Captcha.DriverString{

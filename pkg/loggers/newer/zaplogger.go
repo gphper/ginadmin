@@ -9,7 +9,7 @@ import (
 	"io"
 	"time"
 
-	"github.com/gphper/ginadmin/pkg/comment"
+	"github.com/gphper/ginadmin/configs"
 
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"go.uber.org/zap"
@@ -33,9 +33,8 @@ func NewZapLogger(path string) *zap.Logger {
 		},
 	})
 	// 获取 info、error日志文件的io.Writer 抽象 getWriter() 在下方实现
-	rootPath, _ := comment.RootPath()
-	infoWriter := getWriter(rootPath + "/logs/%Y%m%d/" + path + "/demo_info.log")
-	errorWriter := getWriter(rootPath + "/logs/%Y%m%d/" + path + "/demo_error.log")
+	infoWriter := getWriter(configs.RootPath + "/logs/%Y%m%d/" + path + "/demo_info.log")
+	errorWriter := getWriter(configs.RootPath + "/logs/%Y%m%d/" + path + "/demo_error.log")
 
 	// 最后创建具体的Logger
 	core := zapcore.NewTee(

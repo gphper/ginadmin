@@ -28,7 +28,7 @@ type DefaultResponse struct {
 	Msg  string `json:"msg"`  //错误提示信息
 }
 
-func (Base *BaseController) Success(c *gin.Context, obj interface{}) {
+func (Base BaseController) Success(c *gin.Context, obj interface{}) {
 	var res SuccessResponse
 	res.Code = 1
 	res.Msg = "success"
@@ -37,7 +37,7 @@ func (Base *BaseController) Success(c *gin.Context, obj interface{}) {
 	c.JSON(http.StatusOK, res)
 }
 
-func (Base *BaseController) Error(c *gin.Context, err error) {
+func (Base BaseController) Error(c *gin.Context, err error) {
 	var res DefaultResponse
 	res.Code = 0
 	res.Msg = err.Error()
@@ -45,7 +45,7 @@ func (Base *BaseController) Error(c *gin.Context, err error) {
 	c.JSON(http.StatusOK, res)
 }
 
-func (Base *BaseController) FormBind(c *gin.Context, obj interface{}) error {
+func (Base BaseController) FormBind(c *gin.Context, obj interface{}) error {
 
 	trans, err := comment.InitTrans("en")
 

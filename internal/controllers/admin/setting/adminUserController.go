@@ -28,7 +28,7 @@ var Auc = adminUserController{}
 /**
 管理员列表
 */
-func (con *adminUserController) Index(c *gin.Context) {
+func (con adminUserController) Index(c *gin.Context) {
 	var (
 		err           error
 		req           models.AdminUserIndexReq
@@ -54,7 +54,7 @@ func (con *adminUserController) Index(c *gin.Context) {
 /**
 添加
 */
-func (con *adminUserController) AddIndex(c *gin.Context) {
+func (con adminUserController) AddIndex(c *gin.Context) {
 	c.HTML(http.StatusOK, "setting/adminuser_form.html", gin.H{
 		"adminGroups": casbinauth.GetGroups(),
 	})
@@ -63,7 +63,7 @@ func (con *adminUserController) AddIndex(c *gin.Context) {
 /**
 保存
 */
-func (con *adminUserController) Save(c *gin.Context) {
+func (con adminUserController) Save(c *gin.Context) {
 
 	var (
 		err error
@@ -86,7 +86,7 @@ func (con *adminUserController) Save(c *gin.Context) {
 /**
 编辑
 */
-func (con *adminUserController) Edit(c *gin.Context) {
+func (con adminUserController) Edit(c *gin.Context) {
 	id := c.Query("id")
 	adminUser, _ := services.AuService.GetAdminUser(id)
 	var groupName []string
@@ -105,7 +105,7 @@ func (con *adminUserController) Edit(c *gin.Context) {
 /**
 删除
 */
-func (con *adminUserController) Del(c *gin.Context) {
+func (con adminUserController) Del(c *gin.Context) {
 	id := c.Query("id")
 	err := services.AuService.DelAdminUser(id)
 	if err != nil {

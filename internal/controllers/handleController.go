@@ -16,7 +16,7 @@ type handleController struct {
 
 var Hand = handleController{}
 
-func (con *handleController) Handle(c *gin.Context) {
+func (con handleController) Handle(c *gin.Context) {
 	c.HTML(http.StatusOK, "home/error.html", gin.H{
 		"title": c.Writer.Status(),
 	})

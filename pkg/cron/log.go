@@ -13,6 +13,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gphper/ginadmin/configs"
 	globalRedis "github.com/gphper/ginadmin/internal/redis"
 	"github.com/gphper/ginadmin/pkg/comment"
 )
@@ -29,11 +30,10 @@ func WriteLog() {
 	pattern := "logs:" + date + ":*"
 	keys, _ := globalRedis.RedisClient.Keys(pattern).Result()
 
-	rootPath, _ := comment.RootPath()
-
 	for _, key := range keys {
 		path := strings.ReplaceAll(key, ":", "/")
-		file, err := comment.OpenFile(rootPath + "/" + path + ".log")
+
+		file, err := comment.OpenFile(comment.JoinStr(configs.RootPath, "/", path, ".log"))
 		if err == nil {
 			wg.Add(1)
 			go writeFile(key, file, &wg)
