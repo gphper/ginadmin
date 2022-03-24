@@ -102,13 +102,24 @@
 
 4. 运行 `go run .\cmd\ginadmin`访问地址 http://localhost:端口地址/admin/login。默认账户：admin  密码：111111
 
-5. 指定配置文件路径   `go run .\cmd\ginadmin [--config=configPath]`
+5. vscode调试配置文件 `launch.json`
 
-```shell
-PS F:\gindemo\ginadmin> .\ginadmin.exe --h
-Usage of F:\gindemo\ginadmin\ginadmin.exe:
-  -config string
-        config path (default "F:\\gindemo\\ginadmin/configs/config.ini")
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "ginadmin",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceRoot}/cmd/ginadmin",
+            "trace": true,
+            "args":[
+                "--root_path=${workspaceRoot}"
+            ],
+        }
+}
 ```
 
 

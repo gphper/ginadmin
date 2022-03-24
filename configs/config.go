@@ -59,19 +59,16 @@ var App = new(AppConf)
 //初始化配置文件
 func init() {
 
-	var ConfigPath string
-
 	path, err := comment.RootPath()
 	if err != nil {
 		fmt.Printf("get root path err:%v", err)
 	}
 
 	flag.StringVar(&RootPath, "root_path", path, "root path")
-	flag.StringVar(&ConfigPath, "config", RootPath+"/configs/config.ini", "config path")
 
 	flag.Parse()
-
-	err = ini.MapTo(App, ConfigPath)
+	fmt.Println(RootPath)
+	err = ini.MapTo(App, RootPath+"/configs/config.ini")
 	if err != nil {
 		fmt.Printf("load ini err:%v", err)
 	}
