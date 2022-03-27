@@ -190,10 +190,10 @@
 
 ### :small_blue_diamond:<a name="分页">分页</a>
 
-1.  使用 `pkg/comment/util.go` 里面的 `PageOperation` 进行分页
+1.  使用 `pkg/paginater/paginater.go` 里面的 `PageOperation` 进行分页
     ```go
     adminDb := models.Db.Table("admin_users").Select("nickname","username").Where("uid != ?", 1)
-    adminUserData := comment.PageOperation(c, adminDb, 1, &adminUserList)
+    adminUserData := paginater.PageOperation(c, adminDb, 1, &adminUserList)
     ```
 2.  在html中使用
     ```go
@@ -277,7 +277,7 @@
 
 - casbin版集成了casbin权限管理框架，官方地址：[casbin](#https://casbin.org/docs/zh-CN/get-started)
 
-- 框架中的常用方法定义在  `comment/auth/casbinauth/asbin.go` 文件中
+- 框架中的常用方法定义在  `pkg/casbinauth/casbin.go` 文件中
 
 - 在控制器中可用从 `gin.context` 获取登录用户信息
 
