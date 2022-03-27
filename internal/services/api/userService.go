@@ -12,8 +12,8 @@ import (
 
 	"github.com/gphper/ginadmin/internal/dao"
 	"github.com/gphper/ginadmin/internal/models"
-	"github.com/gphper/ginadmin/pkg/comment"
 	"github.com/gphper/ginadmin/pkg/jwt"
+	"github.com/gphper/ginadmin/pkg/utils/strings"
 )
 
 type userService struct{}
@@ -40,8 +40,8 @@ func (ser *userService) Register(req models.UserRegisterReq) error {
 
 	user.Nickname = req.Nickname
 	user.Email = req.Email
-	salt := comment.RandString(6)
-	passwordSalt := comment.Encryption(req.Password, salt)
+	salt := strings.RandString(6)
+	passwordSalt := strings.Encryption(req.Password, salt)
 	user.Password = passwordSalt
 	user.Salt = salt
 
@@ -67,7 +67,7 @@ func (ser *userService) Login(req models.UserLoginReq) (jtoken string, retoken s
 	}
 
 	//校验密码
-	passwordSalt := comment.Encryption(req.Password, user.Salt)
+	passwordSalt := strings.Encryption(req.Password, user.Salt)
 	if passwordSalt != user.Password {
 		return jtoken, retoken, errors.New("账号密码错误")
 	}
@@ -82,7 +82,7 @@ func (ser *userService) Login(req models.UserLoginReq) (jtoken string, retoken s
 	}
 
 	//生成refresh_token
-	retoken = comment.Encryption(passwordSalt, strconv.FormatInt(time.Now().UnixNano(), 10))
+	retoken = strings.Encryption(passwordSalt, strconv.FormatInt(time.Now().UnixNano(), 10))
 	user.RefreshToken.String = retoken
 	user.RefreshToken.Valid = true
 	user.ExpirTime.Time = time.Now().Add(7 * time.Hour)

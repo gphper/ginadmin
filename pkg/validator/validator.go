@@ -1,9 +1,9 @@
 /*
- * @Description:参数验证二次封装
+ * @Description:
  * @Author: gphper
- * @Date: 2021-07-13 20:46:10
+ * @Date: 2022-03-27 11:06:16
  */
-package comment
+package validator
 
 import (
 	"fmt"

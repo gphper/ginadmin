@@ -19,8 +19,8 @@ import (
 	"github.com/gphper/ginadmin/configs"
 	"github.com/gphper/ginadmin/internal/controllers/admin"
 	"github.com/gphper/ginadmin/internal/redis"
-	"github.com/gphper/ginadmin/pkg/comment"
 	"github.com/gphper/ginadmin/pkg/loggers"
+	gstrings "github.com/gphper/ginadmin/pkg/utils/strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -42,11 +42,11 @@ func (con adminSystemController) Index(c *gin.Context) {
 		log_path string
 	)
 
-	path = comment.JoinStr(configs.RootPath, string(filepath.Separator), "logs")
+	path = gstrings.JoinStr(configs.RootPath, string(filepath.Separator), "logs")
 
 	files, err := ioutil.ReadDir(path)
 
-	log_path = comment.JoinStr(string(filepath.Separator), "logs")
+	log_path = gstrings.JoinStr(string(filepath.Separator), "logs")
 
 	if err != nil {
 		loggers.LogError("admin", "读取目录失败", map[string]string{"error": err.Error()})
@@ -80,7 +80,7 @@ func (con adminSystemController) GetDir(c *gin.Context) {
 	)
 
 	fileSlice = make([]FileNode, 0)
-	path = comment.JoinStr(configs.RootPath, c.Query("path"))
+	path = gstrings.JoinStr(configs.RootPath, c.Query("path"))
 
 	files, err = ioutil.ReadDir(path)
 	if err != nil {
@@ -97,7 +97,7 @@ func (con adminSystemController) GetDir(c *gin.Context) {
 		}
 		fileSlice = append(fileSlice, FileNode{
 			Name: v.Name(),
-			Path: comment.JoinStr(c.Query("path"), string(filepath.Separator), v.Name()),
+			Path: gstrings.JoinStr(c.Query("path"), string(filepath.Separator), v.Name()),
 			Type: fileType,
 		})
 	}
@@ -132,7 +132,7 @@ func (con adminSystemController) View(c *gin.Context) {
 	}
 
 	var filecontents []string
-	filePath := comment.JoinStr(configs.RootPath, c.Query("path"))
+	filePath := gstrings.JoinStr(configs.RootPath, c.Query("path"))
 	fi, err := os.Open(filePath)
 	if err != nil {
 		con.ErrorHtml(c, err)

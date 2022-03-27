@@ -9,7 +9,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/gphper/ginadmin/pkg/comment"
+	gvalidator "github.com/gphper/ginadmin/pkg/validator"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -47,7 +47,7 @@ func (Base BaseController) Error(c *gin.Context, err error) {
 
 func (Base BaseController) FormBind(c *gin.Context, obj interface{}) error {
 
-	trans, err := comment.InitTrans("en")
+	trans, err := gvalidator.InitTrans("en")
 
 	if err != nil {
 		return err

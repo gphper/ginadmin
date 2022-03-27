@@ -14,9 +14,9 @@ import (
 
 	"github.com/gphper/ginadmin/configs"
 	"github.com/gphper/ginadmin/internal/controllers"
-	"github.com/gphper/ginadmin/pkg/comment"
 	"github.com/gphper/ginadmin/pkg/loggers/facade"
 	"github.com/gphper/ginadmin/pkg/loggers/medium"
+	"github.com/gphper/ginadmin/pkg/utils/strings"
 	"github.com/gphper/ginadmin/web"
 
 	"github.com/gin-contrib/gzip"
@@ -58,7 +58,7 @@ func prep(router *gin.Engine) {
 		err        error
 	)
 
-	uploadPath = comment.JoinStr(configs.RootPath, string(filepath.Separator), "uploadfile")
+	uploadPath = strings.JoinStr(configs.RootPath, string(filepath.Separator), "uploadfile")
 
 	if SwagHandler != nil {
 		router.GET("/swagger/*any", SwagHandler)

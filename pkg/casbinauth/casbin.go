@@ -11,7 +11,7 @@ import (
 	"sync"
 
 	"github.com/gphper/ginadmin/internal/models"
-	"github.com/gphper/ginadmin/pkg/comment"
+	gstrings "github.com/gphper/ginadmin/pkg/utils/strings"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"
@@ -204,7 +204,7 @@ func GetPoliceByGroup(group string) [][]string {
 func UpdateGroups(username string, old []string, new []string, tx *gorm.DB) (ok bool, err error) {
 	en := newEnforceObj(tx)
 
-	add, incre := comment.CompareSlice(old, new)
+	add, incre := gstrings.CompareSlice(old, new)
 
 	//添加新权限
 	addLen := len(add)
@@ -244,7 +244,7 @@ func UpdateGroups(username string, old []string, new []string, tx *gorm.DB) (ok 
 
 //更新指定用户组的权限
 func UpdatePolices(groupname string, old []string, new []string, tx *gorm.DB) (ok bool, err error) {
-	addPolice, increPolice := comment.CompareSlice(old, new)
+	addPolice, increPolice := gstrings.CompareSlice(old, new)
 	en := newEnforceObj(tx)
 	defer loadPolicy()
 

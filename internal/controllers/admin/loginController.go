@@ -16,7 +16,7 @@ import (
 
 	"github.com/gphper/ginadmin/internal/models"
 	"github.com/gphper/ginadmin/pkg/captcha/store"
-	"github.com/gphper/ginadmin/pkg/comment"
+	gstrings "github.com/gphper/ginadmin/pkg/utils/strings"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -56,7 +56,7 @@ func (con loginController) Login(c *gin.Context) {
 			return
 		}
 		//判断密码是否正确
-		if comment.Encryption(password, adminUser.Salt) == adminUser.Password {
+		if gstrings.Encryption(password, adminUser.Salt) == adminUser.Password {
 
 			userInfo := make(map[string]interface{})
 			userInfo["uid"] = adminUser.Uid

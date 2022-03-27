@@ -12,7 +12,7 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/gphper/ginadmin/pkg/comment"
+	"github.com/gphper/ginadmin/pkg/utils/filesystem"
 
 	"gopkg.in/ini.v1"
 )
@@ -59,7 +59,7 @@ var App = new(AppConf)
 //初始化配置文件
 func init() {
 
-	path, err := comment.RootPath()
+	path, err := filesystem.RootPath()
 	if err != nil {
 		fmt.Printf("get root path err:%v", err)
 	}

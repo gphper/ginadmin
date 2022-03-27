@@ -14,7 +14,7 @@ import (
 	"github.com/gphper/ginadmin/internal/models"
 	services "github.com/gphper/ginadmin/internal/services/admin"
 	"github.com/gphper/ginadmin/pkg/casbinauth"
-	"github.com/gphper/ginadmin/pkg/comment"
+	"github.com/gphper/ginadmin/pkg/paginater"
 
 	"github.com/gin-gonic/gin"
 )
@@ -42,7 +42,7 @@ func (con adminUserController) Index(c *gin.Context) {
 	}
 
 	adminDb := services.AuService.GetAdminUsers(req)
-	adminUserData := comment.PageOperation(c, adminDb, 1, &adminUserList)
+	adminUserData := paginater.PageOperation(c, adminDb, 1, &adminUserList)
 	c.HTML(http.StatusOK, "setting/adminuser.html", gin.H{
 		"adminUserData": adminUserData,
 		"created_at":    c.Query("created_at"),

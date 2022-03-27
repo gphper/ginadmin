@@ -14,7 +14,7 @@ import (
 	"github.com/gphper/ginadmin/internal/dao"
 	"github.com/gphper/ginadmin/internal/models"
 	"github.com/gphper/ginadmin/pkg/casbinauth"
-	"github.com/gphper/ginadmin/pkg/comment"
+	gstrings "github.com/gphper/ginadmin/pkg/utils/strings"
 
 	"gorm.io/gorm"
 )
@@ -76,9 +76,9 @@ func (ser *adminUserService) SaveAdminUser(req models.AdminUserSaveReq) (err err
 			ApiToken:  "",
 		}
 		if req.Password != "" {
-			salt := comment.RandString(6)
+			salt := gstrings.RandString(6)
 			adminUser.Salt = salt
-			passwordSalt := comment.Encryption(req.Password, salt)
+			passwordSalt := gstrings.Encryption(req.Password, salt)
 			adminUser.Password = passwordSalt
 		}
 		err = dao.AuDao.Tx.Model(&adminUser).Updates(adminUser).Error
@@ -95,8 +95,8 @@ func (ser *adminUserService) SaveAdminUser(req models.AdminUserSaveReq) (err err
 		}
 
 	} else {
-		salt := comment.RandString(6)
-		passwordSalt := comment.Encryption(req.Password, salt)
+		salt := gstrings.RandString(6)
+		passwordSalt := gstrings.Encryption(req.Password, salt)
 		adminUser := models.AdminUsers{
 			GroupName: string(groupnameStr),
 			Nickname:  req.Nickname,
@@ -148,13 +148,13 @@ func (ser *adminUserService) EditPass(req models.AdminUserEditPassReq) (err erro
 		return
 	}
 
-	oldPass := comment.Encryption(req.OldPassword, adminUser.Salt)
+	oldPass := gstrings.Encryption(req.OldPassword, adminUser.Salt)
 	if oldPass != adminUser.Password {
 		err = errors.New("原密码错误")
 		return
 	}
 
-	newPass := comment.Encryption(req.NewPassword, adminUser.Salt)
+	newPass := gstrings.Encryption(req.NewPassword, adminUser.Salt)
 
 	err = dao.AuDao.DB.Model(&adminUser).UpdateColumn("password", newPass).Error
 

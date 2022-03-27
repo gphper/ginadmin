@@ -12,7 +12,7 @@ import (
 	"runtime"
 	"strconv"
 
-	"github.com/gphper/ginadmin/pkg/comment"
+	gvalidator "github.com/gphper/ginadmin/pkg/validator"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -55,7 +55,7 @@ func (Base BaseController) ErrorHtml(c *gin.Context, err error) {
 
 func (Base BaseController) FormBind(c *gin.Context, obj interface{}) error {
 
-	trans, err := comment.InitTrans("zh")
+	trans, err := gvalidator.InitTrans("zh")
 
 	if err != nil {
 		return err
@@ -77,7 +77,7 @@ func (Base BaseController) FormBind(c *gin.Context, obj interface{}) error {
 
 func (Base BaseController) UriBind(c *gin.Context, obj interface{}) error {
 
-	trans, err := comment.InitTrans("zh")
+	trans, err := gvalidator.InitTrans("zh")
 
 	if err != nil {
 		return err

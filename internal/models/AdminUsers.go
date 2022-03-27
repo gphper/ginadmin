@@ -8,7 +8,7 @@ package models
 import (
 	"time"
 
-	"github.com/gphper/ginadmin/pkg/comment"
+	"github.com/gphper/ginadmin/pkg/utils/strings"
 )
 
 type AdminUsers struct {
@@ -62,8 +62,8 @@ func (au *AdminUsers) TableName() string {
 
 func (au *AdminUsers) FillData() {
 	//初始化管理员
-	salt := comment.RandString(6)
-	passwordSalt := comment.Encryption("111111", salt)
+	salt := strings.RandString(6)
+	passwordSalt := strings.Encryption("111111", salt)
 	adminUser := AdminUsers{
 		Uid:       1,
 		GroupName: "superadmin",

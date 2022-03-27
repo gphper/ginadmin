@@ -13,7 +13,7 @@ import (
 	"github.com/gphper/ginadmin/internal/controllers/admin"
 	"github.com/gphper/ginadmin/internal/models"
 	services "github.com/gphper/ginadmin/internal/services/admin"
-	"github.com/gphper/ginadmin/pkg/comment"
+	"github.com/gphper/ginadmin/pkg/paginater"
 
 	"github.com/gin-gonic/gin"
 )
@@ -62,7 +62,7 @@ func (con articleController) List(c *gin.Context) {
 
 	adminDb := services.ArticleService.GetArticles(req)
 
-	articleData := comment.PageOperation(c, adminDb, 1, &articleList)
+	articleData := paginater.PageOperation(c, adminDb, 1, &articleList)
 
 	c.HTML(http.StatusOK, "article/article_list.html", gin.H{
 		"articleData": articleData,
