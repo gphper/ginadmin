@@ -1,3 +1,8 @@
+/*
+ * @Description:
+ * @Author: gphper
+ * @Date: 2022-03-15 20:14:09
+ */
 package dao
 
 import (
@@ -8,7 +13,6 @@ import (
 
 type adminUserDao struct {
 	DB *gorm.DB
-	Tx *gorm.DB
 }
 
-var AuDao = adminUserDao{DB: models.Db, Tx: models.Db.Begin()}
+var AuDao = adminUserDao{DB: models.Db}

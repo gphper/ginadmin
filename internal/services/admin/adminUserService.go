@@ -56,8 +56,10 @@ func (ser *adminUserService) SaveAdminUser(req models.AdminUserSaveReq) (err err
 		rules = append(rules, []string{req.Username, v})
 	}
 
+	tx := dao.AuDao.DB.Begin()
+
 	if req.Uid > 0 {
-		err = dao.AuDao.Tx.Table("admin_users").Where("uid = ?", req.Uid).First(&adminUser).Error
+		err = tx.Table("admin_users").Where("uid = ?", req.Uid).First(&adminUser).Error
 		if err != nil {
 			return
 		}
@@ -68,6 +70,7 @@ func (ser *adminUserService) SaveAdminUser(req models.AdminUserSaveReq) (err err
 		adminUser := models.AdminUsers{
 			Uid:       req.Uid,
 			GroupName: string(groupnameStr),
+			Username:  req.Username,
 			Nickname:  req.Nickname,
 			Password:  "",
 			Phone:     req.Phone,
@@ -81,16 +84,16 @@ func (ser *adminUserService) SaveAdminUser(req models.AdminUserSaveReq) (err err
 			passwordSalt := gstrings.Encryption(req.Password, salt)
 			adminUser.Password = passwordSalt
 		}
-		err = dao.AuDao.Tx.Model(&adminUser).Updates(adminUser).Error
+		err = tx.Model(&adminUser).Updates(adminUser).Error
 
 		if err != nil {
-			dao.AuDao.Tx.Rollback()
+			tx.Rollback()
 			return
 		}
 
-		_, err = casbinauth.UpdateGroups(req.Username, groupOldName, req.GroupName, dao.AuDao.Tx)
+		_, err = casbinauth.UpdateGroups(req.Username, groupOldName, req.GroupName, tx)
 		if err != nil {
-			dao.AuDao.Tx.Rollback()
+			tx.Rollback()
 			return
 		}
 
@@ -100,24 +103,25 @@ func (ser *adminUserService) SaveAdminUser(req models.AdminUserSaveReq) (err err
 		adminUser := models.AdminUsers{
 			GroupName: string(groupnameStr),
 			Nickname:  req.Nickname,
+			Username:  req.Username,
 			Password:  passwordSalt,
 			Phone:     req.Phone,
 			Salt:      salt,
 		}
-		err = dao.AuDao.Tx.Save(&adminUser).Error
+		err = tx.Save(&adminUser).Error
 		if err != nil {
-			dao.AuDao.Tx.Rollback()
+			tx.Rollback()
 			return
 		}
 		//将权限添加到casbin中
-		ok, err = casbinauth.AddGroups("g", rules, dao.AuDao.Tx)
+		ok, err = casbinauth.AddGroups("g", rules, tx)
 		if err != nil || !ok {
-			dao.AuDao.Tx.Rollback()
+			tx.Rollback()
 			return
 		}
 	}
 
-	dao.AuDao.Tx.Commit()
+	tx.Commit()
 	return
 }
 
