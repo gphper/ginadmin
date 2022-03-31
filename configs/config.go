@@ -11,6 +11,7 @@ package configs
 import (
 	"flag"
 	"fmt"
+	"testing"
 
 	"github.com/gphper/ginadmin/pkg/utils/filesystem"
 
@@ -66,8 +67,10 @@ func init() {
 
 	flag.StringVar(&RootPath, "root_path", path, "root path")
 
+	//否则执行 go test 报错
+	testing.Init()
 	flag.Parse()
-	fmt.Println(RootPath)
+
 	err = ini.MapTo(App, RootPath+"/configs/config.ini")
 	if err != nil {
 		fmt.Printf("load ini err:%v", err)
