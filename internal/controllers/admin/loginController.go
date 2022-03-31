@@ -40,13 +40,18 @@ func (con loginController) Login(c *gin.Context) {
 	} else {
 		username := c.PostForm("username")
 		password := c.PostForm("password")
-		captch := c.PostForm("captcha")
 
-		var store = store.NewSessionStore(c, 20)
-		verify := store.Verify("", captch, true)
-		if !verify {
-			con.Error(c, "验证码错误")
-			return
+		// 为测试方便release模式才开启验证码
+		if gin.Mode() == gin.ReleaseMode {
+
+			captch := c.PostForm("captcha")
+			var store = store.NewSessionStore(c, 20)
+			verify := store.Verify("", captch, true)
+			if !verify {
+				con.Error(c, "验证码错误")
+				return
+			}
+
 		}
 
 		var adminUser models.AdminUsers
