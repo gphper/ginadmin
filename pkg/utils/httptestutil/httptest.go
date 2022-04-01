@@ -15,6 +15,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type OptionValue struct {
+	Param   url.Values
+	Cookies []*http.Cookie
+}
+
 // Get 请求方法
 func Get(uri string, router *gin.Engine) []byte {
 	// 构造get请求
@@ -35,10 +40,17 @@ func Get(uri string, router *gin.Engine) []byte {
 }
 
 // PostForm 根据特定请求uri和参数param，以表单形式传递参数，发起post请求返回响应
-func PostForm(uri string, param url.Values, router *gin.Engine) (body []byte, cookies []*http.Cookie) {
-
+func PostForm(uri string, router *gin.Engine, options OptionValue) (body []byte, cookies []*http.Cookie) {
 	// 构造post请求
-	req := httptest.NewRequest("POST", uri, strings.NewReader(param.Encode()))
+	req := httptest.NewRequest("POST", uri, strings.NewReader(options.Param.Encode()))
+
+	// 设置cookies
+	if len(options.Cookies) > 0 {
+		for _, cookie := range options.Cookies {
+			req.AddCookie(cookie)
+		}
+	}
+
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	// 初始化响应
