@@ -20,8 +20,8 @@ jobs:
       mysql:
         image: mysql:5.7
         options: >-
-          --character-set-server "utf8mb4" 
-          --collation-server "utf8mb4_general_ci"
+          --character-set-server=utf8mb4 
+          --collation-server=utf8mb4_general_ci
         env:
           MYSQL_DATABASE     : db_beego
           MYSQL_ROOT_PASSWORD: 123456
