@@ -1,0 +1,40 @@
+name: GinAdminTest
+on: [push]
+jobs:
+  Build-Docker:
+    runs-on: ubuntu-latest
+    services:
+      # Label used to access the service container
+      redis:
+        # Docker Hub image
+        image: redis:6.0
+        options: >-
+          --health-cmd      "redis-cli ping"
+          --health-interval 10s
+          --health-timeout  5s
+          --health-retries  5
+        ports:
+          # Maps tcp port 6379 on service container to the host
+          - 6379:6379
+
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE     : db_beego
+          MYSQL_ROOT_PASSWORD: 123456
+        ports:
+          # Maps tcp port 3306 on service container to the host
+          - 3306:3306
+    steps:
+      - name: Golang
+        uses: actions/setup-go@v3
+        with:
+          go-version: '^1.13.1' # The Go version to download (if necessary) and use.
+
+      - name: Project pull
+        uses: actions/checkout@v3
+
+      - name: Test Run Project  
+        run: |
+          go mod download
+          go test -v ./test
