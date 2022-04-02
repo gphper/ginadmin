@@ -33,8 +33,6 @@
 
 :white_check_mark:redis日志落盘保存
 
-:white_check_mark:HTTP测试
-
 :black_square_button:登录日志
 
 :black_square_button:Admin Api
