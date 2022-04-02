@@ -4,9 +4,7 @@ jobs:
   Build-Docker:
     runs-on: ubuntu-latest
     services:
-      # Label used to access the service container
       redis:
-        # Docker Hub image
         image: redis:6.0
         options: >-
           --health-cmd      "redis-cli ping"
@@ -14,21 +12,20 @@ jobs:
           --health-timeout  5s
           --health-retries  5
         ports:
-          # Maps tcp port 6379 on service container to the host
           - 6379:6379
 
-      mysql:
-        image: mysql:5.7
-        options: >-
-          --character-set-server=utf8mb4 
-          --collation-server=utf8mb4_general_ci
-        env:
-          MYSQL_DATABASE     : db_beego
-          MYSQL_ROOT_PASSWORD: 123456
-        ports:
-          # Maps tcp port 3306 on service container to the host
-          - 3306:3306
     steps:
+      - name: Setup MySQL
+        uses: gphper/mysql-action@v1.1
+        with:
+          host port: 3306
+          container port: 3306
+          character set server: 'utf8'
+          collation server: 'utf8_general_ci'
+          mysql version: '5.7'
+          mysql database: 'db_ginadmin'
+          mysql root password: '123456'
+
       - name: Golang
         uses: actions/setup-go@v3
         with:

@@ -81,7 +81,7 @@
    [mysql]
    username=root
    password=123456
-   database=db_beego
+   database=db_ginadmin
    host=127.0.0.1
    port=3306
    max_open_conn=50
