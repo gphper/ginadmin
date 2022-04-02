@@ -19,6 +19,9 @@ jobs:
 
       mysql:
         image: mysql:5.7
+        options: >-
+          --character-set-server "utf8mb4" 
+          --collation-server "utf8mb4_general_ci"
         env:
           MYSQL_DATABASE     : db_beego
           MYSQL_ROOT_PASSWORD: 123456
@@ -37,4 +40,4 @@ jobs:
       - name: Test Run Project  
         run: |
           go mod download
-          go run ./cmd/ginadmin
+          go test -v ./test
