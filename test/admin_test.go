@@ -25,12 +25,10 @@ type AdminTestSuite struct {
 
 func (suite *AdminTestSuite) SetupSuite() {
 	suite.router = router.Init()
-	//先执行登录操作获取cookie
-	suite.TestLoginPost()
 }
 
 // 登录页测试
-func (suite *AdminTestSuite) TestLoginGet() {
+func (suite *AdminTestSuite) TestALoginGet() {
 
 	body := httptestutil.Get("/admin/login", suite.router)
 
@@ -38,7 +36,7 @@ func (suite *AdminTestSuite) TestLoginGet() {
 }
 
 // 登录
-func (suite *AdminTestSuite) TestLoginPost() {
+func (suite *AdminTestSuite) TestALoginPost() {
 
 	option := httptestutil.OptionValue{
 		Param: url.Values{
@@ -56,7 +54,7 @@ func (suite *AdminTestSuite) TestLoginPost() {
 }
 
 // 添加角色
-func (suite *AdminTestSuite) TestAddGroup() {
+func (suite *AdminTestSuite) TestBAddGroup() {
 	param := httptestutil.OptionValue{
 		Param: url.Values{
 			"groupname": {"测试角色11"},
