@@ -1,4 +1,5 @@
 # GinAdmin
+
 这个项目是以Gin框架为基础搭建的后台管理平台，虽然很多人都认为go是用来开发高性能服务端项目的，但是也难免有要做web管理端的需求，总不能再使用别的语言来开发吧。所以整合出了GinAdmin项目，请大家多提意见指正！欢迎 star ⭐⭐
 
 ![logo](README/logo.jpg)
@@ -6,6 +7,7 @@
 ![logo](README/index.jpg)
 
 ## 依赖
+
 * golang > 1.8
 * Gin
 * BootStrap
@@ -43,42 +45,58 @@
 
 :black_square_button:命令行操作
 
+:black_square_button:RPC服务调用
+
 ## 使用文档
+
 - [演示地址](#演示地址)
 
 - [开始使用](#开始使用)
+
 - [构建环境](#docker-compose)
+
 - [项目目录](#结构)
+
 - [分页](#分页)
+
 - [日志](#日志)
+
 - [数据库](#数据库)
+
 - [定时任务](#定时任务)
+
 - [配置文件](#配置文件)
+
 - [模板页面](#模板页面)
+
 - [用户权限](#用户权限)
+
 - [API文档](#API文档)
+
 - [线上部署](#线上部署)
+
 - [性能监控](#性能监控)
 
 ### :small_blue_diamond:<a name="演示地址">演示地址</a>
+
 * http://122.152.196.83/admin/login  账号：admin 密码： 111111
 
 ### :small_blue_diamond:<a name="开始使用">开始使用</a>
 
 1. git 克隆地址 
-
+   
    ```
    git clone https://github.com/gphper/ginadmin.git
    ```
 
 2. 下载依赖包
-
+   
    ```go
    go mod download
    ```
 
 3. 配置 `configs/config.ini`文件
-
+   
    ```
    [mysql]
    username=root
@@ -124,12 +142,10 @@
 }
 ```
 
-
-
 ### :small_blue_diamond:<a name="docker-compose">构建开发环境</a>
 
 1. 替换conf目录下的配置项
-
+   
    ```ini
    [mysql]
    username=docker
@@ -160,7 +176,7 @@
 5. 运行项目 ` go run ./cmd/ginadmin/`  访问地址 `http://localhost:20010/admin/login`
 
 6. 桌面连接redis地址
-
+   
    ```
    地址：127.0.0.1
    端口：6380
@@ -168,7 +184,7 @@
    ```
 
 7. 桌面连接mysql地址
-
+   
    ```
    地址：localhost
    端口：3310
@@ -192,78 +208,81 @@
 
 ### :small_blue_diamond:<a name="分页">分页</a>
 
-1.  使用 `pkg/paginater/paginater.go` 里面的 `PageOperation` 进行分页
-    ```go
-    adminDb := models.Db.Table("admin_users").Select("nickname","username").Where("uid != ?", 1)
-    adminUserData := paginater.PageOperation(c, adminDb, 1, &adminUserList)
-    ```
-2.  在html中使用
-    ```go
-    {{ .adminUserData.PageHtml }}
-    ```
+1. 使用 `pkg/paginater/paginater.go` 里面的 `PageOperation` 进行分页
+   
+   ```go
+   adminDb := models.Db.Table("admin_users").Select("nickname","username").Where("uid != ?", 1)
+   adminUserData := paginater.PageOperation(c, adminDb, 1, &adminUserList)
+   ```
+2. 在html中使用
+   
+   ```go
+   {{ .adminUserData.PageHtml }}
+   ```
 
 ### :small_blue_diamond:<a name="日志">日志</a>
-1.  系统日志
-    
-    设置路由中间件来收集系统日志和错误日志，设置 `internal/router/default.go` 文件
-    
-2.  自定义日志
-    
-    使用 loggers.LogInfo()` 方法记录日志  `github.com/gphper/ginadmin/pkg/loggers`
-    
-    ```golang
-    loggers.LogInfo("admin", "this is a info message", map[string]string{
-    		"user_info": "this is a user info",
-    })
-    ```
-    
-3. 切换存储介质
 
+1. 系统日志
+   
+   设置路由中间件来收集系统日志和错误日志，设置 `internal/router/default.go` 文件
+
+2. 自定义日志
+   
+   使用 loggers.LogInfo()` 方法记录日志  `github.com/gphper/ginadmin/pkg/loggers`
+   
+   ```golang
+   loggers.LogInfo("admin", "this is a info message", map[string]string{
+           "user_info": "this is a user info",
+   })
+   ```
+
+3. 切换存储介质
+   
    在配置文件中修改 `log_media` 参数默认file文件存储可选redis存储
 
 ### :small_blue_diamond:<a name="数据库">数据库</a>
 
 1. models下定义的文件均需要实现 `TableName() string`  方法，并将实现该结构体的指针写入到 `GetModels` 方法中
-
+   
    ```go
    func GetModels() []interface{} {
-   	return []interface{}{
-   		&AdminUsers{},
-   		&AdminGroup{},
-   	}
+       return []interface{}{
+           &AdminUsers{},
+           &AdminGroup{},
+       }
    }
    ```
 
 2. model需要继承 BaseModle 并且实现 TableName 方法，如果需要初始化填充数据的话，需要实现 FillData() 方法，并将数据填充需要执行的代码写到函数体里。详情参照 AdminUsers
 
-5. 可以通过设置 ini 配置文件中的 `fill_data`和`migrate_table` 分别控制程序重启时自动迁移数据表和填充数据
+3. 可以通过设置 ini 配置文件中的 `fill_data`和`migrate_table` 分别控制程序重启时自动迁移数据表和填充数据
 
 ### :small_blue_diamond:<a name="定时任务">定时任务</a>
 
--    在 `pkg/cron/cron.go`  添加定时执行任务
+- 在 `pkg/cron/cron.go`  添加定时执行任务
 
 ### :small_blue_diamond:<a name="配置文件">配置文件</a>
 
 1. 现在 `configs/config.go` 添加配置项的 struct 类型，例如
-
+   
    ```go
    type AppConf struct {
-   	BaseConf `ini:"base"`
+       BaseConf `ini:"base"`
    }
    type BaseConf struct {
-   	Port string `ini:"port"`
+       Port string `ini:"port"`
    }
    ```
 
 2. 在 `configs/config.ini` 添加配置信息
-
+   
    ```
    [base]
    port=:8091
    ```
 
 3. 在代码中调用配置文件的信息
-
+   
    ```go
    configs.App.BaseConf.Port
    ```
@@ -271,7 +290,6 @@
 ### :small_blue_diamond:<a name="模板页面">模板页面</a>
 
 - 所有的后台模板都写到 `web/views/template` 目录下面，并且分目录存储，调用时按照 `目录/模板名称` 的方式调用
-
 
 ### :small_blue_diamond:<a name="用户权限">用户权限</a>
 
@@ -282,32 +300,32 @@
 - 框架中的常用方法定义在  `pkg/casbinauth/casbin.go` 文件中
 
 - 在控制器中可用从 `gin.context` 获取登录用户信息
-
+  
   ```go
   info,_ := c.Get("userInfo")
   ```
 
 - template 中判断权限的函数 `judgeContainPriv` 定义在 `pkg/template/default.go` 文件下
-
+  
   ```go
   "judgeContainPriv": func(username string, obj string, act string) bool {
-  		if username == "admin" {
-  			return true
-  		}
-  		ok, err := casbinauth.Check(username, obj, act)
-  		if !ok || err != nil {
-  			return false
-  		}
-  		return true
+          if username == "admin" {
+              return true
+          }
+          ok, err := casbinauth.Check(username, obj, act)
+          if !ok || err != nil {
+              return false
+          }
+          return true
   },
   ```
 
 ### :small_blue_diamond:<a name="API文档">API文档</a>
 
 - 使用 swagg 生成api文档，生成文件再docs目录下
-
-  ```swag init -g cmd/ginadmin/main.go```
   
+  ```swag init -g cmd/ginadmin/main.go```
+
 - 在根目录执行  `go build .\cmd\ginadmin\` 然后啊访问 http://localhost:20010/swagger/index.html
 
 ### :small_blue_diamond:<a name="线上部署">线上部署</a>
@@ -318,4 +336,3 @@
 ### :small_blue_diamond:<a name="性能监控">性能监控</a>
 
 * 推荐使用 prometheus + grafana 进行性能监控，参考示例  https://github.com/gphper/ginmonitor
-
