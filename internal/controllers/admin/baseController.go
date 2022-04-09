@@ -12,6 +12,7 @@ import (
 	"runtime"
 	"strconv"
 
+	"github.com/gphper/ginadmin/pkg/loggers"
 	gvalidator "github.com/gphper/ginadmin/pkg/validator"
 
 	"github.com/gin-gonic/gin"
@@ -47,6 +48,12 @@ func (Base BaseController) ErrorHtml(c *gin.Context, err error) {
 			"error": err.Error(),
 		})
 	} else {
+		//收集信息存入到日志
+		_, file, line, _ := runtime.Caller(1)
+		loggers.LogError("admin-custom-error", "err msg", map[string]string{
+			"err msg":   err.Error(),
+			"file info": file + ":" + strconv.Itoa(line),
+		})
 		c.HTML(http.StatusOK, "home/error.html", gin.H{
 			"title": "出错了~",
 		})
