@@ -37,6 +37,8 @@
 
 :white_check_mark:HTTP测试
 
+:white_check_mark:MongoDB存储日志
+
 :black_square_button:登录日志
 
 :black_square_button:Admin Api
