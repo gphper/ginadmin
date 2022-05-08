@@ -6,6 +6,8 @@
 package filesystem
 
 import (
+	"errors"
+	"fmt"
 	"io/fs"
 	"log"
 	"os"
@@ -89,15 +91,23 @@ func OpenFile(filepath string) (file *os.File, err error) {
 }
 
 /**
-* 组装字符串
+* 过滤非法访问的路径
  */
-func JoinStr(items ...interface{}) string {
-	if len(items) == 0 {
-		return ""
+func FilterPath(root, path string) (string, error) {
+
+	newPath := fmt.Sprintf("%s%s", root, path)
+	absPath, err := filepath.Abs(newPath)
+	if err != nil {
+		return "", err
 	}
-	var builder strings.Builder
-	for _, v := range items {
-		builder.WriteString(v.(string))
+
+	absPath = filepath.FromSlash(absPath)
+	ifOver := filepath.HasPrefix(absPath, filepath.FromSlash(root))
+	fmt.Println(absPath)
+	fmt.Println(filepath.FromSlash(root))
+	if !ifOver {
+		return "", errors.New("access to the path is prohibited")
 	}
-	return builder.String()
+
+	return absPath, nil
 }

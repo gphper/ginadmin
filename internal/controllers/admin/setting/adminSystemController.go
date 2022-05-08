@@ -20,6 +20,7 @@ import (
 	"github.com/gphper/ginadmin/internal/controllers/admin"
 	"github.com/gphper/ginadmin/internal/redis"
 	"github.com/gphper/ginadmin/pkg/loggers"
+	"github.com/gphper/ginadmin/pkg/utils/filesystem"
 	gstrings "github.com/gphper/ginadmin/pkg/utils/strings"
 
 	"github.com/gin-gonic/gin"
@@ -80,7 +81,11 @@ func (con adminSystemController) GetDir(c *gin.Context) {
 	)
 
 	fileSlice = make([]FileNode, 0)
-	path = gstrings.JoinStr(configs.RootPath, c.Query("path"))
+	path, err = filesystem.FilterPath(configs.RootPath+"logs", c.Query("path"))
+	if err != nil {
+		con.Error(c, err.Error())
+		return
+	}
 
 	files, err = ioutil.ReadDir(path)
 	if err != nil {
@@ -132,7 +137,12 @@ func (con adminSystemController) View(c *gin.Context) {
 	}
 
 	var filecontents []string
-	filePath := gstrings.JoinStr(configs.RootPath, c.Query("path"))
+	filePath, err := filesystem.FilterPath(configs.RootPath+"logs", c.Query("path"))
+	if err != nil {
+		con.ErrorHtml(c, err)
+		return
+	}
+
 	fi, err := os.Open(filePath)
 	if err != nil {
 		con.ErrorHtml(c, err)
