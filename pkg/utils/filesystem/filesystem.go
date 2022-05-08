@@ -102,9 +102,7 @@ func FilterPath(root, path string) (string, error) {
 	}
 
 	absPath = filepath.FromSlash(absPath)
-	ifOver := filepath.HasPrefix(absPath, filepath.FromSlash(root))
-	fmt.Println(absPath)
-	fmt.Println(filepath.FromSlash(root))
+	ifOver := strings.HasPrefix(absPath, filepath.FromSlash(root))
 	if !ifOver {
 		return "", errors.New("access to the path is prohibited")
 	}
