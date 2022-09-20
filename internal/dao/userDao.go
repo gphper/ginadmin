@@ -6,6 +6,8 @@
 package dao
 
 import (
+	"sync"
+
 	"github.com/gphper/ginadmin/internal/models"
 
 	"gorm.io/gorm"
@@ -15,4 +17,12 @@ type userDao struct {
 	DB *gorm.DB
 }
 
-var UserDao = userDao{DB: models.Db}
+var insUd *userDao
+var onceUd sync.Once
+
+func NewUserDao() *userDao {
+	onceUd.Do(func() {
+		insUd = &userDao{DB: models.Db}
+	})
+	return insUd
+}

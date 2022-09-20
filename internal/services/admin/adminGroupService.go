@@ -17,7 +17,7 @@ var AgService = adminGroupService{}
 
 //获取角色列表
 func (ser *adminGroupService) GetList() (adminGroups []models.AdminGroup, err error) {
-	err = dao.AgDao.DB.Where("group_id != ?", 1).Find(&adminGroups).Error
+	err = dao.NewAdminGroupDao().DB.Where("group_id != ?", 1).Find(&adminGroups).Error
 	return
 }
 
@@ -45,13 +45,13 @@ func (ser *adminGroupService) SaveGroup(req models.AdminGroupSaveReq) error {
 
 //获取角色信息
 func (ser *adminGroupService) GetGroup(id string) (adminGroup models.AdminGroup, err error) {
-	err = dao.AgDao.DB.Where("group_id = ?", id).First(&adminGroup).Error
+	err = dao.NewAdminGroupDao().DB.Where("group_id = ?", id).First(&adminGroup).Error
 	return
 }
 
 //获取所有角色
 func (ser *adminGroupService) GetAllGroup() (adminGroups []models.AdminGroup, err error) {
-	err = dao.AgDao.DB.Where("group_id != ?", 1).Find(&adminGroups).Error
+	err = dao.NewAdminGroupDao().DB.Where("group_id != ?", 1).Find(&adminGroups).Error
 	return
 }
 

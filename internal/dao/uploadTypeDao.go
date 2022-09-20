@@ -6,6 +6,8 @@
 package dao
 
 import (
+	"sync"
+
 	"github.com/gphper/ginadmin/internal/models"
 
 	"gorm.io/gorm"
@@ -15,4 +17,12 @@ type uploadTypeDao struct {
 	DB *gorm.DB
 }
 
-var UtDao = uploadTypeDao{DB: models.Db}
+var insUtd *uploadTypeDao
+var onceUtd sync.Once
+
+func NewUploadTypeDao() *uploadTypeDao {
+	onceUtd.Do(func() {
+		insUtd = &uploadTypeDao{DB: models.Db}
+	})
+	return insUtd
+}

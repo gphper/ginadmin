@@ -26,7 +26,7 @@ var AuService = adminUserService{}
 //获取管理员
 func (ser *adminUserService) GetAdminUsers(req models.AdminUserIndexReq) (db *gorm.DB) {
 
-	db = dao.AuDao.DB.Table("admin_users").Where("uid != ?", 1)
+	db = dao.NewAdminUserDao().DB.Table("admin_users").Where("uid != ?", 1)
 
 	if req.Nickname != "" {
 		db = db.Where("nickname like ?", "%"+req.Nickname+"%")
@@ -56,7 +56,7 @@ func (ser *adminUserService) SaveAdminUser(req models.AdminUserSaveReq) (err err
 		rules = append(rules, []string{req.Username, v})
 	}
 
-	tx := dao.AuDao.DB.Begin()
+	tx := dao.NewAdminUserDao().DB.Begin()
 
 	if req.Uid > 0 {
 		err = tx.Table("admin_users").Where("uid = ?", req.Uid).First(&adminUser).Error
@@ -127,13 +127,13 @@ func (ser *adminUserService) SaveAdminUser(req models.AdminUserSaveReq) (err err
 
 //获取单个管理员用户信息
 func (ser *adminUserService) GetAdminUser(id string) (adminUser models.AdminUsers, err error) {
-	err = dao.AuDao.DB.Where("uid = ?", id).First(&adminUser).Error
+	err = dao.NewAdminUserDao().DB.Where("uid = ?", id).First(&adminUser).Error
 	return
 }
 
 //删除管理员
 func (ser *adminUserService) DelAdminUser(id string) (err error) {
-	err = dao.AuDao.DB.Where("uid = ?", id).Delete(models.AdminUsers{}).Error
+	err = dao.NewAdminUserDao().DB.Where("uid = ?", id).Delete(models.AdminUsers{}).Error
 	return
 }
 
@@ -160,7 +160,7 @@ func (ser *adminUserService) EditPass(req models.AdminUserEditPassReq) (err erro
 
 	newPass := gstrings.Encryption(req.NewPassword, adminUser.Salt)
 
-	err = dao.AuDao.DB.Model(&adminUser).UpdateColumn("password", newPass).Error
+	err = dao.NewAdminUserDao().DB.Model(&adminUser).UpdateColumn("password", newPass).Error
 
 	return
 }
@@ -179,7 +179,7 @@ func (ser *adminUserService) EditSkin(req models.AdminUserSkinReq) (err error) {
 		return
 	}
 
-	err = dao.AuDao.DB.Model(&adminUser).UpdateColumn(skinMap[req.Type], req.Color).Error
+	err = dao.NewAdminUserDao().DB.Model(&adminUser).UpdateColumn(skinMap[req.Type], req.Color).Error
 
 	return
 }

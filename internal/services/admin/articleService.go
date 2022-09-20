@@ -20,7 +20,7 @@ var ArticleService = articleService{}
 
 func (ser *articleService) GetArticle(articleId uint) (article models.Article, err error) {
 	article.ArticleId = articleId
-	err = dao.ArticleDao.DB.First(&article).Error
+	err = dao.NewArticleDao().DB.First(&article).Error
 	if err != nil {
 		return models.Article{}, err
 	}
@@ -29,7 +29,7 @@ func (ser *articleService) GetArticle(articleId uint) (article models.Article, e
 
 func (ser *articleService) GetArticles(req models.ArticleIndexReq) (db *gorm.DB) {
 
-	db = dao.AuDao.DB.Table("article")
+	db = dao.NewArticleDao().DB.Table("article")
 
 	if req.Title != "" {
 		db = db.Where("title like ?", "%"+req.Title+"%")
@@ -56,14 +56,14 @@ func (ser *articleService) SaveArticle(req models.ArticleReq) (err error) {
 
 		article.ArticleId = uint(req.ArticleId)
 
-		dao.ArticleDao.DB.First(&article)
+		dao.NewArticleDao().DB.First(&article)
 
 		article.Title = req.Title
 		article.Desc = req.Desc
 		article.Content = req.Content
 		article.CoverImg = req.CoverImg
 
-		err = dao.ArticleDao.DB.Save(&article).Error
+		err = dao.NewArticleDao().DB.Save(&article).Error
 		if err != nil {
 			return
 		}
@@ -73,7 +73,7 @@ func (ser *articleService) SaveArticle(req models.ArticleReq) (err error) {
 		article.Content = req.Content
 		article.CoverImg = req.CoverImg
 		article.Desc = req.Desc
-		err = dao.ArticleDao.DB.Save(&article).Error
+		err = dao.NewArticleDao().DB.Save(&article).Error
 		if err != nil {
 			return
 		}
@@ -85,6 +85,6 @@ func (ser *articleService) SaveArticle(req models.ArticleReq) (err error) {
 func (ser *articleService) DelArticle(id int) (err error) {
 	var article models.Article
 	article.ArticleId = uint(id)
-	err = dao.ArticleDao.DB.Delete(&article).Error
+	err = dao.NewArticleDao().DB.Delete(&article).Error
 	return
 }
