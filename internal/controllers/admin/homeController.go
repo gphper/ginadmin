@@ -51,7 +51,7 @@ func (con homeController) Home(c *gin.Context) {
 	//获取当前用户的皮肤
 	uid, _ := userData["uid"].(float64)
 
-	adminUser, _ := services.AuService.GetAdminUser(strconv.Itoa(int(uid)))
+	adminUser, _ := (services.NewAdminUserService()).GetAdminUser(strconv.Itoa(int(uid)))
 
 	c.HTML(http.StatusOK, "home/home.html", gin.H{
 		"menuList":  menuList,

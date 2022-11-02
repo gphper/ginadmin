@@ -29,7 +29,7 @@ func (ser *articleService) GetArticle(articleId uint) (article models.Article, e
 
 func (ser *articleService) GetArticles(req models.ArticleIndexReq) (db *gorm.DB) {
 
-	db = dao.AuDao.DB.Table("article")
+	db = dao.NewAdminUserDao().DB.Table("article")
 
 	if req.Title != "" {
 		db = db.Where("title like ?", "%"+req.Title+"%")
