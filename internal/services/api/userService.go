@@ -29,7 +29,7 @@ func (ser *userService) Register(req models.UserRegisterReq) error {
 		err  error
 	)
 
-	err = dao.UserDao.DB.Find(&user, "email = ?", req.Email).Error
+	err = dao.NewUserDao().DB.Find(&user, "email = ?", req.Email).Error
 	if err != nil {
 		return err
 	}
@@ -45,7 +45,7 @@ func (ser *userService) Register(req models.UserRegisterReq) error {
 	user.Password = passwordSalt
 	user.Salt = salt
 
-	return dao.UserDao.DB.Create(&user).Error
+	return dao.NewUserDao().DB.Create(&user).Error
 }
 
 /**
@@ -57,7 +57,7 @@ func (ser *userService) Login(req models.UserLoginReq) (jtoken string, retoken s
 		payload jwt.Payload
 	)
 
-	err = dao.UserDao.DB.Find(&user, "email = ?", req.Email).Error
+	err = dao.NewUserDao().DB.Find(&user, "email = ?", req.Email).Error
 	if err != nil {
 		return
 	}
@@ -86,7 +86,7 @@ func (ser *userService) Login(req models.UserLoginReq) (jtoken string, retoken s
 	user.RefreshToken.String = retoken
 	user.RefreshToken.Valid = true
 	user.ExpirTime.Time = time.Now().Add(7 * time.Hour)
-	dao.UserDao.DB.Save(&user)
+	dao.NewUserDao().DB.Save(&user)
 
 	return
 }
@@ -100,7 +100,7 @@ func (ser *userService) RefreshToken(req models.UserRefreshTokenReq) (jtoken str
 		payload jwt.Payload
 	)
 
-	err = dao.UserDao.DB.Find(&user, "refresh_token = ?", req.Retoken).Error
+	err = dao.NewUserDao().DB.Find(&user, "refresh_token = ?", req.Retoken).Error
 	if err != nil {
 		return
 	}

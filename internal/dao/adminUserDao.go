@@ -6,7 +6,6 @@
 package dao
 
 import (
-	"fmt"
 	"strings"
 	"sync"
 
@@ -32,7 +31,6 @@ func NewAdminUserDao() *AdminUserDao {
 }
 
 func (dao *AdminUserDao) GetAdminUser(id string) (adminUser models.AdminUsers, err error) {
-	fmt.Println(dao.DB)
 	err = dao.DB.Where("uid = ?", id).First(&adminUser).Error
 	return
 }

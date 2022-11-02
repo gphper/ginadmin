@@ -76,4 +76,5 @@ func Init() {
 	if err != nil {
 		fmt.Printf("load ini err:%v", err)
 	}
+
 }

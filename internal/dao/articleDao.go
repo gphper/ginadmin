@@ -6,6 +6,8 @@
 package dao
 
 import (
+	"sync"
+
 	"github.com/gphper/ginadmin/internal/models"
 
 	"gorm.io/gorm"
@@ -15,4 +17,12 @@ type articleDao struct {
 	DB *gorm.DB
 }
 
-var ArticleDao = articleDao{DB: models.Db}
+var insAd *articleDao
+var onceAd sync.Once
+
+func NewArticleDao() *articleDao {
+	onceAd.Do(func() {
+		insAd = &articleDao{DB: models.Db}
+	})
+	return insAd
+}

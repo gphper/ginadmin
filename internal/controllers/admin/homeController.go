@@ -8,7 +8,6 @@ package admin
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -100,8 +99,6 @@ func (con homeController) SaveSkin(c *gin.Context) {
 	value, _ := c.Get("userInfo")
 
 	userData := make(map[string]interface{})
-
-	fmt.Println(value.(string))
 
 	json.Unmarshal([]byte(value.(string)), &userData)
 

@@ -55,7 +55,7 @@ func (con uploadController) UploadHtml(c *gin.Context) {
 	mimeMap["rar"] = "application/x-rar-compressed"
 	mimeMap["mp3"] = "audio/mpeg"
 
-	err = dao.UtDao.DB.Where("type_name", req.TypeName).First(&uploadType).Error
+	err = dao.NewUploadTypeDao().DB.Where("type_name", req.TypeName).First(&uploadType).Error
 	if err != nil {
 		con.Error(c, err.Error())
 		return
