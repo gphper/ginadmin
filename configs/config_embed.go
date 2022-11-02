@@ -1,4 +1,5 @@
-//+build embed
+//go:build embed
+// +build embed
 
 /*
  * @Description:
@@ -57,7 +58,7 @@ var App = new(AppConf)
 var iniStr string
 
 //初始化配置文件
-func init() {
+func Init() {
 	err := ini.MapTo(App, bytes.NewReader([]byte(iniStr)))
 	if err != nil {
 		fmt.Printf("load ini err:%v", err)
