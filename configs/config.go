@@ -1,4 +1,5 @@
-//+build !embed
+//go:build !embed
+// +build !embed
 
 /*
  * @Description:
@@ -58,7 +59,7 @@ type BaseConf struct {
 var App = new(AppConf)
 
 //初始化配置文件
-func init() {
+func Init() {
 
 	path, err := filesystem.RootPath()
 	if err != nil {

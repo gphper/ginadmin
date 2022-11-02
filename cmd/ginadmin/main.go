@@ -9,6 +9,9 @@ import (
 	"fmt"
 	"io/ioutil"
 
+	"github.com/gphper/ginadmin/configs"
+	"github.com/gphper/ginadmin/internal/models"
+	"github.com/gphper/ginadmin/internal/redis"
 	"github.com/gphper/ginadmin/internal/router"
 	_ "github.com/gphper/ginadmin/pkg/cron"
 
@@ -34,6 +37,11 @@ var (
 // @basepath /api
 func main() {
 	showLogo()
+
+	configs.Init()
+
+	models.Init()
+	redis.Init()
 
 	//判断是否编译线上版本
 	if release {
