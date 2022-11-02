@@ -37,17 +37,12 @@
 
 :white_check_mark:HTTP测试
 
-:black_square_button:MongoDB存储日志
-
 :black_square_button:登录日志
 
-:black_square_button:Admin Api
-
-:black_square_button:Admin Vue
+:black_square_button:csrf 防御
 
 :black_square_button:命令行操作
 
-:black_square_button:RPC服务调用
 
 ## 使用文档
 
