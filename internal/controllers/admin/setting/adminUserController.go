@@ -41,7 +41,7 @@ func (con adminUserController) Index(c *gin.Context) {
 		return
 	}
 
-	adminDb := services.AuService.GetAdminUsers(req)
+	adminDb := services.NewAdminUserService().GetAdminUsers(req)
 	adminUserData := paginater.PageOperation(c, adminDb, 1, &adminUserList)
 	c.HTML(http.StatusOK, "setting/adminuser.html", gin.H{
 		"adminUserData": adminUserData,
@@ -75,12 +75,14 @@ func (con adminUserController) Save(c *gin.Context) {
 		con.Error(c, err.Error())
 		return
 	}
-	err = services.AuService.SaveAdminUser(req)
-	if err == nil {
-		con.Success(c, "/admin/setting/adminuser/index", "操作成功")
-	} else {
+
+	err = services.NewAdminUserService().SaveAdminUser(req)
+	if err != nil {
 		con.Error(c, err.Error())
+		return
 	}
+
+	con.Success(c, "/admin/setting/adminuser/index", "操作成功")
 }
 
 /**
@@ -88,7 +90,7 @@ func (con adminUserController) Save(c *gin.Context) {
 */
 func (con adminUserController) Edit(c *gin.Context) {
 	id := c.Query("id")
-	adminUser, _ := services.AuService.GetAdminUser(map[string]interface{}{"uid": id})
+	adminUser, _ := services.NewAdminUserService().GetAdminUser(map[string]interface{}{"uid": id})
 	var groupName []string
 	json.Unmarshal([]byte(adminUser.GroupName), &groupName)
 	var groupMap = make(map[string]struct{})
@@ -106,12 +108,14 @@ func (con adminUserController) Edit(c *gin.Context) {
 删除
 */
 func (con adminUserController) Del(c *gin.Context) {
+
 	id := c.Query("id")
-	err := services.AuService.DelAdminUser(id)
+
+	err := services.NewAdminUserService().DelAdminUser(id)
 	if err != nil {
 		con.Error(c, "删除失败")
-	} else {
-		con.Success(c, "", "删除成功")
+		return
 	}
 
+	con.Success(c, "", "删除成功")
 }

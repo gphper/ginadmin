@@ -8,16 +8,18 @@ import (
 	"gorm.io/gorm"
 )
 
-type adminGroupDao struct {
+type AdminGroupDao struct {
 	DB *gorm.DB
 }
 
-var insAgd *adminGroupDao
-var onceAgd sync.Once
+var (
+	instanceAdminGroup *AdminGroupDao
+	onceAdminGroup     sync.Once
+)
 
-func NewAdminGroupDao() *adminGroupDao {
-	onceAgd.Do(func() {
-		insAgd = &adminGroupDao{DB: models.Db}
+func NewAdminGroupDao() *AdminGroupDao {
+	onceAdminGroup.Do(func() {
+		instanceAdminGroup = &AdminGroupDao{DB: models.Db}
 	})
-	return insAgd
+	return instanceAdminGroup
 }

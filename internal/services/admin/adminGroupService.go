@@ -6,19 +6,29 @@
 package admin
 
 import (
+	"sync"
+
 	"github.com/gphper/ginadmin/internal/dao"
 	"github.com/gphper/ginadmin/internal/models"
 	"github.com/gphper/ginadmin/pkg/casbinauth"
 )
 
-type adminGroupService struct{}
+type adminGroupService struct {
+	Dao *dao.AdminGroupDao
+}
 
-var AgService = adminGroupService{}
+var (
+	instanceAdminGroupService *adminGroupService
+	onceAdminGroupService     sync.Once
+)
 
-//获取角色列表
-func (ser *adminGroupService) GetList() (adminGroups []models.AdminGroup, err error) {
-	err = dao.NewAdminGroupDao().DB.Where("group_id != ?", 1).Find(&adminGroups).Error
-	return
+func NewAdminGroupService() *adminGroupService {
+	onceAdminGroupService.Do(func() {
+		instanceAdminGroupService = &adminGroupService{
+			Dao: dao.NewAdminGroupDao(),
+		}
+	})
+	return instanceAdminGroupService
 }
 
 //保存角色
@@ -32,7 +42,7 @@ func (ser *adminGroupService) SaveGroup(req models.AdminGroupSaveReq) error {
 		}
 	}
 
-	tx := models.Db.Begin()
+	tx := ser.Dao.DB.Begin()
 
 	_, err := casbinauth.UpdatePolices(req.GroupName, oldSlice, req.Privs, tx)
 	if err != nil {
@@ -40,19 +50,8 @@ func (ser *adminGroupService) SaveGroup(req models.AdminGroupSaveReq) error {
 		return err
 	}
 
+	tx.Commit()
 	return nil
-}
-
-//获取角色信息
-func (ser *adminGroupService) GetGroup(id string) (adminGroup models.AdminGroup, err error) {
-	err = dao.NewAdminGroupDao().DB.Where("group_id = ?", id).First(&adminGroup).Error
-	return
-}
-
-//获取所有角色
-func (ser *adminGroupService) GetAllGroup() (adminGroups []models.AdminGroup, err error) {
-	err = dao.NewAdminGroupDao().DB.Where("group_id != ?", 1).Find(&adminGroups).Error
-	return
 }
 
 //删除角色

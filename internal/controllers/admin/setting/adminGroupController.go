@@ -8,6 +8,7 @@ package setting
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gphper/ginadmin/internal/controllers/admin"
 	"github.com/gphper/ginadmin/internal/menu"
@@ -28,8 +29,23 @@ var Agc = adminGroupController{}
 角色列表
 */
 func (con adminGroupController) Index(c *gin.Context) {
+
+	var groups []string
+
+	key := c.Query("keyword")
+	if key != "" {
+		for _, v := range casbinauth.GetGroups() {
+			if strings.Contains(v, key) {
+				groups = append(groups, key)
+			}
+		}
+	} else {
+		groups = casbinauth.GetGroups()
+	}
+
 	c.HTML(http.StatusOK, "setting/group.html", gin.H{
-		"adminGroups": casbinauth.GetGroups(),
+		"adminGroups": groups,
+		"keyword":     key,
 	})
 }
 
@@ -55,12 +71,13 @@ func (con adminGroupController) Save(c *gin.Context) {
 		return
 	}
 
-	dbErr := services.AgService.SaveGroup(req)
-	if dbErr != nil {
+	err = services.NewAdminGroupService().SaveGroup(req)
+	if err != nil {
 		con.Error(c, "操作失败")
-	} else {
-		con.Success(c, "/admin/setting/admingroup/index", "操作成功")
+		return
 	}
+
+	con.Success(c, "/admin/setting/admingroup/index", "操作成功")
 }
 
 /**
@@ -80,7 +97,7 @@ func (con adminGroupController) Edit(c *gin.Context) {
 func (con adminGroupController) Del(c *gin.Context) {
 
 	id := c.Query("id")
-	dbOk, dbErr := services.AgService.DelGroup(id)
+	dbOk, dbErr := services.NewAdminGroupService().DelGroup(id)
 	if dbErr != nil || !dbOk {
 		con.Error(c, "删除失败")
 	} else {

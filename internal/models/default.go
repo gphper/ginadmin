@@ -60,7 +60,6 @@ func Init() {
 func GetModels() []interface{} {
 	return []interface{}{
 		&AdminUsers{},
-		&AdminGroup{},
 		&Article{},
 		&UploadType{},
 		&User{},

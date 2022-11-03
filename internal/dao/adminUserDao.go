@@ -35,9 +35,9 @@ func (dao *AdminUserDao) GetAdminUser(conditions map[string]interface{}) (adminU
 	return
 }
 
-func (dao *AdminUserDao) GetAdminUsers(uid int, nickname string, created_time string) (db *gorm.DB) {
+func (dao *AdminUserDao) GetAdminUsers(nickname string, created_time string) (db *gorm.DB) {
 
-	db = dao.DB.Table("admin_users").Where("uid != ?", uid)
+	db = dao.DB.Table("admin_users")
 
 	if nickname != "" {
 		db = db.Where("nickname like ?", "%"+nickname+"%")
@@ -55,4 +55,17 @@ func (dao *AdminUserDao) GetAdminUsers(uid int, nickname string, created_time st
 
 func (dao *AdminUserDao) UpdateColumn(uid uint, key, value string) error {
 	return dao.DB.Model(&models.AdminUsers{}).Where("uid = ?", uid).UpdateColumn(key, value).Error
+}
+
+func (dao *AdminUserDao) UpdateColumns(conditions, field map[string]interface{}, tx *gorm.DB) error {
+
+	if tx != nil {
+		return tx.Model(&models.AdminUsers{}).Where(conditions).UpdateColumns(field).Error
+	}
+
+	return dao.DB.Model(&models.AdminUsers{}).Where(conditions).UpdateColumns(field).Error
+}
+
+func (dao *AdminUserDao) Del(conditions map[string]interface{}) error {
+	return dao.DB.Delete(&models.AdminUsers{}, conditions).Error
 }

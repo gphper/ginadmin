@@ -6,11 +6,13 @@
 package admin
 
 import (
+	"encoding/json"
 	"errors"
 	"sync"
 
 	"github.com/gphper/ginadmin/internal/dao"
 	"github.com/gphper/ginadmin/internal/models"
+	"github.com/gphper/ginadmin/pkg/casbinauth"
 	gstrings "github.com/gphper/ginadmin/pkg/utils/strings"
 
 	"gorm.io/gorm"
@@ -34,94 +36,85 @@ func NewAdminUserService() *adminUserService {
 	return instanceAdminUserService
 }
 
-var AuService = adminUserService{}
-
 //获取管理员
 func (ser *adminUserService) GetAdminUsers(req models.AdminUserIndexReq) (db *gorm.DB) {
-
-	return
+	return ser.Dao.GetAdminUsers(req.Nickname, req.CreatedAt)
 }
 
 //添加或保存管理员信息
 func (ser *adminUserService) SaveAdminUser(req models.AdminUserSaveReq) (err error) {
 
-	// var (
-	// 	adminUser models.AdminUsers
-	// 	ok        bool
-	// )
-	// groupnameStr, _ := json.Marshal(req.GroupName)
+	var (
+		adminUser models.AdminUsers
+		ok        bool
+	)
+	groupnameStr, _ := json.Marshal(req.GroupName)
 
-	// var rules = make([][]string, 0)
-	// for _, v := range req.GroupName {
-	// 	rules = append(rules, []string{req.Username, v})
-	// }
+	var rules = make([][]string, 0)
+	for _, v := range req.GroupName {
+		rules = append(rules, []string{req.Username, v})
+	}
 
-	// tx := dao.AuDao.DB.Begin()
+	tx := ser.Dao.DB.Begin()
 
-	// if req.Uid > 0 {
-	// 	err = tx.Table("admin_users").Where("uid = ?", req.Uid).First(&adminUser).Error
-	// 	if err != nil {
-	// 		return
-	// 	}
+	if req.Uid > 0 {
 
-	// 	var groupOldName []string
-	// 	json.Unmarshal([]byte(adminUser.GroupName), &groupOldName)
+		var groupOldName []string
+		adminUser, err = ser.Dao.GetAdminUser(map[string]interface{}{"uid": req.Uid})
+		if err != nil {
+			return
+		}
 
-	// 	adminUser := models.AdminUsers{
-	// 		Uid:       req.Uid,
-	// 		GroupName: string(groupnameStr),
-	// 		Username:  req.Username,
-	// 		Nickname:  req.Nickname,
-	// 		Password:  "",
-	// 		Phone:     req.Phone,
-	// 		LastLogin: "",
-	// 		Salt:      "",
-	// 		ApiToken:  "",
-	// 	}
-	// 	if req.Password != "" {
-	// 		salt := gstrings.RandString(6)
-	// 		adminUser.Salt = salt
-	// 		passwordSalt := gstrings.Encryption(req.Password, salt)
-	// 		adminUser.Password = passwordSalt
-	// 	}
-	// 	err = tx.Model(&adminUser).Updates(adminUser).Error
+		json.Unmarshal([]byte(adminUser.GroupName), &groupOldName)
+		fields := map[string]interface{}{
+			"groupName": string(groupnameStr),
+			"username":  req.Username,
+			"nickname":  req.Nickname,
+			"phone":     req.Phone,
+		}
+		if req.Password != "" {
+			salt := gstrings.RandString(6)
+			fields["salt"] = salt
+			fields["password"] = gstrings.Encryption(req.Password, salt)
+		}
 
-	// 	if err != nil {
-	// 		tx.Rollback()
-	// 		return
-	// 	}
+		err = ser.Dao.UpdateColumns(map[string]interface{}{"uid": req.Uid}, fields, tx)
+		if err != nil {
+			tx.Rollback()
+			return
+		}
 
-	// 	_, err = casbinauth.UpdateGroups(req.Username, groupOldName, req.GroupName, tx)
-	// 	if err != nil {
-	// 		tx.Rollback()
-	// 		return
-	// 	}
+		_, err = casbinauth.UpdateGroups(req.Username, groupOldName, req.GroupName, tx)
+		if err != nil {
+			tx.Rollback()
+			return
+		}
 
-	// } else {
-	// 	salt := gstrings.RandString(6)
-	// 	passwordSalt := gstrings.Encryption(req.Password, salt)
-	// 	adminUser := models.AdminUsers{
-	// 		GroupName: string(groupnameStr),
-	// 		Nickname:  req.Nickname,
-	// 		Username:  req.Username,
-	// 		Password:  passwordSalt,
-	// 		Phone:     req.Phone,
-	// 		Salt:      salt,
-	// 	}
-	// 	err = tx.Save(&adminUser).Error
-	// 	if err != nil {
-	// 		tx.Rollback()
-	// 		return
-	// 	}
-	// 	//将权限添加到casbin中
-	// 	ok, err = casbinauth.AddGroups("g", rules, tx)
-	// 	if err != nil || !ok {
-	// 		tx.Rollback()
-	// 		return
-	// 	}
-	// }
+	} else {
+		salt := gstrings.RandString(6)
+		passwordSalt := gstrings.Encryption(req.Password, salt)
+		adminUser := models.AdminUsers{
+			GroupName: string(groupnameStr),
+			Nickname:  req.Nickname,
+			Username:  req.Username,
+			Password:  passwordSalt,
+			Phone:     req.Phone,
+			Salt:      salt,
+		}
+		err = tx.Save(&adminUser).Error
+		if err != nil {
+			tx.Rollback()
+			return
+		}
+		//将权限添加到casbin中
+		ok, err = casbinauth.AddGroups("g", rules, tx)
+		if err != nil || !ok {
+			tx.Rollback()
+			return
+		}
+	}
 
-	// tx.Commit()
+	tx.Commit()
 	return
 }
 
@@ -133,8 +126,7 @@ func (ser *adminUserService) GetAdminUser(conditions map[string]interface{}) (ad
 
 //删除管理员
 func (ser *adminUserService) DelAdminUser(id string) (err error) {
-	// err = dao.AuDao.DB.Where("uid = ?", id).Delete(models.AdminUsers{}).Error
-	return
+	return ser.Dao.Del(map[string]interface{}{"uid": id})
 }
 
 //修改密码
