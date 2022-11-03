@@ -1,4 +1,5 @@
-//+build !embed
+//go:build !embed
+// +build !embed
 
 /*
  * @Description:部署拷贝静态文件时忽略该文件
@@ -21,7 +22,7 @@ import (
 
 var StaticsFs http.FileSystem
 
-func init() {
+func Init() {
 	StaticsFs = http.Dir(configs.RootPath + string(filepath.Separator) + "web" + string(filepath.Separator) + "statics")
 }
 

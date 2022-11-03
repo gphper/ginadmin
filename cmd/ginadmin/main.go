@@ -14,6 +14,7 @@ import (
 	"github.com/gphper/ginadmin/internal/redis"
 	"github.com/gphper/ginadmin/internal/router"
 	_ "github.com/gphper/ginadmin/pkg/cron"
+	"github.com/gphper/ginadmin/web"
 
 	"github.com/gphper/ginadmin/internal"
 
@@ -39,6 +40,8 @@ func main() {
 	showLogo()
 
 	configs.Init()
+
+	web.Init()
 
 	models.Init()
 	redis.Init()

@@ -31,7 +31,12 @@
               <input type="hidden" name="groupid" value="{{.id}}">
               <div class="form-group">
                 <label for="example-text-input">角色名称</label>
-                <input class="form-control" type="text" name="groupname" placeholder="角色名称" value="{{.id}}">
+                {{if isset $.id}}
+                <input class="form-control" type="text" name="groupname" disabled placeholder="角色名称" value="{{.id}}">
+                <input type="hidden" name="groupname" value="{{.id}}">
+                {{else}}
+                  <input class="form-control" type="text" name="groupname" placeholder="角色名称" value="{{.id}}">
+                {{end}}
               </div>
               <div class="table-responsive">
               <table class="table table-striped">
