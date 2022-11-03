@@ -32,6 +32,7 @@ func NewAdminUserDao() *AdminUserDao {
 
 func (dao *AdminUserDao) GetAdminUser(id string) (adminUser models.AdminUsers, err error) {
 	err = dao.DB.Where("uid = ?", id).First(&adminUser).Error
+
 	return
 }
 
@@ -51,4 +52,8 @@ func (dao *AdminUserDao) GetAdminUsers(uid int, nickname string, created_time st
 	}
 
 	return
+}
+
+func (dao *AdminUserDao) UpdateColumn(uid uint, key, value string) error {
+	return dao.DB.Model(&models.AdminUsers{}).Where("uid = ?", uid).UpdateColumn(key, value).Error
 }

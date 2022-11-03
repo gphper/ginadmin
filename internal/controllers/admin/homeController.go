@@ -73,23 +73,29 @@ func (con homeController) EditPassword(c *gin.Context) {
 	})
 }
 
+/**
+*	修改密码
+ */
 func (con homeController) SavePassword(c *gin.Context) {
+
 	var (
 		req models.AdminUserEditPassReq
 		err error
 	)
 	con.FormBind(c, &req)
-	err = services.AuService.EditPass(req)
 
+	err = services.NewAdminUserService().EditPass(req)
 	if err != nil {
 		con.Error(c, err.Error())
 		return
-	} else {
-		con.Success(c, "", "修改成功")
-		return
 	}
+
+	con.Success(c, "", "修改成功")
 }
 
+/**
+*	保存皮肤
+ */
 func (con homeController) SaveSkin(c *gin.Context) {
 
 	var skinReq models.AdminUserSkinReq
@@ -106,7 +112,11 @@ func (con homeController) SaveSkin(c *gin.Context) {
 
 	skinReq.Uid = int(v)
 
-	services.AuService.EditSkin(skinReq)
+	err := services.NewAdminUserService().EditSkin(skinReq)
+	if err != nil {
+		con.Error(c, err.Error())
+		return
+	}
 
 	c.JSON(http.StatusOK, skinReq)
 }
