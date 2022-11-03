@@ -88,7 +88,7 @@ func (con adminUserController) Save(c *gin.Context) {
 */
 func (con adminUserController) Edit(c *gin.Context) {
 	id := c.Query("id")
-	adminUser, _ := services.AuService.GetAdminUser(id)
+	adminUser, _ := services.AuService.GetAdminUser(map[string]interface{}{"uid": id})
 	var groupName []string
 	json.Unmarshal([]byte(adminUser.GroupName), &groupName)
 	var groupMap = make(map[string]struct{})

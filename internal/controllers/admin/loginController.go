@@ -14,7 +14,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/gphper/ginadmin/internal/models"
+	services "github.com/gphper/ginadmin/internal/services/admin"
 	"github.com/gphper/ginadmin/pkg/captcha/store"
 	gstrings "github.com/gphper/ginadmin/pkg/utils/strings"
 
@@ -54,8 +54,7 @@ func (con loginController) Login(c *gin.Context) {
 
 		}
 
-		var adminUser models.AdminUsers
-		err := models.Db.Table("admin_users").Where("username = ?", username).First(&adminUser).Error
+		adminUser, err := services.NewAdminUserService().GetAdminUser(map[string]interface{}{"username": username})
 		if err != nil {
 			con.Error(c, "账号密码错误")
 			return

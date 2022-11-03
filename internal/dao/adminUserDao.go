@@ -30,9 +30,8 @@ func NewAdminUserDao() *AdminUserDao {
 	return instanceAdminUser
 }
 
-func (dao *AdminUserDao) GetAdminUser(id string) (adminUser models.AdminUsers, err error) {
-	err = dao.DB.Where("uid = ?", id).First(&adminUser).Error
-
+func (dao *AdminUserDao) GetAdminUser(conditions map[string]interface{}) (adminUser models.AdminUsers, err error) {
+	err = dao.DB.Where(conditions).First(&adminUser).Error
 	return
 }
 

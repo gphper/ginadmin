@@ -7,7 +7,6 @@ package admin
 
 import (
 	"errors"
-	"strconv"
 	"sync"
 
 	"github.com/gphper/ginadmin/internal/dao"
@@ -127,8 +126,8 @@ func (ser *adminUserService) SaveAdminUser(req models.AdminUserSaveReq) (err err
 }
 
 //获取单个管理员用户信息
-func (ser *adminUserService) GetAdminUser(id string) (adminUser models.AdminUsers, err error) {
-	adminUser, err = ser.Dao.GetAdminUser(id)
+func (ser *adminUserService) GetAdminUser(conditions map[string]interface{}) (adminUser models.AdminUsers, err error) {
+	adminUser, err = ser.Dao.GetAdminUser(conditions)
 	return
 }
 
@@ -148,7 +147,7 @@ func (ser *adminUserService) EditPass(req models.AdminUserEditPassReq) (err erro
 		return
 	}
 
-	adminUser, err = ser.GetAdminUser(strconv.Itoa(req.Uid))
+	adminUser, err = ser.GetAdminUser(map[string]interface{}{"uid": req.Uid})
 	if err != nil {
 		return
 	}
