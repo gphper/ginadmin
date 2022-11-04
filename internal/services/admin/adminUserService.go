@@ -67,10 +67,10 @@ func (ser *adminUserService) SaveAdminUser(req models.AdminUserSaveReq) (err err
 
 		json.Unmarshal([]byte(adminUser.GroupName), &groupOldName)
 		fields := map[string]interface{}{
-			"groupName": string(groupnameStr),
-			"username":  req.Username,
-			"nickname":  req.Nickname,
-			"phone":     req.Phone,
+			"group_name": string(groupnameStr),
+			"username":   req.Username,
+			"nickname":   req.Nickname,
+			"phone":      req.Phone,
 		}
 		if req.Password != "" {
 			salt := gstrings.RandString(6)
