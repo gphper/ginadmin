@@ -109,7 +109,7 @@ func (con uploadController) Upload(c *gin.Context) {
 	stor := uploader.LocalStorage{}
 
 	req.Dst = "uploadfile"
-	filepath, err := adminServ.UpService.Save(stor, req)
+	filepath, err := adminServ.NewUploadService().Save(stor, req)
 	if err != nil {
 		con.Error(c, err.Error())
 		return

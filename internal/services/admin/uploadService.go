@@ -6,13 +6,26 @@
 package admin
 
 import (
+	"sync"
+
 	"github.com/gphper/ginadmin/internal/models"
 	"github.com/gphper/ginadmin/pkg/uploader"
 )
 
-type uploadService struct{}
+type uploadService struct {
+}
 
-var UpService = uploadService{}
+var (
+	instanceUploadService *uploadService
+	onceUploadService     sync.Once
+)
+
+func NewUploadService() *uploadService {
+	onceUploadService.Do(func() {
+		instanceUploadService = &uploadService{}
+	})
+	return instanceUploadService
+}
 
 func (ser *uploadService) Save(storage uploader.Storage, req models.UploadReq) (string, error) {
 	return storage.Save(req.File, req.Dst)
