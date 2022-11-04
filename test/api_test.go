@@ -12,8 +12,12 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gphper/ginadmin/configs"
+	"github.com/gphper/ginadmin/internal/models"
+	"github.com/gphper/ginadmin/internal/redis"
 	"github.com/gphper/ginadmin/internal/router"
 	"github.com/gphper/ginadmin/pkg/utils/httptestutil"
+	"github.com/gphper/ginadmin/web"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
@@ -82,5 +86,9 @@ func (suite *ApiTestSuite) TestBLogin() {
 }
 
 func TestApiSuite(t *testing.T) {
+	configs.Init()
+	web.Init()
+	models.Init()
+	redis.Init()
 	suite.Run(t, new(ApiTestSuite))
 }

@@ -6,7 +6,6 @@
 package router
 
 import (
-	"fmt"
 	"path/filepath"
 	"time"
 
@@ -60,7 +59,6 @@ func prep(router *gin.Engine) {
 	)
 
 	uploadPath = strings.JoinStr(configs.RootPath, string(filepath.Separator), "uploadfile")
-	fmt.Println(uploadPath)
 	if SwagHandler != nil {
 		router.GET("/swagger/*any", SwagHandler)
 	}
