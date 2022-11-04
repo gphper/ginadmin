@@ -6,9 +6,7 @@
 package article
 
 import (
-	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/gphper/ginadmin/internal/controllers/admin"
 	"github.com/gphper/ginadmin/internal/models"
@@ -25,18 +23,13 @@ type articleController struct {
 var Arc = articleController{}
 
 func (con articleController) Add(c *gin.Context) {
-	var article models.Article
-	c.HTML(http.StatusOK, "article/article_form.html", gin.H{
-		"article": article,
-	})
+	c.HTML(http.StatusOK, "article/article_form.html", nil)
 }
 
 func (con articleController) Edit(c *gin.Context) {
-	articel_id := c.Query("article_id")
 
-	id, _ := strconv.Atoi(articel_id)
-
-	article, err := services.ArticleService.GetArticle(uint(id))
+	articelId := c.Query("article_id")
+	article, err := services.NewArticleService().GetArticle(map[string]interface{}{"article_id": articelId})
 	if err != nil {
 		con.Error(c, err.Error())
 	}
@@ -60,7 +53,7 @@ func (con articleController) List(c *gin.Context) {
 		return
 	}
 
-	adminDb := services.ArticleService.GetArticles(req)
+	adminDb := services.NewArticleService().GetArticles(req)
 
 	articleData := paginater.PageOperation(c, adminDb, 1, &articleList)
 
@@ -78,7 +71,7 @@ func (con articleController) Save(c *gin.Context) {
 	)
 
 	con.FormBind(c, &req)
-	err = services.ArticleService.SaveArticle(req)
+	err = services.NewArticleService().SaveArticle(req)
 	if err != nil {
 		con.Error(c, err.Error())
 	}
@@ -87,14 +80,13 @@ func (con articleController) Save(c *gin.Context) {
 }
 
 func (con articleController) Del(c *gin.Context) {
-	id := c.Query("article_id")
-	fmt.Println(id)
-	articleId, _ := strconv.Atoi(id)
 
-	err := services.ArticleService.DelArticle(articleId)
+	id := c.Query("article_id")
+	err := services.NewArticleService().DelArticle(map[string]interface{}{"article_id": id})
 	if err != nil {
 		con.Error(c, "删除失败")
-	} else {
-		con.Success(c, "", "删除成功")
+		return
 	}
+
+	con.Success(c, "", "删除成功")
 }

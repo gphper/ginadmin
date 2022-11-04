@@ -33,8 +33,9 @@ func init() {
 			_, ok := items[find]
 			return ok
 		},
-		"isset": func(param string) bool {
-			return param != ""
+		"isset": func(param interface{}) bool {
+
+			return param != nil
 		},
 	}
 }

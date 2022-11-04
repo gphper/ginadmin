@@ -6,6 +6,7 @@
 package dao
 
 import (
+	"strings"
 	"sync"
 
 	"github.com/gphper/ginadmin/internal/models"
@@ -13,16 +14,55 @@ import (
 	"gorm.io/gorm"
 )
 
-type articleDao struct {
+type ArticleDao struct {
 	DB *gorm.DB
 }
 
-var insAd *articleDao
-var onceAd sync.Once
+var (
+	instanceArticle *ArticleDao
+	onceArticleDao  sync.Once
+)
 
-func NewArticleDao() *articleDao {
-	onceAd.Do(func() {
-		insAd = &articleDao{DB: models.Db}
+func NewArticleDao() *ArticleDao {
+	onceArticleDao.Do(func() {
+		instanceArticle = &ArticleDao{DB: models.Db}
 	})
-	return insAd
+	return instanceArticle
+}
+
+func (dao *ArticleDao) GetArticle(conditions map[string]interface{}) (article models.Article, err error) {
+
+	err = dao.DB.First(&article, conditions).Error
+	return
+}
+
+func (dao *ArticleDao) GetArticles(title string, createdAt string) (db *gorm.DB) {
+
+	db = dao.DB.Table("article")
+
+	if title != "" {
+		db = db.Where("title like ?", "%"+title+"%")
+	}
+
+	if createdAt != "" {
+		period := strings.Split(createdAt, " ~ ")
+		start := period[0] + " 00:00:00"
+		end := period[1] + " 23:59:59"
+		db = db.Where("created_at > ? ", start).Where("created_at < ?", end)
+	}
+
+	return
+}
+
+func (dao *ArticleDao) UpdateColumns(conditions, field map[string]interface{}, tx *gorm.DB) error {
+
+	if tx != nil {
+		return tx.Model(&models.Article{}).Where(conditions).UpdateColumns(field).Error
+	}
+
+	return dao.DB.Model(&models.Article{}).Where(conditions).UpdateColumns(field).Error
+}
+
+func (dao *ArticleDao) Del(conditions map[string]interface{}) error {
+	return dao.DB.Delete(&models.Article{}, conditions).Error
 }
