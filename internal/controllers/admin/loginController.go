@@ -99,7 +99,7 @@ func (con loginController) Captcha(c *gin.Context) {
 
 	var store = store.NewSessionStore(c, 20)
 	driver := &base64Captcha.DriverString{
-		Height: 40,
+		Height: 60,
 		Width:  150,
 		Length: 4,
 		Source: "abcdefghijklmnopqr234509867",
