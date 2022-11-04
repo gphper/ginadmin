@@ -31,17 +31,14 @@ func (suite *AdminTestSuite) SetupSuite() {
 	suite.router = router.Init()
 }
 
-// 登录页测试
+//登录页测试
 func (suite *AdminTestSuite) TestALoginGet() {
-
 	body := httptestutil.Get("/admin/login", suite.router)
-
 	assert.Contains(suite.T(), string(body), "登录")
 }
 
-// 登录
+//登录
 func (suite *AdminTestSuite) TestALoginPost() {
-
 	option := httptestutil.OptionValue{
 		Param: url.Values{
 			"username": {"admin"},
