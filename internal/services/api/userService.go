@@ -8,29 +8,45 @@ package api
 import (
 	"errors"
 	"strconv"
+	"sync"
 	"time"
 
 	"github.com/gphper/ginadmin/internal/dao"
 	"github.com/gphper/ginadmin/internal/models"
 	"github.com/gphper/ginadmin/pkg/jwt"
 	"github.com/gphper/ginadmin/pkg/utils/strings"
+	"gorm.io/gorm"
 )
 
-type userService struct{}
+type apiUserService struct {
+	Dao *dao.UserDao
+}
 
-var UserService = userService{}
+var (
+	instanceApiUserService *apiUserService
+	onceApiUserService     sync.Once
+)
+
+func NewApiUserService() *apiUserService {
+	onceApiUserService.Do(func() {
+		instanceApiUserService = &apiUserService{
+			Dao: dao.NewUserDao(),
+		}
+	})
+	return instanceApiUserService
+}
 
 /**
 * 用户注册
 **/
-func (ser *userService) Register(req models.UserRegisterReq) error {
+func (ser *apiUserService) Register(req models.UserRegisterReq) error {
 	var (
 		user models.User
 		err  error
 	)
 
-	err = dao.NewUserDao().DB.Find(&user, "email = ?", req.Email).Error
-	if err != nil {
+	user, err = ser.Dao.GetUser(map[string]interface{}{"email": req.Email})
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return err
 	}
 
@@ -45,21 +61,21 @@ func (ser *userService) Register(req models.UserRegisterReq) error {
 	user.Password = passwordSalt
 	user.Salt = salt
 
-	return dao.NewUserDao().DB.Create(&user).Error
+	return ser.Dao.DB.Create(&user).Error
 }
 
 /**
 * 验证用户登录
  */
-func (ser *userService) Login(req models.UserLoginReq) (jtoken string, retoken string, err error) {
+func (ser *apiUserService) Login(req models.UserLoginReq) (jtoken string, retoken string, err error) {
 	var (
 		user    models.User
 		payload jwt.Payload
 	)
 
-	err = dao.NewUserDao().DB.Find(&user, "email = ?", req.Email).Error
+	user, err = ser.Dao.GetUser(map[string]interface{}{"email": req.Email})
 	if err != nil {
-		return
+		return jtoken, retoken, errors.New("账号密码错误")
 	}
 
 	if user.Uid == 0 {
@@ -83,10 +99,13 @@ func (ser *userService) Login(req models.UserLoginReq) (jtoken string, retoken s
 
 	//生成refresh_token
 	retoken = strings.Encryption(passwordSalt, strconv.FormatInt(time.Now().UnixNano(), 10))
-	user.RefreshToken.String = retoken
-	user.RefreshToken.Valid = true
-	user.ExpirTime.Time = time.Now().Add(7 * time.Hour)
-	dao.NewUserDao().DB.Save(&user)
+
+	err = ser.Dao.UpdateColumns(map[string]interface{}{
+		"uid": user.Uid,
+	}, map[string]interface{}{
+		"refresh_token": retoken,
+		"expir_time":    time.Now().Add(7 * time.Hour),
+	}, nil)
 
 	return
 }
@@ -94,13 +113,13 @@ func (ser *userService) Login(req models.UserLoginReq) (jtoken string, retoken s
 /**
 * 使用refresh token 更换jtoken
  */
-func (ser *userService) RefreshToken(req models.UserRefreshTokenReq) (jtoken string, err error) {
+func (ser *apiUserService) RefreshToken(req models.UserRefreshTokenReq) (jtoken string, err error) {
 	var (
 		user    models.User
 		payload jwt.Payload
 	)
 
-	err = dao.NewUserDao().DB.Find(&user, "refresh_token = ?", req.Retoken).Error
+	user, err = ser.Dao.GetUser(map[string]interface{}{"refresh_token": req.Retoken})
 	if err != nil {
 		return
 	}

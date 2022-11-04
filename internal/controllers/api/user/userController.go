@@ -68,7 +68,7 @@ func (apicon userController) Register(c *gin.Context) {
 		return
 	}
 
-	err = apiservice.UserService.Register(req)
+	err = apiservice.NewApiUserService().Register(req)
 	if err != nil {
 		apicon.Error(c, err)
 		return
@@ -102,7 +102,7 @@ func (apicon userController) Login(c *gin.Context) {
 		return
 	}
 
-	jtoken, retoken, err = apiservice.UserService.Login(req)
+	jtoken, retoken, err = apiservice.NewApiUserService().Login(req)
 	if err != nil {
 		apicon.Error(c, err)
 		return
@@ -137,7 +137,7 @@ func (apicon userController) RefreshToken(c *gin.Context) {
 		return
 	}
 
-	jtoken, err = apiservice.UserService.RefreshToken(req)
+	jtoken, err = apiservice.NewApiUserService().RefreshToken(req)
 	if err != nil {
 		apicon.Error(c, err)
 		return
