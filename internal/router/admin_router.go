@@ -21,7 +21,7 @@ import (
 func AdminRouter(adminRouter *gin.RouterGroup) {
 
 	//设置后台用户权限中间件
-	store := cookie.NewStore([]byte("secret11111"))
+	store := cookie.NewStore([]byte("1GdFRMs4fcWBvLXT"))
 	adminRouter.Use(sessions.Sessions("mysession", store))
 	{
 		admin.NewLoginController().Routes(adminRouter)

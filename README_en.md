@@ -1,9 +1,8 @@
 # GinAdmin
 The project is a background management platform based on gin framework. Although many people think that go is used to develop high-performance server-side projects, it is inevitable that there is a need to do web management side. You can't use other languages to develop it. Therefore, the ginadmin project has been integrated. Please give more comments and corrections! 
 
-![logo](README/logo.jpg)
-
-![logo](README/index.jpg)
+![login](https://user-images.githubusercontent.com/18718299/200120227-e7258587-7344-42e1-891d-5e42b0095020.jpg)
+![index](https://user-images.githubusercontent.com/18718299/200120226-afaaf7b2-bea2-4e67-9b6b-09e077fd53a2.jpg)
 
 ## Dependence
 * golang > 1.8
