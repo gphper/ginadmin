@@ -23,12 +23,22 @@ type adminUserController struct {
 	admin.BaseController
 }
 
-var Auc = adminUserController{}
+func NewAdminUserController() adminUserController {
+	return adminUserController{}
+}
+
+func (con adminUserController) Routes(rg *gin.RouterGroup) {
+	rg.GET("/index", con.index)
+	rg.GET("/add", con.addIndex)
+	rg.POST("/save", con.save)
+	rg.GET("/edit", con.edit)
+	rg.GET("/del", con.del)
+}
 
 /**
 管理员列表
 */
-func (con adminUserController) Index(c *gin.Context) {
+func (con adminUserController) index(c *gin.Context) {
 	var (
 		err           error
 		req           models.AdminUserIndexReq
@@ -54,7 +64,7 @@ func (con adminUserController) Index(c *gin.Context) {
 /**
 添加
 */
-func (con adminUserController) AddIndex(c *gin.Context) {
+func (con adminUserController) addIndex(c *gin.Context) {
 	c.HTML(http.StatusOK, "setting/adminuser_form.html", gin.H{
 		"adminGroups": casbinauth.GetGroups(),
 	})
@@ -63,7 +73,7 @@ func (con adminUserController) AddIndex(c *gin.Context) {
 /**
 保存
 */
-func (con adminUserController) Save(c *gin.Context) {
+func (con adminUserController) save(c *gin.Context) {
 
 	var (
 		err error
@@ -88,7 +98,7 @@ func (con adminUserController) Save(c *gin.Context) {
 /**
 编辑
 */
-func (con adminUserController) Edit(c *gin.Context) {
+func (con adminUserController) edit(c *gin.Context) {
 	id := c.Query("id")
 	adminUser, _ := services.NewAdminUserService().GetAdminUser(map[string]interface{}{"uid": id})
 	var groupName []string
@@ -107,7 +117,7 @@ func (con adminUserController) Edit(c *gin.Context) {
 /**
 删除
 */
-func (con adminUserController) Del(c *gin.Context) {
+func (con adminUserController) del(c *gin.Context) {
 
 	id := c.Query("id")
 

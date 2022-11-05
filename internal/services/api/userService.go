@@ -144,3 +144,7 @@ func (ser *apiUserService) RefreshToken(req models.UserRefreshTokenReq) (jtoken 
 
 	return
 }
+
+func (ser *apiUserService) GetUseInfo(condition map[string]interface{}) (user models.User, err error) {
+	return ser.Dao.GetUser(condition)
+}

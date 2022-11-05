@@ -21,15 +21,22 @@ type uploadController struct {
 	admin.BaseController
 }
 
-var Uc = uploadController{}
+func NewUploadController() uploadController {
+	return uploadController{}
+}
 
-func (con uploadController) Show(c *gin.Context) {
+func (con uploadController) Routes(rg *gin.RouterGroup) {
+	rg.GET("/show", con.show)
+	rg.POST("/upload", con.upload)
+}
+
+func (con uploadController) show(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "demo/upload.html", gin.H{})
 
 }
 
-func (con uploadController) Upload(c *gin.Context) {
+func (con uploadController) upload(c *gin.Context) {
 
 	var (
 		err error

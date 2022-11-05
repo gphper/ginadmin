@@ -20,13 +20,23 @@ type articleController struct {
 	admin.BaseController
 }
 
-var Arc = articleController{}
+func NewArticleController() articleController {
+	return articleController{}
+}
 
-func (con articleController) Add(c *gin.Context) {
+func (con articleController) Routes(rg *gin.RouterGroup) {
+	rg.GET("/list", con.list)
+	rg.GET("/add", con.add)
+	rg.GET("/edit", con.edit)
+	rg.POST("/save", con.save)
+	rg.GET("/del", con.del)
+}
+
+func (con articleController) add(c *gin.Context) {
 	c.HTML(http.StatusOK, "article/article_form.html", nil)
 }
 
-func (con articleController) Edit(c *gin.Context) {
+func (con articleController) edit(c *gin.Context) {
 
 	articelId := c.Query("article_id")
 	article, err := services.NewArticleService().GetArticle(map[string]interface{}{"article_id": articelId})
@@ -40,7 +50,7 @@ func (con articleController) Edit(c *gin.Context) {
 	})
 }
 
-func (con articleController) List(c *gin.Context) {
+func (con articleController) list(c *gin.Context) {
 	var (
 		err         error
 		req         models.ArticleIndexReq
@@ -64,7 +74,7 @@ func (con articleController) List(c *gin.Context) {
 	})
 }
 
-func (con articleController) Save(c *gin.Context) {
+func (con articleController) save(c *gin.Context) {
 	var (
 		req models.ArticleReq
 		err error
@@ -79,7 +89,7 @@ func (con articleController) Save(c *gin.Context) {
 	con.Success(c, "/admin/article/list", "添加成功")
 }
 
-func (con articleController) Del(c *gin.Context) {
+func (con articleController) del(c *gin.Context) {
 
 	id := c.Query("article_id")
 	err := services.NewArticleService().DelArticle(map[string]interface{}{"article_id": id})

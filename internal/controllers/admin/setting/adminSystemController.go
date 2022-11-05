@@ -30,12 +30,23 @@ type adminSystemController struct {
 	admin.BaseController
 }
 
-var Asc = adminSystemController{}
+func NewAdminSystemController() adminSystemController {
+	return adminSystemController{}
+}
+
+func (con adminSystemController) Routes(rg *gin.RouterGroup) {
+	rg.GET("/index", con.index)
+	rg.GET("/getdir", con.getDir)
+	rg.GET("/view", con.view)
+	rg.GET("/index_redis", con.indexRedis)
+	rg.GET("/getdir_redis", con.getDirRedis)
+	rg.GET("/view_redis", con.viewRedis)
+}
 
 /**
 日志目录页面
 */
-func (con adminSystemController) Index(c *gin.Context) {
+func (con adminSystemController) index(c *gin.Context) {
 
 	var (
 		path     string
@@ -65,7 +76,7 @@ func (con adminSystemController) Index(c *gin.Context) {
 /**
 获取目录
 */
-func (con adminSystemController) GetDir(c *gin.Context) {
+func (con adminSystemController) getDir(c *gin.Context) {
 
 	type FileNode struct {
 		Name string `json:"name"`
@@ -115,7 +126,7 @@ func (con adminSystemController) GetDir(c *gin.Context) {
 /**
 获取日志详情
 */
-func (con adminSystemController) View(c *gin.Context) {
+func (con adminSystemController) view(c *gin.Context) {
 
 	var (
 		err       error
@@ -174,7 +185,7 @@ func (con adminSystemController) View(c *gin.Context) {
 /**
 日志目录页面
 */
-func (con adminSystemController) IndexRedis(c *gin.Context) {
+func (con adminSystemController) indexRedis(c *gin.Context) {
 
 	path := "logs"
 
@@ -205,7 +216,7 @@ func (con adminSystemController) IndexRedis(c *gin.Context) {
 /**
 获取目录
 */
-func (con adminSystemController) GetDirRedis(c *gin.Context) {
+func (con adminSystemController) getDirRedis(c *gin.Context) {
 
 	path := c.Query("path")
 
@@ -264,7 +275,7 @@ func (con adminSystemController) GetDirRedis(c *gin.Context) {
 /**
 获取日志详情
 */
-func (con adminSystemController) ViewRedis(c *gin.Context) {
+func (con adminSystemController) viewRedis(c *gin.Context) {
 
 	startLine, _ := strconv.Atoi(c.DefaultQuery("start_line", "1"))
 

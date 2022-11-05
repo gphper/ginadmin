@@ -7,6 +7,7 @@ package user
 
 import (
 	"github.com/gphper/ginadmin/internal/controllers/api"
+	"github.com/gphper/ginadmin/internal/middleware"
 	"github.com/gphper/ginadmin/internal/models"
 	apiservice "github.com/gphper/ginadmin/internal/services/api"
 
@@ -17,7 +18,16 @@ type userController struct {
 	api.BaseController
 }
 
-var Uc = userController{}
+func NewUserController() userController {
+	return userController{}
+}
+
+func (con userController) Routes(rg *gin.RouterGroup) {
+	rg.POST("/info", middleware.JwtAuth(), con.userExample)
+	rg.POST("/register", con.register)
+	rg.POST("/login", con.login)
+	rg.POST("/refresh", con.refreshToken)
+}
 
 // @Summary 展示用户信息
 // @Id 1
@@ -26,24 +36,20 @@ var Uc = userController{}
 // @Accept multipart/form-data
 // @Produce json
 // @Param authorization header string true "token"
-// @Param info formData models.UserReq true "User info"
-// @Success 200 {object} api.SuccessResponse{data=models.UserReq}
+// @Success 200 {object} api.SuccessResponse{data=models.User}
 // @response default {object} api.DefaultResponse
-// @Router /example/index [post]
-func (apicon userController) UserExample(c *gin.Context) {
+// @Router /user/info [post]
+func (apicon userController) userExample(c *gin.Context) {
 
-	var (
-		err     error
-		userReq models.UserReq
-	)
-	err = apicon.FormBind(c, &userReq)
+	uid, _ := c.Get("uid")
 
+	userInfo, err := apiservice.NewApiUserService().GetUseInfo(map[string]interface{}{"uid": uid})
 	if err != nil {
 		apicon.Error(c, err)
 		return
 	}
 
-	apicon.Success(c, userReq)
+	apicon.Success(c, userInfo)
 }
 
 // @Summary 用户注册
@@ -56,7 +62,7 @@ func (apicon userController) UserExample(c *gin.Context) {
 // @Success 200 {object} api.SuccessResponse
 // @response default {object} api.DefaultResponse
 // @Router /user/register [post]
-func (apicon userController) Register(c *gin.Context) {
+func (apicon userController) register(c *gin.Context) {
 	var (
 		err error
 		req models.UserRegisterReq
@@ -87,7 +93,7 @@ func (apicon userController) Register(c *gin.Context) {
 // @Success 200 {object} models.UserLoginRes
 // @response default {object} api.DefaultResponse
 // @Router /user/login [post]
-func (apicon userController) Login(c *gin.Context) {
+func (apicon userController) login(c *gin.Context) {
 	var (
 		err     error
 		req     models.UserLoginReq
@@ -124,7 +130,7 @@ func (apicon userController) Login(c *gin.Context) {
 // @Success 200 {json} {"code":1,"msg":"success","data":{"jtoken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFeHAiOiIyMDIxLTEyLTI2VDE5OjI1OjI4Ljg0OTIzNzUrMDg6MDAiLCJOYW1lIjoiZ3BocGVyIiwiVWlkIjo0fQ==.ab81bb7134978afe976df55b45789aefd10f6c3edb969bae283c32c080083b89"}}
 // @response default {object} api.DefaultResponse
 // @Router /user/refresh [post]
-func (apicon userController) RefreshToken(c *gin.Context) {
+func (apicon userController) refreshToken(c *gin.Context) {
 	var (
 		err    error
 		req    models.UserRefreshTokenReq

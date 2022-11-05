@@ -27,12 +27,23 @@ type loginController struct {
 	BaseController
 }
 
-var Lc = loginController{}
+func NewLoginController() loginController {
+	return loginController{}
+}
+
+func (con loginController) Routes(rg *gin.RouterGroup) {
+	rg.GET("/captcha", con.captcha)
+	/*******登录路由**********/
+	rg.GET("/login", con.login)
+	rg.POST("/login", con.login)
+	rg.GET("/login_out", con.loginOut)
+	rg.POST("/login_out", con.loginOut)
+}
 
 /**
 * 登录
  */
-func (con loginController) Login(c *gin.Context) {
+func (con loginController) login(c *gin.Context) {
 	if c.Request.Method == "GET" {
 		c.HTML(http.StatusOK, "home/login.html", gin.H{
 			"title": "GinAdmin管理平台",
@@ -85,7 +96,7 @@ func (con loginController) Login(c *gin.Context) {
 /**
 * 登出
  */
-func (con loginController) LoginOut(c *gin.Context) {
+func (con loginController) loginOut(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Delete("userInfo")
 	session.Save()
@@ -95,7 +106,7 @@ func (con loginController) LoginOut(c *gin.Context) {
 /*
 * 验证码
  */
-func (con loginController) Captcha(c *gin.Context) {
+func (con loginController) captcha(c *gin.Context) {
 
 	var store = store.NewSessionStore(c, 20)
 	driver := &base64Captcha.DriverString{

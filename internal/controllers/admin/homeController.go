@@ -24,9 +24,19 @@ type homeController struct {
 	BaseController
 }
 
-var Hc = homeController{}
+func NewHomeController() homeController {
+	return homeController{}
+}
 
-func (con homeController) Home(c *gin.Context) {
+func (con homeController) Routes(rg *gin.RouterGroup) {
+	rg.GET("/", con.home)
+	rg.GET("/welcome", con.welcome)
+	rg.GET("/edit_password", con.editPassword)
+	rg.POST("/save_password", con.savePassword)
+	rg.POST("/save_skin", con.saveSkin)
+}
+
+func (con homeController) home(c *gin.Context) {
 	menuList := menu.GetMenu()
 
 	session := sessions.Default(c)
@@ -61,11 +71,11 @@ func (con homeController) Home(c *gin.Context) {
 	})
 }
 
-func (con homeController) Welcome(c *gin.Context) {
+func (con homeController) welcome(c *gin.Context) {
 	c.HTML(http.StatusOK, "home/welcome.html", gin.H{})
 }
 
-func (con homeController) EditPassword(c *gin.Context) {
+func (con homeController) editPassword(c *gin.Context) {
 	id := c.Query("id")
 	c.HTML(http.StatusOK, "home/password_form.html", gin.H{
 		"id": id,
@@ -75,7 +85,7 @@ func (con homeController) EditPassword(c *gin.Context) {
 /**
 *	修改密码
  */
-func (con homeController) SavePassword(c *gin.Context) {
+func (con homeController) savePassword(c *gin.Context) {
 
 	var (
 		req models.AdminUserEditPassReq
@@ -95,7 +105,7 @@ func (con homeController) SavePassword(c *gin.Context) {
 /**
 *	保存皮肤
  */
-func (con homeController) SaveSkin(c *gin.Context) {
+func (con homeController) saveSkin(c *gin.Context) {
 
 	var skinReq models.AdminUserSkinReq
 

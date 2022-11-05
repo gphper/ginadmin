@@ -22,9 +22,16 @@ type uploadController struct {
 	admin.BaseController
 }
 
-var Upc = uploadController{}
+func NewUploadController() uploadController {
+	return uploadController{}
+}
 
-func (con uploadController) UploadHtml(c *gin.Context) {
+func (con uploadController) Routes(rg *gin.RouterGroup) {
+	rg.GET("/upload_html/:type_name/:id/:type/:now_num", con.uploadHtml)
+	rg.POST("/upload", con.upload)
+}
+
+func (con uploadController) uploadHtml(c *gin.Context) {
 
 	var (
 		req         models.UploadHtmlReq
@@ -93,7 +100,7 @@ func (con uploadController) UploadHtml(c *gin.Context) {
 	})
 }
 
-func (con uploadController) Upload(c *gin.Context) {
+func (con uploadController) upload(c *gin.Context) {
 
 	var (
 		err error

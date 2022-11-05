@@ -32,8 +32,8 @@ func Init() *gin.Engine {
 	router := gin.Default()
 
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
-	router.NoRoute(controllers.Hand.Handle)
-	router.NoMethod(controllers.Hand.Handle)
+	router.NoRoute(controllers.NewHandleController().Handle)
+	router.NoMethod(controllers.NewHandleController().Handle)
 	prep(router)
 
 	// router.Use(medium.GinLog(facade.NewZaplog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewZaplog("admin"), true))

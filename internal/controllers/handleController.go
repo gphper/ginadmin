@@ -14,7 +14,9 @@ import (
 type handleController struct {
 }
 
-var Hand = handleController{}
+func NewHandleController() handleController {
+	return handleController{}
+}
 
 func (con handleController) Handle(c *gin.Context) {
 	c.HTML(http.StatusOK, "home/error.html", gin.H{

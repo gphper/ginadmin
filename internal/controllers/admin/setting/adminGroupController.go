@@ -23,12 +23,22 @@ type adminGroupController struct {
 	admin.BaseController
 }
 
-var Agc = adminGroupController{}
+func NewAdminGroupController() adminGroupController {
+	return adminGroupController{}
+}
+
+func (con adminGroupController) Routes(rg *gin.RouterGroup) {
+	rg.GET("/index", con.index)
+	rg.GET("/add", con.addIndex)
+	rg.POST("/save", con.save)
+	rg.GET("/edit", con.edit)
+	rg.GET("/del", con.del)
+}
 
 /**
 角色列表
 */
-func (con adminGroupController) Index(c *gin.Context) {
+func (con adminGroupController) index(c *gin.Context) {
 
 	var groups []string
 
@@ -52,7 +62,7 @@ func (con adminGroupController) Index(c *gin.Context) {
 /**
 添加角色
 */
-func (con adminGroupController) AddIndex(c *gin.Context) {
+func (con adminGroupController) addIndex(c *gin.Context) {
 	c.HTML(http.StatusOK, "setting/group_form.html", gin.H{
 		"menuList": menu.GetMenu(),
 		"id":       "",
@@ -62,7 +72,7 @@ func (con adminGroupController) AddIndex(c *gin.Context) {
 /**
 保存角色
 */
-func (con adminGroupController) Save(c *gin.Context) {
+func (con adminGroupController) save(c *gin.Context) {
 
 	var req models.AdminGroupSaveReq
 	err := con.FormBind(c, &req)
@@ -83,7 +93,7 @@ func (con adminGroupController) Save(c *gin.Context) {
 /**
 编辑
 */
-func (con adminGroupController) Edit(c *gin.Context) {
+func (con adminGroupController) edit(c *gin.Context) {
 	id := c.Query("id")
 	c.HTML(http.StatusOK, "setting/group_form.html", gin.H{
 		"menuList": menu.GetMenu(),
@@ -94,7 +104,7 @@ func (con adminGroupController) Edit(c *gin.Context) {
 /**
 删除
 */
-func (con adminGroupController) Del(c *gin.Context) {
+func (con adminGroupController) del(c *gin.Context) {
 
 	id := c.Query("id")
 	dbOk, dbErr := services.NewAdminGroupService().DelGroup(id)
