@@ -24,7 +24,7 @@ var syncPool sync.Pool
 func init() {
 	syncPool = sync.Pool{
 		New: func() interface{} {
-			a, err := gormadapter.NewAdapterByDB(models.GetDB(&models.BaseModle{}))
+			a, err := gormadapter.NewAdapterByDB(models.GetDB(&models.BaseModle{ConnName: "default"}))
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -56,7 +56,7 @@ func init() {
 
 //获取enforce对象，开始事务时使用
 func newEnforceObj(tx *gorm.DB) *casbin.Enforcer {
-	a, err := gormadapter.NewAdapterByDB(models.GetDB(&models.BaseModle{}))
+	a, err := gormadapter.NewAdapterByDB(models.GetDB(&models.BaseModle{ConnName: "default"}))
 	if err != nil {
 		fmt.Println(err)
 	}

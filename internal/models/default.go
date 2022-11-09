@@ -25,7 +25,9 @@ type GaTabler interface {
 	GetConnName() string
 }
 
-type BaseModle struct{}
+type BaseModle struct {
+	ConnName string `gorm:"-"`
+}
 
 func (b *BaseModle) TableName() string {
 	return ""
@@ -34,7 +36,7 @@ func (b *BaseModle) TableName() string {
 func (b *BaseModle) FillData(db *gorm.DB) {}
 
 func (b *BaseModle) GetConnName() string {
-	return "default"
+	return b.ConnName
 }
 
 //获取链接
