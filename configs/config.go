@@ -22,13 +22,14 @@ import (
 var RootPath string
 
 type AppConf struct {
-	Mysql   MysqlConf   `yaml:"mysql" json:"mysql"`
+	Mysqls  []MysqlConf `yaml:"mysql" json:"mysql"`
 	Redis   RedisConf   `yaml:"redis" json:"redis"`
 	Session SessionConf `yaml:"session" json:"session"`
 	Base    BaseConf    `yaml:"base" json:"base"`
 }
 
 type MysqlConf struct {
+	Name        string `yaml:"name" json:"name"`
 	Host        string `yaml:"host" json:"host"`
 	Port        string `yaml:"port" json:"port"`
 	UserName    string `yaml:"username" json:"username"`
@@ -78,10 +79,6 @@ func Init() {
 	}
 	err = yaml.Unmarshal(yamlFile, &App)
 	if err != nil {
-		fmt.Println("sdasdasdas")
 		fmt.Println(err.Error())
 	}
-
-	fmt.Printf("%+v", App)
-
 }

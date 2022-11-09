@@ -22,7 +22,7 @@ var onceUtd sync.Once
 
 func NewUploadTypeDao() *uploadTypeDao {
 	onceUtd.Do(func() {
-		insUtd = &uploadTypeDao{DB: models.Db}
+		insUtd = &uploadTypeDao{DB: models.GetDB(&models.UploadType{})}
 	})
 	return insUtd
 }

@@ -5,7 +5,11 @@
  */
 package models
 
-import "database/sql"
+import (
+	"database/sql"
+
+	"gorm.io/gorm"
+)
 
 type User struct {
 	BaseModle
@@ -49,6 +53,10 @@ func (user *User) TableName() string {
 	return "users"
 }
 
-func (user *User) FillData() {
+func (user *User) FillData(db *gorm.DB) {
 
+}
+
+func (user *User) GetConnName() string {
+	return "default"
 }

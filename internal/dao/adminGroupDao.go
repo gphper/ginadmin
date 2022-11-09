@@ -19,7 +19,7 @@ var (
 
 func NewAdminGroupDao() *AdminGroupDao {
 	onceAdminGroup.Do(func() {
-		instanceAdminGroup = &AdminGroupDao{DB: models.Db}
+		instanceAdminGroup = &AdminGroupDao{DB: models.GetDB(&models.BaseModle{})}
 	})
 	return instanceAdminGroup
 }

@@ -5,7 +5,11 @@
  */
 package models
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Article struct {
 	BaseModle
@@ -35,6 +39,10 @@ func (a *Article) TableName() string {
 	return "article"
 }
 
-func (a *Article) FillData() {
+func (a *Article) FillData(db *gorm.DB) {
 
+}
+
+func (a *Article) GetConnName() string {
+	return "default"
 }

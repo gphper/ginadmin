@@ -24,7 +24,7 @@ var (
 
 func NewUserDao() *UserDao {
 	onceUserDao.Do(func() {
-		instanceUser = &UserDao{DB: models.Db}
+		instanceUser = &UserDao{DB: models.GetDB(&models.Article{})}
 	})
 	return instanceUser
 }

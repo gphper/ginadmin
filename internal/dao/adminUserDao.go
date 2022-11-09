@@ -25,7 +25,7 @@ var (
 
 func NewAdminUserDao() *AdminUserDao {
 	onceAdminUserDao.Do(func() {
-		instanceAdminUser = &AdminUserDao{DB: models.Db}
+		instanceAdminUser = &AdminUserDao{DB: models.GetDB(&models.AdminUsers{})}
 	})
 	return instanceAdminUser
 }

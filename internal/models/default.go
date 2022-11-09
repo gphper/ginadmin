@@ -7,54 +7,88 @@ package models
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/gphper/ginadmin/configs"
 	"github.com/gphper/ginadmin/pkg/loggers"
-
 	"gorm.io/driver/mysql"
+
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 )
 
-var Db *gorm.DB
+var mapDB map[string]*gorm.DB
 
 type GaTabler interface {
 	schema.Tabler
-	FillData()
+	FillData(*gorm.DB)
+	GetConnName() string
 }
 
-type BaseModle struct {
+type BaseModle struct{}
+
+func (b *BaseModle) TableName() string {
+	return ""
+}
+
+func (b *BaseModle) FillData(db *gorm.DB) {}
+
+func (b *BaseModle) GetConnName() string {
+	return "default"
+}
+
+//获取链接
+func GetDB(model GaTabler) *gorm.DB {
+
+	db, ok := mapDB[model.GetConnName()]
+	if !ok {
+		errMsg := fmt.Sprintf("connection name%s no exists", model.GetConnName())
+		loggers.LogError("get_db_error", "GetDB", map[string]string{
+			"msg": errMsg,
+		})
+	}
+	return db
 }
 
 func Init() {
-	var err error
-	dns := fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", configs.App.Mysql.UserName, configs.App.Mysql.Password, configs.App.Mysql.Host, configs.App.Mysql.Port, configs.App.Mysql.Database)
-	Db, err = gorm.Open(mysql.Open(dns), &gorm.Config{})
-	if err != nil {
-		panic(err)
-	}
-	sqlDb, _ := Db.DB()
-	sqlDb.SetMaxOpenConns(configs.App.Mysql.MaxOpenConn)
-	sqlDb.SetMaxIdleConns(configs.App.Mysql.MaxIdleConn)
+	mapDB = make(map[string]*gorm.DB)
 
-	modelss := GetModels()
-	if configs.App.Base.MigrateTable {
-		err := Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(modelss...)
+	for _, mysqlConfig := range configs.App.Mysqls {
+		var err error
+		dns := fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", mysqlConfig.UserName, mysqlConfig.Password, mysqlConfig.Host, mysqlConfig.Port, mysqlConfig.Database)
+		db, err := gorm.Open(mysql.Open(dns), &gorm.Config{})
 		if err != nil {
-			os.Exit(0)
+			panic(err)
 		}
+		sqlDb, _ := db.DB()
+		sqlDb.SetMaxOpenConns(mysqlConfig.MaxOpenConn)
+		sqlDb.SetMaxIdleConns(mysqlConfig.MaxIdleConn)
+
+		//注册回调函数
+		RegisterCallback(db)
+
+		mapDB[mysqlConfig.Name] = db
 	}
 
-	if configs.App.Base.FillData {
-		for _, v := range modelss {
-			tabler := v.(GaTabler)
-			tabler.FillData()
-		}
-	}
+	// modelss := GetModels()
+	// if configs.App.Base.MigrateTable {
 
-	//注册回调函数
-	RegisterCallback()
+	// 	for _, v := range modelss {
+	// 		db := GetDB(v.(GaTabler))
+	// 		err := db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(v)
+	// 		if err != nil {
+	// 			os.Exit(0)
+	// 		}
+	// 	}
+
+	// }
+
+	// if configs.App.Base.FillData {
+	// 	for _, v := range modelss {
+	// 		tabler := v.(GaTabler)
+	// 		db := GetDB(tabler)
+	// 		tabler.FillData(db)
+	// 	}
+	// }
 }
 
 func GetModels() []interface{} {
@@ -66,9 +100,9 @@ func GetModels() []interface{} {
 	}
 }
 
-func RegisterCallback() {
+func RegisterCallback(db *gorm.DB) {
 	//注册创建数据回调
-	Db.Callback().Create().After("gorm:create").Register("my_plugin:after_create", func(db *gorm.DB) {
+	db.Callback().Create().After("gorm:create").Register("my_plugin:after_create", func(db *gorm.DB) {
 		str := db.Dialector.Explain(db.Statement.SQL.String(), db.Statement.Vars...)
 		loggers.LogInfo("sql", "create sql", map[string]string{
 			"info": str,
@@ -79,14 +113,14 @@ func RegisterCallback() {
 	// 	fmt.Println(str)
 	// })
 	//TODO 注册删除数据回调
-	Db.Callback().Delete().After("gorm:delete").Register("my_plugin:after_delete", func(db *gorm.DB) {
+	db.Callback().Delete().After("gorm:delete").Register("my_plugin:after_delete", func(db *gorm.DB) {
 		str := db.Dialector.Explain(db.Statement.SQL.String(), db.Statement.Vars...)
 		loggers.LogInfo("sql", "delete sql", map[string]string{
 			"info": str,
 		})
 	})
 	//TODO 注册更新数据回调
-	Db.Callback().Update().After("gorm:update").Register("my_plugin:after_update", func(db *gorm.DB) {
+	db.Callback().Update().After("gorm:update").Register("my_plugin:after_update", func(db *gorm.DB) {
 		str := db.Dialector.Explain(db.Statement.SQL.String(), db.Statement.Vars...)
 		loggers.LogInfo("sql", "update sql", map[string]string{
 			"info": str,

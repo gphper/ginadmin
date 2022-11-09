@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/gphper/ginadmin/pkg/utils/strings"
+	"gorm.io/gorm"
 )
 
 type AdminUsers struct {
@@ -60,7 +61,7 @@ func (au *AdminUsers) TableName() string {
 	return "admin_users"
 }
 
-func (au *AdminUsers) FillData() {
+func (au *AdminUsers) FillData(db *gorm.DB) {
 	//初始化管理员
 	salt := strings.RandString(6)
 	passwordSalt := strings.Encryption("111111", salt)
@@ -78,5 +79,9 @@ func (au *AdminUsers) FillData() {
 		Logo:      "default",
 		Side:      "default",
 	}
-	Db.Save(&adminUser)
+	db.Save(&adminUser)
+}
+
+func (au *AdminUsers) GetConnName() string {
+	return "default"
 }

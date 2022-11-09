@@ -5,6 +5,8 @@
  */
 package models
 
+import "gorm.io/gorm"
+
 type UploadType struct {
 	BaseModle
 	Id          uint   `gorm:"primary_key;auto_increment"`
@@ -27,7 +29,7 @@ func (u *UploadType) TableName() string {
 	return "upload_type"
 }
 
-func (u *UploadType) FillData() {
+func (u *UploadType) FillData(db *gorm.DB) {
 	ut := UploadType{
 		Id:          1,
 		TypeName:    "UP_COMMON",
@@ -37,5 +39,9 @@ func (u *UploadType) FillData() {
 		AllowSize:   5242880,
 		AllowNum:    1,
 	}
-	Db.Save(&ut)
+	db.Save(&ut)
+}
+
+func (u *UploadType) GetConnName() string {
+	return "default"
 }

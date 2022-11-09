@@ -25,7 +25,7 @@ var (
 
 func NewArticleDao() *ArticleDao {
 	onceArticleDao.Do(func() {
-		instanceArticle = &ArticleDao{DB: models.Db}
+		instanceArticle = &ArticleDao{DB: models.GetDB(&models.Article{})}
 	})
 	return instanceArticle
 }
