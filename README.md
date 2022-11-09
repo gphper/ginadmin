@@ -92,7 +92,7 @@
    go mod download
    ```
 
-3. 配置 `configs/config.ini`文件
+3. 配置 `configs/config.yaml`文件
    
    ```
    [mysql]
@@ -271,7 +271,7 @@
    }
    ```
 
-2. 在 `configs/config.ini` 添加配置信息
+2. 在 `configs/config.yaml` 添加配置信息
    
    ```
    [base]

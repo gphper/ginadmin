@@ -25,7 +25,7 @@ type Application struct {
 func (app Application) Run() {
 
 	srv := &http.Server{
-		Addr:    configs.App.BaseConf.Host + ":" + configs.App.BaseConf.Port,
+		Addr:    configs.App.Base.Host + ":" + configs.App.Base.Port,
 		Handler: app.Route,
 	}
 

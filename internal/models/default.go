@@ -29,24 +29,24 @@ type BaseModle struct {
 
 func Init() {
 	var err error
-	dns := fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", configs.App.MysqlConf.UserName, configs.App.MysqlConf.Password, configs.App.MysqlConf.Host, configs.App.MysqlConf.Port, configs.App.MysqlConf.Database)
+	dns := fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", configs.App.Mysql.UserName, configs.App.Mysql.Password, configs.App.Mysql.Host, configs.App.Mysql.Port, configs.App.Mysql.Database)
 	Db, err = gorm.Open(mysql.Open(dns), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
 	sqlDb, _ := Db.DB()
-	sqlDb.SetMaxOpenConns(configs.App.MaxOpenConn)
-	sqlDb.SetMaxIdleConns(configs.App.MaxIdleConn)
+	sqlDb.SetMaxOpenConns(configs.App.Mysql.MaxOpenConn)
+	sqlDb.SetMaxIdleConns(configs.App.Mysql.MaxIdleConn)
 
 	modelss := GetModels()
-	if configs.App.MigrateTable {
+	if configs.App.Base.MigrateTable {
 		err := Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(modelss...)
 		if err != nil {
 			os.Exit(0)
 		}
 	}
 
-	if configs.App.FillData {
+	if configs.App.Base.FillData {
 		for _, v := range modelss {
 			tabler := v.(GaTabler)
 			tabler.FillData()

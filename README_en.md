@@ -62,7 +62,7 @@ The project is a background management platform based on gin framework. Although
    go mod download
    ```
 
-3. Config `configs/config.ini`
+3. Config `configs/config.yaml`
 
    ```
    [mysql]
@@ -87,7 +87,7 @@ The project is a background management platform based on gin framework. Although
 
 ### :small_blue_diamond:<a name="docker-compose">docker-compose</a>
 
-1. Replace `configs/config.ini`
+1. Replace `configs/config.yaml`
 
    ```ini
    [mysql]
@@ -189,7 +189,7 @@ The project is a background management platform based on gin framework. Although
    }
    ```
 
-2. Second,  in `configs/config.ini` add configuration information
+2. Second,  in `configs/config.yaml` add configuration information
 
    ```
    [base]

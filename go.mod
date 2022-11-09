@@ -25,13 +25,13 @@ require (
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mojocn/base64Captcha v1.3.5
 	github.com/onsi/gomega v1.16.0 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/robfig/cron v1.2.0
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	github.com/stretchr/testify v1.7.1
 	github.com/swaggo/gin-swagger v1.3.0
 	github.com/swaggo/swag v1.7.0
 	github.com/ugorji/go v1.2.7 // indirect
-	go.mongodb.org/mongo-driver v1.9.1
 	go.uber.org/zap v1.17.0
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
 	golang.org/x/image v0.0.0-20210628002857-a66eb6448b8d // indirect
@@ -39,6 +39,7 @@ require (
 	golang.org/x/tools v0.1.5 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/ini.v1 v1.62.0
+	gopkg.in/yaml.v2 v2.4.0
 	gopkg.in/yaml.v3 v3.0.0 // indirect
 	gorm.io/driver/mysql v1.1.0
 	gorm.io/gorm v1.21.10

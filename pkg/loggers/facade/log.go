@@ -16,7 +16,7 @@ type Log interface {
 
 func NewLogger(path string) (logger Log) {
 
-	var logType string = configs.App.LogMedia
+	var logType string = configs.App.Base.LogMedia
 
 	switch logType {
 
