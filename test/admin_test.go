@@ -93,7 +93,7 @@ func (suite *AdminTestSuite) TestBAddGroup() {
 func TestExampleTestSuite(t *testing.T) {
 	configs.Init()
 	web.Init()
-	models.Init()
 	redis.Init()
+	models.Init()
 	suite.Run(t, new(AdminTestSuite))
 }
