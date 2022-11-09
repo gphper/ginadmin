@@ -43,8 +43,8 @@ func main() {
 
 	web.Init()
 
-	models.Init()
 	redis.Init()
+	models.Init()
 
 	//判断是否编译线上版本
 	if release {

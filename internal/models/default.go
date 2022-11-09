@@ -7,6 +7,7 @@ package models
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/gphper/ginadmin/configs"
 	"github.com/gphper/ginadmin/pkg/loggers"
@@ -69,26 +70,26 @@ func Init() {
 		mapDB[mysqlConfig.Name] = db
 	}
 
-	// modelss := GetModels()
-	// if configs.App.Base.MigrateTable {
+	modelss := GetModels()
+	if configs.App.Base.MigrateTable {
 
-	// 	for _, v := range modelss {
-	// 		db := GetDB(v.(GaTabler))
-	// 		err := db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(v)
-	// 		if err != nil {
-	// 			os.Exit(0)
-	// 		}
-	// 	}
+		for _, v := range modelss {
+			db := GetDB(v.(GaTabler))
+			err := db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(v)
+			if err != nil {
+				os.Exit(0)
+			}
+		}
 
-	// }
+	}
 
-	// if configs.App.Base.FillData {
-	// 	for _, v := range modelss {
-	// 		tabler := v.(GaTabler)
-	// 		db := GetDB(tabler)
-	// 		tabler.FillData(db)
-	// 	}
-	// }
+	if configs.App.Base.FillData {
+		for _, v := range modelss {
+			tabler := v.(GaTabler)
+			db := GetDB(tabler)
+			tabler.FillData(db)
+		}
+	}
 }
 
 func GetModels() []interface{} {
