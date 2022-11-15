@@ -6,6 +6,7 @@
 package admin
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"sync"
@@ -37,8 +38,8 @@ func NewAdminUserService() *adminUserService {
 }
 
 //获取管理员
-func (ser *adminUserService) GetAdminUsers(req models.AdminUserIndexReq) (db *gorm.DB) {
-	return ser.Dao.GetAdminUsers(req.Nickname, req.CreatedAt)
+func (ser *adminUserService) GetAdminUsers(context context.Context, req models.AdminUserIndexReq) (db *gorm.DB) {
+	return ser.Dao.GetAdminUsers(context, req.Nickname, req.CreatedAt)
 }
 
 //添加或保存管理员信息

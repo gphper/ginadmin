@@ -14,6 +14,7 @@ import (
 
 	"github.com/gphper/ginadmin/configs"
 	"github.com/gphper/ginadmin/internal/controllers"
+	"github.com/gphper/ginadmin/internal/middleware"
 	"github.com/gphper/ginadmin/pkg/loggers/facade"
 	"github.com/gphper/ginadmin/pkg/loggers/medium"
 	"github.com/gphper/ginadmin/pkg/utils/strings"
@@ -38,6 +39,7 @@ func Init() *gin.Engine {
 
 	// router.Use(medium.GinLog(facade.NewZaplog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewZaplog("admin"), true))
 	// router.Use(medium.GinLog(facade.NewRedisLog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewRedisLog("admin"), true))
+	router.Use(middleware.Trace())
 	router.Use(medium.GinLog(facade.NewLogger("admin"), time.RFC3339, false), medium.RecoveryWithLog(facade.NewLogger("admin"), true))
 	/*****admin路由定义******/
 	adminRouter := router.Group("/admin")

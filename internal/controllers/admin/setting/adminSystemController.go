@@ -8,6 +8,7 @@ package setting
 
 import (
 	"bufio"
+	"context"
 	"io/fs"
 	"io/ioutil"
 	"net/http"
@@ -60,8 +61,10 @@ func (con adminSystemController) index(c *gin.Context) {
 
 	log_path = gstrings.JoinStr(string(filepath.Separator), "logs")
 
+	ctx, _ := c.Get("ctx")
+
 	if err != nil {
-		loggers.LogError("admin", "读取目录失败", map[string]string{"error": err.Error()})
+		loggers.LogError(ctx.(context.Context), "admin", "读取目录失败", map[string]string{"error": err.Error()})
 		con.ErrorHtml(c, err)
 		return
 	}
@@ -191,8 +194,10 @@ func (con adminSystemController) indexRedis(c *gin.Context) {
 
 	dateSlice, err := redis.RedisClient.Keys("logs:*").Result()
 
+	ctx, _ := c.Get("ctx")
+
 	if err != nil {
-		loggers.LogError("admin", "读取目录失败", map[string]string{"error": err.Error()})
+		loggers.LogError(ctx.(context.Context), "admin", "读取目录失败", map[string]string{"error": err.Error()})
 		con.ErrorHtml(c, err)
 		return
 	}
@@ -232,8 +237,10 @@ func (con adminSystemController) getDirRedis(c *gin.Context) {
 
 	dateSlice, err := redis.RedisClient.Keys(pattern).Result()
 
+	ctx, _ := c.Get("ctx")
+
 	if err != nil {
-		loggers.LogError("admin", "读取目录失败", map[string]string{"error": err.Error()})
+		loggers.LogError(ctx.(context.Context), "admin", "读取目录失败", map[string]string{"error": err.Error()})
 		con.ErrorHtml(c, err)
 		return
 	}

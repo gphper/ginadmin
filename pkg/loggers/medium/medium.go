@@ -6,6 +6,7 @@
 package medium
 
 import (
+	"context"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -34,15 +35,17 @@ func GinLog(logger facade.Log, timeFormat string, utc bool) gin.HandlerFunc {
 			end = end.UTC()
 		}
 
+		ctx, _ := c.Get("ctx")
+
 		if len(c.Errors) > 0 {
 			infoMap := make(map[string]string, len(c.Errors))
 			for ek, e := range c.Errors.Errors() {
 				infoMap[strconv.Itoa(ek)] = e
 			}
-			logger.Error("error msg", infoMap)
+			logger.Error(ctx.(context.Context), "error msg", infoMap)
 		} else {
 
-			logger.Info(path, map[string]string{
+			logger.Info(ctx.(context.Context), path, map[string]string{
 				"status":     strconv.Itoa(c.Writer.Status()),
 				"method":     c.Request.Method,
 				"path":       path,
@@ -59,6 +62,9 @@ func GinLog(logger facade.Log, timeFormat string, utc bool) gin.HandlerFunc {
 
 func RecoveryWithLog(logger facade.Log, stack bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		ctx, _ := c.Get("ctx")
+
 		defer func() {
 			if err := recover(); err != nil {
 
@@ -74,7 +80,7 @@ func RecoveryWithLog(logger facade.Log, stack bool) gin.HandlerFunc {
 				httpRequest, _ := httputil.DumpRequest(c.Request, false)
 				if brokenPipe {
 
-					logger.Error(c.Request.URL.Path, map[string]string{
+					logger.Error(ctx.(context.Context), c.Request.URL.Path, map[string]string{
 						"error":   err.(string),
 						"request": string(httpRequest),
 					})
@@ -85,14 +91,14 @@ func RecoveryWithLog(logger facade.Log, stack bool) gin.HandlerFunc {
 				}
 
 				if stack {
-					logger.Error("[Recovery from panic]", map[string]string{
+					logger.Error(ctx.(context.Context), "[Recovery from panic]", map[string]string{
 						"time":    time.Now().String(),
 						"error":   err.(string),
 						"request": string(httpRequest),
 						"stack":   string(debug.Stack()),
 					})
 				} else {
-					logger.Error("[Recovery from panic]", map[string]string{
+					logger.Error(ctx.(context.Context), "[Recovery from panic]", map[string]string{
 						"time":    time.Now().String(),
 						"error":   err.(string),
 						"request": string(httpRequest),

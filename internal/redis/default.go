@@ -6,8 +6,6 @@
 package redis
 
 import (
-	"fmt"
-
 	"github.com/gphper/ginadmin/configs"
 
 	"github.com/go-redis/redis"
@@ -21,8 +19,6 @@ func Init() {
 		Password: configs.App.Redis.Password,
 		DB:       configs.App.Redis.Db,
 	})
-
-	fmt.Println(configs.App.Redis.Password)
 
 	err := RedisClient.Ping().Err()
 	if err != nil {

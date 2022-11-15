@@ -6,6 +6,7 @@
 package dao
 
 import (
+	"context"
 	"strings"
 	"sync"
 
@@ -35,9 +36,9 @@ func (dao *AdminUserDao) GetAdminUser(conditions map[string]interface{}) (adminU
 	return
 }
 
-func (dao *AdminUserDao) GetAdminUsers(nickname string, created_time string) (db *gorm.DB) {
+func (dao *AdminUserDao) GetAdminUsers(context context.Context, nickname string, created_time string) (db *gorm.DB) {
 
-	db = dao.DB.Table("admin_users")
+	db = dao.DB.WithContext(context).Table("admin_users")
 
 	if nickname != "" {
 		db = db.Where("nickname like ?", "%"+nickname+"%")

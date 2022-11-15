@@ -6,6 +6,7 @@
 package models
 
 import (
+	"context"
 	"fmt"
 	"os"
 
@@ -45,7 +46,7 @@ func GetDB(model GaTabler) *gorm.DB {
 	db, ok := mapDB[model.GetConnName()]
 	if !ok {
 		errMsg := fmt.Sprintf("connection name%s no exists", model.GetConnName())
-		loggers.LogError("get_db_error", "GetDB", map[string]string{
+		loggers.LogError(context.Background(), "get_db_error", "GetDB", map[string]string{
 			"msg": errMsg,
 		})
 	}
@@ -107,25 +108,28 @@ func RegisterCallback(db *gorm.DB) {
 	//注册创建数据回调
 	db.Callback().Create().After("gorm:create").Register("my_plugin:after_create", func(db *gorm.DB) {
 		str := db.Dialector.Explain(db.Statement.SQL.String(), db.Statement.Vars...)
-		loggers.LogInfo("sql", "create sql", map[string]string{
+		loggers.LogInfo(db.Statement.Context, "sql", "create sql", map[string]string{
 			"info": str,
 		})
 	})
-	// Db.Callback().Query().After("gorm:query").Register("my_plugin:after_select", func(db *gorm.DB) {
-	// 	str := fmt.Sprintf("sql语句：%s 参数：%s", db.Statement.SQL.String(), db.Statement.Vars)
-	// 	fmt.Println(str)
-	// })
+	db.Callback().Query().After("gorm:query").Register("my_plugin:after_select", func(db *gorm.DB) {
+		str := fmt.Sprintf("sql语句：%s 参数：%s", db.Statement.SQL.String(), db.Statement.Vars)
+
+		loggers.LogInfo(db.Statement.Context, "sql", "query sql", map[string]string{
+			"info": str,
+		})
+	})
 	//TODO 注册删除数据回调
 	db.Callback().Delete().After("gorm:delete").Register("my_plugin:after_delete", func(db *gorm.DB) {
 		str := db.Dialector.Explain(db.Statement.SQL.String(), db.Statement.Vars...)
-		loggers.LogInfo("sql", "delete sql", map[string]string{
+		loggers.LogInfo(db.Statement.Context, "sql", "delete sql", map[string]string{
 			"info": str,
 		})
 	})
 	//TODO 注册更新数据回调
 	db.Callback().Update().After("gorm:update").Register("my_plugin:after_update", func(db *gorm.DB) {
 		str := db.Dialector.Explain(db.Statement.SQL.String(), db.Statement.Vars...)
-		loggers.LogInfo("sql", "update sql", map[string]string{
+		loggers.LogInfo(db.Statement.Context, "sql", "update sql", map[string]string{
 			"info": str,
 		})
 	})

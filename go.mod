@@ -16,6 +16,7 @@ require (
 	github.com/go-playground/validator/v10 v10.11.0
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/golang/mock v1.5.0 // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/gphper/multitemplate v0.1.0
 	github.com/jonboulle/clockwork v0.2.2 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect

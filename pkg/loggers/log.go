@@ -6,22 +6,24 @@
 package loggers
 
 import (
+	"context"
+
 	"github.com/gphper/ginadmin/pkg/loggers/facade"
 )
 
 /*
 * 通用info日志
  */
-func LogInfo(path string, msg string, info map[string]string) {
+func LogInfo(ctx context.Context, path string, msg string, info map[string]string) {
 	// log := facade.NewZaplog(path)
 	log := facade.NewLogger(path)
-	log.Info(msg, info)
+	log.Info(ctx, msg, info)
 }
 
 /*
 * 通用error日志
  */
-func LogError(path string, msg string, info map[string]string) {
+func LogError(ctx context.Context, path string, msg string, info map[string]string) {
 	log := facade.NewLogger(path)
-	log.Error(msg, info)
+	log.Error(ctx, msg, info)
 }

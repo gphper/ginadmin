@@ -7,6 +7,7 @@
 package setting
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 
@@ -51,7 +52,10 @@ func (con adminUserController) index(c *gin.Context) {
 		return
 	}
 
-	adminDb := services.NewAdminUserService().GetAdminUsers(req)
+	ctx, _ := c.Get("ctx")
+	// rd := ctx.(context.Context).Value("requestId")
+
+	adminDb := services.NewAdminUserService().GetAdminUsers(ctx.(context.Context), req)
 	adminUserData := paginater.PageOperation(c, adminDb, 1, &adminUserList)
 	c.HTML(http.StatusOK, "setting/adminuser.html", gin.H{
 		"adminUserData": adminUserData,

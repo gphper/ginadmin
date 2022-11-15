@@ -7,6 +7,7 @@
 package admin
 
 import (
+	"context"
 	"errors"
 	"net/http"
 	"runtime"
@@ -50,7 +51,8 @@ func (Base BaseController) ErrorHtml(c *gin.Context, err error) {
 	} else {
 		//收集信息存入到日志
 		_, file, line, _ := runtime.Caller(1)
-		loggers.LogError("admin-custom-error", "err msg", map[string]string{
+		ctx, _ := c.Get("ctx")
+		loggers.LogError(ctx.(context.Context), "admin-custom-error", "err msg", map[string]string{
 			"err msg":   err.Error(),
 			"file info": file + ":" + strconv.Itoa(line),
 		})

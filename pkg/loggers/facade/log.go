@@ -6,12 +6,14 @@
 package facade
 
 import (
+	"context"
+
 	"github.com/gphper/ginadmin/configs"
 )
 
 type Log interface {
-	Info(string, map[string]string)
-	Error(string, map[string]string)
+	Info(context.Context, string, map[string]string)
+	Error(context.Context, string, map[string]string)
 }
 
 func NewLogger(path string) (logger Log) {
