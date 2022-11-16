@@ -37,6 +37,6 @@ jobs:
       - name: Test Run Project  
         run: |
           go mod download
-          go run ./cmd/ginadmin migrate
-          go run ./cmd/ginadmin seed
+          go run ./cmd/ginadmin db migrate
+          go run ./cmd/ginadmin db seed
           go test -v ./test
