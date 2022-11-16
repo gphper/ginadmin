@@ -6,19 +6,10 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
-
-	"github.com/gphper/ginadmin/configs"
-	"github.com/gphper/ginadmin/internal/models"
-	"github.com/gphper/ginadmin/internal/redis"
-	"github.com/gphper/ginadmin/internal/router"
+	"github.com/gphper/ginadmin/cmd/cli/db"
+	"github.com/gphper/ginadmin/cmd/cli/run"
 	_ "github.com/gphper/ginadmin/pkg/cron"
-	"github.com/gphper/ginadmin/web"
-
-	"github.com/gphper/ginadmin/internal"
-
-	"github.com/gin-gonic/gin"
+	"github.com/spf13/cobra"
 )
 
 var (
@@ -37,33 +28,9 @@ var (
 // @host localhost:20011
 // @basepath /api
 func main() {
-	showLogo()
 
-	configs.Init()
+	var rootCmd = &cobra.Command{Use: "ginadmin"}
+	rootCmd.AddCommand(run.CmdRun, db.CmdDb)
+	rootCmd.Execute()
 
-	web.Init()
-
-	redis.Init()
-	models.Init()
-
-	//判断是否编译线上版本
-	if release {
-		gin.SetMode(gin.ReleaseMode)
-		gin.DefaultWriter = ioutil.Discard
-	}
-
-	app := internal.Application{
-		Route: router.Init(),
-	}
-	app.Run()
-
-}
-
-func showLogo() {
-	fmt.Println("   _____ _                   _           _       ")
-	fmt.Println("  / ____(_)         /\\      | |         (_)      ")
-	fmt.Println(" | |  __ _ _ __    /  \\   __| |_ __ ___  _ _ __  ")
-	fmt.Println(" | | |_ | | '_ \\  / /\\ \\ / _` | '_ ` _ \\| | '_ \\ ")
-	fmt.Println(" | |__| | | | | |/ _____\\ (_| | | | | | | | | | |")
-	fmt.Println("  \\_____|_|_| |_/_/    \\_\\__,_|_| |_| |_|_|_| |_| \n")
 }

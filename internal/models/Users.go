@@ -6,20 +6,20 @@
 package models
 
 import (
-	"database/sql"
+	"time"
 
 	"gorm.io/gorm"
 )
 
 type User struct {
 	BaseModle
-	Uid          uint           `gorm:"primary_key;auto_increment"`
-	Nickname     string         `json:"nickname" form:"nickanme"`
-	Email        string         `json:"email" form:"email"`
-	Password     string         `json:"password" form:"password"`
-	Salt         string         `json:"salt" form:"salt"`
-	RefreshToken sql.NullString `json:"refresh_token"`
-	ExpirTime    sql.NullTime   `json:"expir_time"`
+	Uid          uint       `gorm:"primary_key;auto_increment"`
+	Nickname     string     `json:"nickname" form:"nickanme"`
+	Email        string     `json:"email" form:"email"`
+	Password     string     `json:"password" form:"password"`
+	Salt         string     `json:"salt" form:"salt"`
+	RefreshToken *string    `json:"refresh_token"`
+	ExpirTime    *time.Time `json:"expir_time"`
 }
 
 type UserRegisterReq struct {

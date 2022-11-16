@@ -50,24 +50,25 @@ type SessionConf struct {
 }
 
 type BaseConf struct {
-	Port         string `yaml:"port"`
-	Host         string `yaml:"host"`
-	FillData     bool   `yaml:"fill_data"`
-	MigrateTable bool   `yaml:"migrate_table"`
-	LogMedia     string `yaml:"log_media"`
+	Port     string `yaml:"port"`
+	Host     string `yaml:"host"`
+	LogMedia string `yaml:"log_media"`
 }
 
 var App *AppConf
 
 //初始化配置文件
-func Init() {
+func Init(path string) {
 
-	path, err := filesystem.RootPath()
-	if err != nil {
-		fmt.Printf("get root path err:%v", err)
+	var err error
+	if path == "" {
+		RootPath, err = filesystem.RootPath()
+		if err != nil {
+			fmt.Printf("get root path err:%v", err)
+		}
+	} else {
+		RootPath = path
 	}
-
-	flag.StringVar(&RootPath, "root_path", path, "root path")
 
 	//否则执行 go test 报错
 	testing.Init()

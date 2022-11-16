@@ -46,11 +46,9 @@ type SessionConf struct {
 }
 
 type BaseConf struct {
-	Port         string `yaml:"port"`
-	Host         string `yaml:"host"`
-	FillData     bool   `yaml:"fill_data"`
-	MigrateTable bool   `yaml:"migrate_table"`
-	LogMedia     string `yaml:"log_media"`
+	Port     string `yaml:"port"`
+	Host     string `yaml:"host"`
+	LogMedia string `yaml:"log_media"`
 }
 
 var App = new(AppConf)

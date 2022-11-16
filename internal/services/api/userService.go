@@ -129,7 +129,7 @@ func (ser *apiUserService) RefreshToken(req models.UserRefreshTokenReq) (jtoken 
 	}
 
 	//校验过期时间
-	if time.Until(user.ExpirTime.Time).Hours() < 0 {
+	if time.Until(*user.ExpirTime).Hours() < 0 {
 		return jtoken, errors.New("refresh token 已过期请重新登录")
 	}
 
