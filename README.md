@@ -96,7 +96,7 @@
 
 3. 配置 `configs/config.yaml`文件
    
-   ```
+   ```yaml
    mysql:
    -  name: "default"
       username: "root"
@@ -144,25 +144,26 @@
 
 1. 替换conf目录下的配置项
    
-   ```ini
-   [mysql]
-   username=docker
-   password=123456
-   database=docker_mysql
-   host=localmysql
-   port=3306
-   max_open_conn=50
-   max_idle_conn=20
-   [session]
-   session_name=gosession_id
-   [base]
-   host=0.0.0.0
-   port=20010
-   fill_data=true
-   [redis]
-   addr=localredis:6379
-   db=0
-   password=ginadmin
+   ```yaml
+   mysql:
+   -  name: "default"
+      username: "docker"
+      password: "123456"
+      database: "docker_mysql"
+      host: "localmysql"
+      port: 3306
+      max_open_conn: 50
+      max_idle_conn: 20
+   redis:
+      addr: "localredis:6379"
+      db: 0
+      password: "ginadmin"
+   session:
+      session_name: "gosession_id"
+   base:
+      host: 0.0.0.0
+      port: 20010
+      log_media: "redis"
    ```
 
 2. 执行命令 `docker-compose up -d`
