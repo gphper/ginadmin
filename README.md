@@ -74,6 +74,8 @@
 
 - [性能监控](#性能监控)
 
+- [命令行操作](#命令行操作)
+
 ### :small_blue_diamond:<a name="演示地址">演示地址</a>
 
 * http://122.152.196.83/admin/login  账号：admin 密码： 111111
@@ -95,26 +97,25 @@
 3. 配置 `configs/config.yaml`文件
    
    ```
-   [mysql]
-   username=root
-   password=123456
-   database=db_ginadmin
-   host=127.0.0.1
-   port=3306
-   max_open_conn=50
-   max_idle_conn=20
-   [redis]
-   addr=localhost:6379
-   db=0
-   password=""
-   [session]
-   session_name=gosession_id
-   [base]
-   host=0.0.0.0
-   port=20011
-   fill_data=true
-   migrate_table=true
-   log_media=redis
+   mysql:
+   -  name: "default"
+      username: "root"
+      password: "123456"
+      database: "db_ginadmin"
+      host: "127.0.0.1"
+      port: 3306
+      max_open_conn: 50
+      max_idle_conn: 20
+   redis:
+      addr: "localhost:6379"
+      db: 0
+      password: ""
+   session:
+      session_name: "gosession_id"
+   base:
+      host: 0.0.0.0
+      port: 20011
+      log_media: "redis"
    ```
 
 4. 运行 `go run .\cmd\ginadmin`访问地址 http://localhost:端口地址/admin/login。默认账户：admin  密码：111111
@@ -170,7 +171,7 @@
 
 4. 下载扩展 `go mod tidy`
 
-5. 运行项目 ` go run ./cmd/ginadmin/`  访问地址 `http://localhost:20010/admin/login`
+5. 运行项目 ` go run ./cmd/ginadmin/ run`  访问地址 `http://localhost:20010/admin/login`
 
 6. 桌面连接redis地址
    
@@ -252,8 +253,6 @@
 
 2. model需要继承 BaseModle 并且实现 TableName 方法，如果需要初始化填充数据的话，需要实现 FillData() 方法，并将数据填充需要执行的代码写到函数体里。详情参照 AdminUsers
 
-3. 可以通过设置 ini 配置文件中的 `fill_data`和`migrate_table` 分别控制程序重启时自动迁移数据表和填充数据
-
 ### :small_blue_diamond:<a name="定时任务">定时任务</a>
 
 - 在 `pkg/cron/cron.go`  添加定时执行任务
@@ -264,10 +263,10 @@
    
    ```go
    type AppConf struct {
-       BaseConf `ini:"base"`
+       BaseConf `yaml:"base"`
    }
    type BaseConf struct {
-       Port string `ini:"port"`
+       Port string `yaml:"port"`
    }
    ```
 
@@ -321,15 +320,61 @@
 
 - 使用 swagg 生成api文档，生成文件再docs目录下
   
-  ```swag init -g cmd/ginadmin/main.go```
+  ```
+  go install github.com/swaggo/swag/cmd/swag
+  swag init -g cmd/ginadmin/main.go
+  ```
 
-- 在根目录执行  `go build .\cmd\ginadmin\` 然后啊访问 http://localhost:20010/swagger/index.html
+- 在根目录执行  `go run .\cmd\ginadmin\ run` 然后啊访问 http://localhost:20010/swagger/index.html
 
 ### :small_blue_diamond:<a name="线上部署">线上部署</a>
 
-- 使用 `go build -tags=release .\cmd\ginadmin`  生成二进制文件
+- 使用 `go build .\cmd\ginadmin`  生成二进制文件
 - 打包静态资源部署 `go build -tags=embed .\cmd\ginadmin` 
 
 ### :small_blue_diamond:<a name="性能监控">性能监控</a>
 
 * 推荐使用 prometheus + grafana 进行性能监控，参考示例  https://github.com/gphper/ginmonitor
+
+### :small_blue_diamond:<a name="命令行操作">命令行操作</a>
+
+*  运行程序命令
+```
+PS F:\ginadmin> go run .\cmd\ginadmin\ run -h
+Run app
+
+Usage:
+  ginadmin run [flags]
+
+Flags:
+  -c, --config path string   config path
+  -h, --help                 help for run
+  -m, --mode string          dev or release (default "dev")
+```
+* 数据表迁移命令
+```
+PS F:\ginadmin> go run .\cmd\ginadmin\ db migrate -h
+DB Migrate
+
+Usage:
+  ginadmin db migrate [-t table] [flags]
+
+Flags:
+  -c, --config path string   config path
+  -h, --help                 help for migrate
+  -t, --table string         input a table name
+```
+
+*  数据填充命令
+```
+PS F:\ginadmin> go run .\cmd\ginadmin\ db seed -h   
+DB Seed
+
+Usage:
+  ginadmin db seed [-t table] [flags]
+
+Flags:
+  -c, --config path string   config path
+  -h, --help                 help for seed
+  -t, --table string         input a table name
+```
