@@ -273,8 +273,8 @@
 2. 在 `configs/config.yaml` 添加配置信息
    
    ```
-   [base]
-   port=:8091
+   base:
+      port: 20011
    ```
 
 3. 在代码中调用配置文件的信息
