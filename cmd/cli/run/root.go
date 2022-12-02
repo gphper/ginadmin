@@ -44,6 +44,7 @@ func runFunction(cmd *cobra.Command, args []string) {
 	redis.Init()
 	models.Init()
 
+	showPanel()
 	//判断是否编译线上版本
 	if mode == "release" {
 		gin.SetMode(gin.ReleaseMode)
@@ -65,4 +66,10 @@ func showLogo() {
 	fmt.Println(" | | |_ | | '_ \\  / /\\ \\ / _` | '_ ` _ \\| | '_ \\ ")
 	fmt.Println(" | |__| | | | | |/ _____\\ (_| | | | | | | | | | |")
 	fmt.Println("  \\_____|_|_| |_/_/    \\_\\__,_|_| |_| |_|_|_| |_| \n")
+}
+
+func showPanel() {
+	fmt.Println("App running at:")
+	fmt.Printf("- Http Address:   %c[%d;%d;%dm%s%c[0m \n", 0x1B, 0, 40, 34, "http://"+configs.App.Base.Host+":"+configs.App.Base.Port, 0x1B)
+	fmt.Println("")
 }
