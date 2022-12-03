@@ -6,13 +6,18 @@
 package api
 
 import (
+	"context"
 	"errors"
+	"fmt"
 	"net/http"
 
+	"github.com/gphper/ginadmin/internal/errorx"
+	"github.com/gphper/ginadmin/pkg/loggers"
 	gvalidator "github.com/gphper/ginadmin/pkg/validator"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	perrors "github.com/pkg/errors"
 )
 
 type BaseController struct {
@@ -24,13 +29,13 @@ type SuccessResponse struct {
 }
 
 type DefaultResponse struct {
-	Code uint   `json:"code"` //code 为1表示正常 0表示业务请求错误
+	Code int    `json:"code"` //code 为1表示正常 0表示业务请求错误
 	Msg  string `json:"msg"`  //错误提示信息
 }
 
 func (Base BaseController) Success(c *gin.Context, obj interface{}) {
 	var res SuccessResponse
-	res.Code = 1
+	res.Code = 200
 	res.Msg = "success"
 	res.Data = obj
 
@@ -38,9 +43,26 @@ func (Base BaseController) Success(c *gin.Context, obj interface{}) {
 }
 
 func (Base BaseController) Error(c *gin.Context, err error) {
+
 	var res DefaultResponse
-	res.Code = 0
-	res.Msg = err.Error()
+
+	sourceErr := perrors.Cause(err)
+	customErr, ok := sourceErr.(*errorx.CustomError)
+	if ok {
+		res.Code = customErr.ErrCode
+		res.Msg = customErr.ErrMsg
+		// 保存日志
+		if customErr.Err != nil {
+			ctx, _ := c.Get("ctx")
+			loggers.LogError(ctx.(context.Context), "api-custom-error", "err msg", map[string]string{
+				"err msg": err.Error(),
+				"stack":   fmt.Sprintf("%+v", err),
+			})
+		}
+	} else {
+		res.Code = errorx.HTTP_UNKNOW_ERR
+		res.Msg = err.Error()
+	}
 
 	c.JSON(http.StatusOK, res)
 }

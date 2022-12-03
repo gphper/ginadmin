@@ -33,8 +33,29 @@
 <section class="error-page">
   <div class="error-box">
     <div class="error-body text-center">
-      <h1>{{.title}}</h1>
+
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <h3 class="panel-title">{{.title}}</h3>
+            </div>
+            <div class="panel-body">
+              <div>
+                <p style="word-break:break-all;text-align:left;">Error Code：</p>
+                <p style="word-break:break-all;text-align:left;text-indent: 2em;">{{.code}}</p>
+              </div>
+              <div>
+                <p style="word-break:break-all;text-align:left;">Error Msg：</p>
+                <p style="word-break:break-all;text-align:left;text-indent: 2em;height: 200px;overflow-y: auto;padding: 10px;">{{.msg}}</p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
       <div style="margin-top:60px;"><a href="/admin/home" class="btn btn-primary ">回到首页</a></div>
+    
     </div>
   </div>
 </section>

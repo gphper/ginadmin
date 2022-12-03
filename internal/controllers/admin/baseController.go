@@ -9,12 +9,15 @@ package admin
 import (
 	"context"
 	"errors"
+	"fmt"
+	"html/template"
 	"net/http"
-	"runtime"
-	"strconv"
+	"strings"
 
+	"github.com/gphper/ginadmin/internal/errorx"
 	"github.com/gphper/ginadmin/pkg/loggers"
 	gvalidator "github.com/gphper/ginadmin/pkg/validator"
+	perrors "github.com/pkg/errors"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -42,22 +45,42 @@ func (Base BaseController) Error(c *gin.Context, message string) {
 func (Base BaseController) ErrorHtml(c *gin.Context, err error) {
 
 	if gin.Mode() == "debug" {
-		_, file, line, _ := runtime.Caller(1)
+		m := fmt.Sprintf("%+v", err)
+		m = strings.ReplaceAll(m, "\n", "<br/>")
+		m = strings.ReplaceAll(m, "\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
 		c.HTML(http.StatusOK, "home/debug.html", gin.H{
 			"title": "DEBUG",
-			"msg":   file + ":" + strconv.Itoa(line),
+			"msg":   template.HTML(m),
 			"error": err.Error(),
 		})
 	} else {
 		//收集信息存入到日志
-		_, file, line, _ := runtime.Caller(1)
 		ctx, _ := c.Get("ctx")
-		loggers.LogError(ctx.(context.Context), "admin-custom-error", "err msg", map[string]string{
-			"err msg":   err.Error(),
-			"file info": file + ":" + strconv.Itoa(line),
-		})
+		var code int
+		var msg string
+
+		sourceErr := perrors.Cause(err)
+		customErr, ok := sourceErr.(*errorx.CustomError)
+		if !ok {
+			code = errorx.HTTP_UNKNOW_ERR
+			msg = err.Error()
+		} else {
+			code = customErr.ErrCode
+			msg = customErr.ErrMsg
+
+			if customErr.Err != nil {
+				//只记录带有wrap的error
+				loggers.LogError(ctx.(context.Context), "admin-custom-error", "err msg", map[string]string{
+					"err msg": err.Error(),
+					"stack":   fmt.Sprintf("%+v", err),
+				})
+			}
+		}
+
 		c.HTML(http.StatusOK, "home/error.html", gin.H{
 			"title": "出错了~",
+			"code":  code,
+			"msg":   msg,
 		})
 	}
 }

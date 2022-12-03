@@ -65,8 +65,11 @@ func (con articleController) list(c *gin.Context) {
 
 	adminDb := services.NewArticleService().GetArticles(req)
 
-	articleData := paginater.PageOperation(c, adminDb, 1, &articleList)
-
+	articleData, err := paginater.PageOperation(c, adminDb, 1, &articleList)
+	if err != nil {
+		con.ErrorHtml(c, err)
+		return
+	}
 	c.HTML(http.StatusOK, "article/article_list.html", gin.H{
 		"articleData": articleData,
 		"created_at":  c.Query("created_at"),

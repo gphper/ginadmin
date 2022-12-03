@@ -48,15 +48,17 @@ func (con adminUserController) index(c *gin.Context) {
 
 	err = con.FormBind(c, &req)
 	if err != nil {
-		con.Error(c, err.Error())
+		con.ErrorHtml(c, err)
 		return
 	}
 
 	ctx, _ := c.Get("ctx")
-	// rd := ctx.(context.Context).Value("requestId")
 
 	adminDb := services.NewAdminUserService().GetAdminUsers(ctx.(context.Context), req)
-	adminUserData := paginater.PageOperation(c, adminDb, 1, &adminUserList)
+	adminUserData, err := paginater.PageOperation(c, adminDb, 1, &adminUserList)
+	if err != nil {
+		con.ErrorHtml(c, err)
+	}
 	c.HTML(http.StatusOK, "setting/adminuser.html", gin.H{
 		"adminUserData": adminUserData,
 		"created_at":    c.Query("created_at"),

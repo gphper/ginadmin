@@ -14,6 +14,7 @@ import (
 	"gorm.io/driver/mysql"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 )
 
@@ -58,7 +59,9 @@ func Init() {
 	for _, mysqlConfig := range configs.App.Mysqls {
 		var err error
 		dns := fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", mysqlConfig.UserName, mysqlConfig.Password, mysqlConfig.Host, mysqlConfig.Port, mysqlConfig.Database)
-		db, err := gorm.Open(mysql.Open(dns), &gorm.Config{})
+		db, err := gorm.Open(mysql.Open(dns), &gorm.Config{
+			Logger: logger.Discard,
+		})
 		if err != nil {
 			panic(err)
 		}

@@ -11,6 +11,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gphper/ginadmin/internal/errorx"
 	"gorm.io/gorm"
 )
 
@@ -25,15 +26,26 @@ type PageData struct {
 	PageCount int
 }
 
-func PageOperation(c *gin.Context, db *gorm.DB, limit int, data interface{}) PageData {
-	var count int64
+func PageOperation(c *gin.Context, db *gorm.DB, limit int, data interface{}) (PageData, error) {
+	var (
+		count int64
+		pd    PageData
+		err   error
+	)
 	p := c.DefaultQuery("p", "1")
 
 	page, _ := strconv.Atoi(p)
 
-	db.Count(&count)
+	err = db.Count(&count).Error
+	if err != nil {
+		// fmt.Println(db.Statement.SQL.String())
+		return pd, errorx.NewCustomErrorWrap(errorx.MYSQL_COUNT_ERR, "page oprion error", err)
+	}
 
-	db.Offset((page - 1) * limit).Limit(limit).Find(data)
+	err = db.Offset((page - 1) * limit).Limit(limit).Find(data).Error
+	if err != nil {
+		return pd, errorx.NewCustomErrorWrap(errorx.MYSQL_FIND_ERR, "page oprion error", err)
+	}
 
 	pageCount := int(math.Ceil(float64(count) / float64(limit)))
 
@@ -109,5 +121,5 @@ func PageOperation(c *gin.Context, db *gorm.DB, limit int, data interface{}) Pag
 		Page:      1,
 		PageHtml:  template.HTML(pageHtml),
 		PageCount: pageCount,
-	}
+	}, nil
 }

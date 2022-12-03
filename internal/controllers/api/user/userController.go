@@ -7,6 +7,7 @@ package user
 
 import (
 	"github.com/gphper/ginadmin/internal/controllers/api"
+	"github.com/gphper/ginadmin/internal/errorx"
 	"github.com/gphper/ginadmin/internal/middleware"
 	"github.com/gphper/ginadmin/internal/models"
 	apiservice "github.com/gphper/ginadmin/internal/services/api"
@@ -70,7 +71,7 @@ func (apicon userController) register(c *gin.Context) {
 
 	err = apicon.FormBind(c, &req)
 	if err != nil {
-		apicon.Error(c, err)
+		apicon.Error(c, errorx.NewCustomError(errorx.HTTP_BIND_PARAMS_ERR, "绑定参数出错"))
 		return
 	}
 

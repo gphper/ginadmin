@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/gphper/ginadmin/internal/dao"
+	"github.com/gphper/ginadmin/internal/errorx"
 	"github.com/gphper/ginadmin/internal/models"
 	"github.com/gphper/ginadmin/pkg/jwt"
 	"github.com/gphper/ginadmin/pkg/utils/strings"
@@ -51,7 +52,8 @@ func (ser *apiUserService) Register(req models.UserRegisterReq) error {
 	}
 
 	if user.Uid != 0 {
-		return errors.New("该邮箱已存在")
+
+		return errorx.NewCustomError(errorx.HTTP_UNKNOW_ERR, "该邮箱已存在")
 	}
 
 	user.Nickname = req.Nickname
