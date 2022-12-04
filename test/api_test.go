@@ -41,7 +41,7 @@ func (suite *ApiTestSuite) TestARegister() {
 	}
 	// 发起post请求，以表单形式传递参数
 	body, _ := httptestutil.PostForm("/api/user/register", suite.router, option)
-	assert.JSONEq(suite.T(), `{"code":1,"msg":"success","data":{}}`, string(body))
+	assert.JSONEq(suite.T(), `{"code":200,"msg":"success","data":{}}`, string(body))
 
 }
 
