@@ -59,7 +59,7 @@ func (con adminUserController) index(c *gin.Context) {
 	if err != nil {
 		con.ErrorHtml(c, err)
 	}
-	c.HTML(http.StatusOK, "setting/adminuser.html", gin.H{
+	con.Html(c, http.StatusOK, "setting/adminuser.html", gin.H{
 		"adminUserData": adminUserData,
 		"created_at":    c.Query("created_at"),
 		"nickname":      c.Query("nickname"),
@@ -71,7 +71,7 @@ func (con adminUserController) index(c *gin.Context) {
 添加
 */
 func (con adminUserController) addIndex(c *gin.Context) {
-	c.HTML(http.StatusOK, "setting/adminuser_form.html", gin.H{
+	con.Html(c, http.StatusOK, "setting/adminuser_form.html", gin.H{
 		"adminGroups": casbinauth.GetGroups(),
 	})
 }
@@ -113,7 +113,7 @@ func (con adminUserController) edit(c *gin.Context) {
 	for _, v := range groupName {
 		groupMap[v] = struct{}{}
 	}
-	c.HTML(http.StatusOK, "setting/adminuser_form.html", gin.H{
+	con.Html(c, http.StatusOK, "setting/adminuser_form.html", gin.H{
 		"adminGroups": casbinauth.GetGroups(),
 		"adminUser":   adminUser,
 		"groupMap":    groupMap,

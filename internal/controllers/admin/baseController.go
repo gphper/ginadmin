@@ -85,6 +85,18 @@ func (Base BaseController) ErrorHtml(c *gin.Context, err error) {
 	}
 }
 
+func (Base BaseController) Html(c *gin.Context, code int, name string, data gin.H) {
+
+	uid, _ := c.Get("uid")
+	username, _ := c.Get("username")
+	groupname, _ := c.Get("groupname")
+	data["username"] = username
+	data["uid"] = uid
+	data["groupname"] = groupname
+
+	c.HTML(code, name, data)
+}
+
 func (Base BaseController) FormBind(c *gin.Context, obj interface{}) error {
 
 	trans, err := gvalidator.InitTrans("zh")

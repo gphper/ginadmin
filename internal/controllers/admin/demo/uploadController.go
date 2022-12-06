@@ -32,7 +32,7 @@ func (con uploadController) Routes(rg *gin.RouterGroup) {
 
 func (con uploadController) show(c *gin.Context) {
 
-	c.HTML(http.StatusOK, "demo/upload.html", gin.H{})
+	con.Html(c, http.StatusOK, "demo/upload.html", gin.H{})
 
 }
 

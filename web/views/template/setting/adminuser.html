@@ -28,7 +28,9 @@
                 <button type="button" class="btn btn-white" onclick="location.href='/admin/setting/adminuser/index'">重置</button>
             </form>
             <div class="toolbar-btn-action">
+              {{if judgeContainPriv $.username "/admin/setting/adminuser/add" "get"}}
               <a class="btn btn-primary m-r-5" href="/admin/setting/adminuser/add"><i class="mdi mdi-plus"></i> 新增</a>
+              {{end}}
             </div>
           </div>
           <div class="card-body">
@@ -54,8 +56,13 @@
                         <td>{{formatAsDate .CreatedAt "2006-01-02 15:04:05"}}</td>
                         <td>{{.GroupName}}</td>
                         <td>
+                          {{if judgeContainPriv $.username "/admin/setting/adminuser/edit" "get"}}
                             <a class="btn btn-xs btn-default" href="/admin/setting/adminuser/edit?id={{.Uid}}" title="编辑" data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
+                          {{end}}
+
+                          {{if judgeContainPriv $.username "/admin/setting/adminuser/del" "get"}}
                             <a class="btn btn-xs btn-default ajaxBtn" href="javascript:void(0);" uri="/admin/setting/adminuser/del?id={{.Uid}}" msg="是否删除该内容？" title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
+                          {{end}}
                         </td>
                     </tr>
                     {{end}}

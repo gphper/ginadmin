@@ -45,7 +45,7 @@ func (con loginController) Routes(rg *gin.RouterGroup) {
  */
 func (con loginController) login(c *gin.Context) {
 	if c.Request.Method == "GET" {
-		c.HTML(http.StatusOK, "home/login.html", gin.H{
+		con.Html(c, http.StatusOK, "home/login.html", gin.H{
 			"title": "GinAdmin管理平台",
 		})
 	} else {

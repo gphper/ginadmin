@@ -17,12 +17,12 @@
           <nav class="sidebar-main">
             <ul class="nav nav-drawer">
                 {{range .menuList}}
-                    {{if judgeContainPriv $.userInfo.username .MenuPriv "get"}}
+                    {{if judgeContainPriv $.username .MenuPriv "get"}}
                     <li class="nav-item nav-item-has-subnav">
                         <a href="javascript:void(0)"><i class="{{.MenuIcon}}"></i> <span>{{.MenuText}}</span></a>
                         <ul class="nav nav-subnav">
                             {{range .Nodes}}
-                                {{if judgeContainPriv $.userInfo.username .NodePriv "get"}}
+                                {{if judgeContainPriv $.username .NodePriv "get"}}
                                 <li> <a class="multitabs" href="{{.NodeUrl}}">{{.NodeText}}</a> </li>
                                 {{end}}
                             {{end}}
@@ -56,12 +56,12 @@
             <ul class="topbar-right">
               <li class="dropdown dropdown-profile">
                 <a href="javascript:void(0)" data-toggle="dropdown">
-                  <img class="img-avatar img-avatar-48 m-r-10" src="/statics/images/users/avatar.jpg" alt="{{.userInfo.username}}" />
-                  <span>{{.userInfo.username}} <span class="caret"></span></span>
+                  <img class="img-avatar img-avatar-48 m-r-10" src="/statics/images/users/avatar.jpg" alt="{{.username}}" />
+                  <span>{{.username}} <span class="caret"></span></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right">
-                  <li> <a class="" href="javascript:void(0)"><i class="mdi mdi-account"></i> {{.userInfo.groupname}}</a> </li>
-                  <li> <a class="multitabs" data-url="/admin/home/edit_password?id={{.userInfo.uid}}" href="javascript:void(0)"><i class="mdi mdi-lock-outline"></i> 修改密码</a> </li>
+                  <li> <a class="" href="javascript:void(0)"><i class="mdi mdi-account"></i> {{.groupname}}</a> </li>
+                  <li> <a class="multitabs" data-url="/admin/home/edit_password?id={{.uid}}" href="javascript:void(0)"><i class="mdi mdi-lock-outline"></i> 修改密码</a> </li>
                   <li class="divider"></li>
                   <li> <a href="" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="mdi mdi-logout-variant"></i> 退出登录</a> </li>
                   <form id="logout-form" action="/admin/login_out" method="POST" style="display: none;"></form>

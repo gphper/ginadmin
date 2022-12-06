@@ -33,7 +33,7 @@ func (con articleController) Routes(rg *gin.RouterGroup) {
 }
 
 func (con articleController) add(c *gin.Context) {
-	c.HTML(http.StatusOK, "article/article_form.html", nil)
+	con.Html(c, http.StatusOK, "article/article_form.html", nil)
 }
 
 func (con articleController) edit(c *gin.Context) {
@@ -44,7 +44,7 @@ func (con articleController) edit(c *gin.Context) {
 		con.Error(c, err.Error())
 	}
 
-	c.HTML(http.StatusOK, "article/article_form.html", gin.H{
+	con.Html(c, http.StatusOK, "article/article_form.html", gin.H{
 		"article": article,
 		"url":     c.Request.RequestURI,
 	})
@@ -70,7 +70,7 @@ func (con articleController) list(c *gin.Context) {
 		con.ErrorHtml(c, err)
 		return
 	}
-	c.HTML(http.StatusOK, "article/article_list.html", gin.H{
+	con.Html(c, http.StatusOK, "article/article_list.html", gin.H{
 		"articleData": articleData,
 		"created_at":  c.Query("created_at"),
 		"title":       c.Query("title"),

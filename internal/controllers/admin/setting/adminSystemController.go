@@ -69,7 +69,7 @@ func (con adminSystemController) index(c *gin.Context) {
 		return
 	}
 
-	c.HTML(http.StatusOK, "setting/systemlog.html", gin.H{
+	con.Html(c, http.StatusOK, "setting/systemlog.html", gin.H{
 		"log_path": log_path,
 		"files":    files,
 		"line":     string(filepath.Separator),
@@ -175,7 +175,7 @@ func (con adminSystemController) view(c *gin.Context) {
 		}
 	}
 
-	c.HTML(http.StatusOK, "setting/systemlog_view.html", gin.H{
+	con.Html(c, http.StatusOK, "setting/systemlog_view.html", gin.H{
 		"file_path":    c.Query("path"),
 		"filecontents": filecontents,
 		"start_line":   startLine,
@@ -212,7 +212,7 @@ func (con adminSystemController) indexRedis(c *gin.Context) {
 		}
 	}
 
-	c.HTML(http.StatusOK, "setting/systemlog_redis.html", gin.H{
+	con.Html(c, http.StatusOK, "setting/systemlog_redis.html", gin.H{
 		"log_path": path,
 		"files":    dates,
 	})
@@ -296,7 +296,7 @@ func (con adminSystemController) viewRedis(c *gin.Context) {
 
 	line, _ := redis.RedisClient.LLen(pathSlice[0]).Result()
 
-	c.HTML(http.StatusOK, "setting/systemlog_viewredis.html", gin.H{
+	con.Html(c, http.StatusOK, "setting/systemlog_viewredis.html", gin.H{
 		"file_path":    filePath,
 		"filecontents": filecontents,
 		"start_line":   startLine,

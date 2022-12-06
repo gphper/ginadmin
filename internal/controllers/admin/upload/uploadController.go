@@ -87,7 +87,7 @@ func (con uploadController) uploadHtml(c *gin.Context) {
 	extensions = strings.ReplaceAll(uploadType.AllowType, "|", ",")
 	maxAllowNum = uploadType.AllowNum - 1
 
-	c.HTML(http.StatusOK, "upload/upload.html", gin.H{
+	con.Html(c, http.StatusOK, "upload/upload.html", gin.H{
 		"mimeTypes":     mimeTypes,
 		"info":          uploadType,
 		"extensions":    extensions,

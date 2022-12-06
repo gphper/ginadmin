@@ -64,7 +64,7 @@
                     <td class="p-l-40">
                       {{range $kkk,$vvv := .PrivChild}}
                       <label class="lyear-checkbox checkbox-primary checkbox-inline">
-                        <input name="privs[]" type="checkbox" class="checkbox-child" dataid="id-{{$k}}-{{$kk}}-{{$kkk}}" {{if judgeContainPriv $.id .NodeSonPriv .NodeSonPrivAct}}checked{{end}} value="{{.NodeSonPriv}}:{{.NodeSonPrivAct}}">
+                        <input name="privs[]" type="checkbox" class="checkbox-child" dataid="id-{{$k}}-{{$kk}}-{{$kkk}}" {{if judegContainSlicePriv $.id .NodeSonPriv}}checked{{end}} value="{{joinSlicePriv .NodeSonPriv}}">
                         <span> {{.NodeSonText}}</span>
                       </label>
                       {{end}}

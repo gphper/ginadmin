@@ -7,7 +7,7 @@
 package admin
 
 import (
-	"encoding/json"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -16,7 +16,6 @@ import (
 	services "github.com/gphper/ginadmin/internal/services/admin"
 	"github.com/gphper/ginadmin/pkg/casbinauth"
 
-	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
@@ -39,31 +38,29 @@ func (con homeController) Routes(rg *gin.RouterGroup) {
 func (con homeController) home(c *gin.Context) {
 	menuList := menu.GetMenu()
 
-	session := sessions.Default(c)
-	userInfoJson := session.Get("userInfo")
-	userData := make(map[string]interface{})
-	err := json.Unmarshal([]byte(userInfoJson.(string)), &userData)
-	if err != nil {
-		// 取不到就是没有登录
+	username, ok := c.Get("username")
+	if !ok {
 		c.Header("Content-Type", "text/html; charset=utf-8")
 		c.String(200, `<script type="text/javascript">top.location.href="/admin/login"</script>`)
 		return
 	}
-
-	privs, err := casbinauth.GetGroupByUser(userData["username"].(string))
+	privs, err := casbinauth.GetGroupByUser(username.(string))
 	var groupname string
 	if err == nil {
 		groupname = strings.Join(privs, ",")
 	}
 
 	//获取当前用户的皮肤
-	uid, _ := userData["uid"].(float64)
-
+	uid, ok := c.Get("uid")
+	if !ok {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.String(200, `<script type="text/javascript">top.location.href="/admin/login"</script>`)
+		return
+	}
 	adminUser, _ := (services.NewAdminUserService()).GetAdminUser(map[string]interface{}{"uid": uid})
 
-	c.HTML(http.StatusOK, "home/home.html", gin.H{
+	con.Html(c, http.StatusOK, "home/home.html", gin.H{
 		"menuList":  menuList,
-		"userInfo":  userData,
 		"groupName": groupname,
 		"header":    adminUser.Header,
 		"logo":      adminUser.Logo,
@@ -72,12 +69,12 @@ func (con homeController) home(c *gin.Context) {
 }
 
 func (con homeController) welcome(c *gin.Context) {
-	c.HTML(http.StatusOK, "home/welcome.html", gin.H{})
+	con.Html(c, http.StatusOK, "home/welcome.html", gin.H{})
 }
 
 func (con homeController) editPassword(c *gin.Context) {
 	id := c.Query("id")
-	c.HTML(http.StatusOK, "home/password_form.html", gin.H{
+	con.Html(c, http.StatusOK, "home/password_form.html", gin.H{
 		"id": id,
 	})
 }
@@ -111,15 +108,9 @@ func (con homeController) saveSkin(c *gin.Context) {
 
 	con.FormBind(c, &skinReq)
 
-	value, _ := c.Get("userInfo")
-
-	userData := make(map[string]interface{})
-
-	json.Unmarshal([]byte(value.(string)), &userData)
-
-	v, _ := userData["uid"].(float64)
-
-	skinReq.Uid = int(v)
+	uid, _ := c.Get("uid")
+	fmt.Printf("%T", uid)
+	skinReq.Uid = uid.(int)
 
 	err := services.NewAdminUserService().EditSkin(skinReq)
 	if err != nil {

@@ -53,7 +53,7 @@ func (con adminGroupController) index(c *gin.Context) {
 		groups = casbinauth.GetGroups()
 	}
 
-	c.HTML(http.StatusOK, "setting/group.html", gin.H{
+	con.Html(c, http.StatusOK, "setting/group.html", gin.H{
 		"adminGroups": groups,
 		"keyword":     key,
 	})
@@ -63,7 +63,7 @@ func (con adminGroupController) index(c *gin.Context) {
 添加角色
 */
 func (con adminGroupController) addIndex(c *gin.Context) {
-	c.HTML(http.StatusOK, "setting/group_form.html", gin.H{
+	con.Html(c, http.StatusOK, "setting/group_form.html", gin.H{
 		"menuList": menu.GetMenu(),
 		"id":       "",
 	})
@@ -81,6 +81,16 @@ func (con adminGroupController) save(c *gin.Context) {
 		return
 	}
 
+	tmp := make([]string, 0, len(req.Privs))
+	for _, v := range req.Privs {
+		if strings.Contains(v, "|") {
+			tmp = append(tmp, strings.Split(v, "|")...)
+		} else {
+			tmp = append(tmp, v)
+		}
+	}
+	req.Privs = tmp
+
 	err = services.NewAdminGroupService().SaveGroup(req)
 	if err != nil {
 		con.Error(c, "操作失败")
@@ -95,7 +105,7 @@ func (con adminGroupController) save(c *gin.Context) {
 */
 func (con adminGroupController) edit(c *gin.Context) {
 	id := c.Query("id")
-	c.HTML(http.StatusOK, "setting/group_form.html", gin.H{
+	con.Html(c, http.StatusOK, "setting/group_form.html", gin.H{
 		"menuList": menu.GetMenu(),
 		"id":       id,
 	})

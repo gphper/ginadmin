@@ -7,9 +7,9 @@
 package menu
 
 type NodeSon struct {
-	NodeSonText    string
-	NodeSonPriv    string
-	NodeSonPrivAct string
+	NodeSonText string
+	NodeSonPriv []string
+	// NodeSonPrivAct string
 }
 
 type Node struct {
@@ -45,19 +45,30 @@ func GetMenu() []Menu {
 					NodePrivAct: "get",
 					PrivChild: []NodeSon{
 						{
-							NodeSonText:    "添加管理员",
-							NodeSonPriv:    "/admin/setting/adminuser/add",
-							NodeSonPrivAct: "get",
+							NodeSonText: "添加管理员",
+							NodeSonPriv: []string{
+								"/admin/setting/adminuser/add:get",
+								"/admin/setting/adminuser/save:post",
+							},
 						},
 						{
-							NodeSonText:    "编辑管理员",
-							NodeSonPriv:    "/admin/setting/adminuser/edit",
-							NodeSonPrivAct: "get",
+							NodeSonText: "编辑管理员",
+							NodeSonPriv: []string{
+								"/admin/setting/adminuser/edit:get",
+								"/admin/setting/adminuser/save:post",
+							},
 						},
 						{
-							NodeSonText:    "保存管理员",
-							NodeSonPriv:    "/admin/setting/adminuser/save",
-							NodeSonPrivAct: "post",
+							NodeSonText: "保存管理员",
+							NodeSonPriv: []string{
+								"/admin/setting/adminuser/save:post",
+							},
+						},
+						{
+							NodeSonText: "删除管理员",
+							NodeSonPriv: []string{
+								"/admin/setting/adminuser/del:get",
+							},
 						},
 					},
 				},
@@ -68,19 +79,30 @@ func GetMenu() []Menu {
 					NodePrivAct: "get",
 					PrivChild: []NodeSon{
 						{
-							NodeSonText:    "添加角色",
-							NodeSonPriv:    "/admin/setting/admingroup/add",
-							NodeSonPrivAct: "get",
+							NodeSonText: "添加角色",
+							NodeSonPriv: []string{
+								"/admin/setting/admingroup/add:get",
+								"/admin/setting/admingroup/save:post",
+							},
 						},
 						{
-							NodeSonText:    "编辑角色",
-							NodeSonPriv:    "/admin/setting/admingroup/edit",
-							NodeSonPrivAct: "get",
+							NodeSonText: "编辑角色",
+							NodeSonPriv: []string{
+								"/admin/setting/admingroup/edit:get",
+								"/admin/setting/admingroup/save:post",
+							},
 						},
 						{
-							NodeSonText:    "保存角色",
-							NodeSonPriv:    "/admin/setting/admingroup/save",
-							NodeSonPrivAct: "post",
+							NodeSonText: "保存角色",
+							NodeSonPriv: []string{
+								"/admin/setting/admingroup/save:post",
+							},
+						},
+						{
+							NodeSonText: "删除角色",
+							NodeSonPriv: []string{
+								"/admin/setting/admingroup/del:get",
+							},
 						},
 					},
 				},
@@ -91,14 +113,16 @@ func GetMenu() []Menu {
 					NodePrivAct: "get",
 					PrivChild: []NodeSon{
 						{
-							NodeSonText:    "获取目录",
-							NodeSonPriv:    "/admin/setting/system/getdir",
-							NodeSonPrivAct: "get",
+							NodeSonText: "获取目录",
+							NodeSonPriv: []string{
+								"/admin/setting/system/getdir:get",
+							},
 						},
 						{
-							NodeSonText:    "读取日志",
-							NodeSonPriv:    "/admin/setting/system/view",
-							NodeSonPrivAct: "get",
+							NodeSonText: "读取日志",
+							NodeSonPriv: []string{
+								"/admin/setting/system/view:get",
+							},
 						},
 					},
 				},
@@ -109,14 +133,16 @@ func GetMenu() []Menu {
 					NodePrivAct: "get",
 					PrivChild: []NodeSon{
 						{
-							NodeSonText:    "获取目录[redis]",
-							NodeSonPriv:    "/admin/setting/system/getdir_redis",
-							NodeSonPrivAct: "get",
+							NodeSonText: "获取目录[redis]",
+							NodeSonPriv: []string{
+								"/admin/setting/system/getdir_redis:get",
+							},
 						},
 						{
-							NodeSonText:    "读取日志[redis]",
-							NodeSonPriv:    "/admin/setting/system/view_redis",
-							NodeSonPrivAct: "get",
+							NodeSonText: "读取日志[redis]",
+							NodeSonPriv: []string{
+								"/admin/setting/system/view_redis:get",
+							},
 						},
 					},
 				},
@@ -135,9 +161,30 @@ func GetMenu() []Menu {
 					NodePrivAct: "get",
 					PrivChild: []NodeSon{
 						{
-							NodeSonText:    "文章保存",
-							NodeSonPriv:    "/admin/article/save",
-							NodeSonPrivAct: "post",
+							NodeSonText: "添加文章",
+							NodeSonPriv: []string{
+								"/admin/article/add:get",
+								"/admin/article/save:post",
+							},
+						},
+						{
+							NodeSonText: "编辑文章",
+							NodeSonPriv: []string{
+								"/admin/article/edit:get",
+								"/admin/article/save:post",
+							},
+						},
+						{
+							NodeSonText: "文章保存",
+							NodeSonPriv: []string{
+								"/admin/article/save:post",
+							},
+						},
+						{
+							NodeSonText: "删除文章",
+							NodeSonPriv: []string{
+								"/admin/article/del:get",
+							},
 						},
 					},
 				},
@@ -156,9 +203,10 @@ func GetMenu() []Menu {
 					NodePrivAct: "get",
 					PrivChild: []NodeSon{
 						{
-							NodeSonText:    "上传文件",
-							NodeSonPriv:    "/admin/demo/upload",
-							NodeSonPrivAct: "post",
+							NodeSonText: "上传文件",
+							NodeSonPriv: []string{
+								"/admin/demo/upload:post",
+							},
 						},
 					},
 				},
