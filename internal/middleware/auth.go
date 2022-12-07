@@ -56,20 +56,15 @@ func AdminUserAuth() gin.HandlerFunc {
 */
 func AdminUserPrivs() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		session := sessions.Default(c)
-		userInfoJson := session.Get("userInfo")
-		userData := make(map[string]interface{})
-		err := json.Unmarshal([]byte(userInfoJson.(string)), &userData)
-		if err != nil {
-			c.JSON(http.StatusOK, gin.H{
-				"status": false,
-				"msg":    "无权限禁止操作",
-			})
-
-			c.Abort()
+		username,ok := c.Get("username")
+		if !ok{
+			c.Header("Content-Type", "text/html; charset=utf-8")
+			c.String(200, `<script type="text/javascript">top.location.href="/admin/login"</script>`)
+			return
 		}
+
 		uri := c.FullPath()
-		ok, err := casbinauth.Check(userData["username"].(string), uri, c.Request.Method)
+		ok, err := casbinauth.Check(username.(string), uri, c.Request.Method)
 		if !ok || err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"status": false,
