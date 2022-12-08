@@ -13,7 +13,7 @@ import (
 
 var RedisClient *redis.Client
 
-func Init() {
+func Init() error {
 	RedisClient = redis.NewClient(&redis.Options{
 		Addr:     configs.App.Redis.Addr,
 		Password: configs.App.Redis.Password,
@@ -22,6 +22,7 @@ func Init() {
 
 	err := RedisClient.Ping().Err()
 	if err != nil {
-		panic("redis connect error")
+		return err
 	}
+	return nil
 }

@@ -27,12 +27,14 @@ var viewPath embed.FS
 
 var StaticsFs http.FileSystem
 
-func Init() {
+func Init() error {
 	static, err := fs.Sub(StaticPath, "statics")
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 	StaticsFs = http.FS(static)
+
+	return nil
 }
 
 func LoadTemplates() multitemplate.Renderer {
@@ -40,8 +42,6 @@ func LoadTemplates() multitemplate.Renderer {
 	r := multitemplate.NewRenderer()
 
 	layouts, err := fs.Glob(viewPath, "views/layout/*.html")
-
-	fmt.Println(layouts)
 
 	if err != nil {
 		panic(err.Error())

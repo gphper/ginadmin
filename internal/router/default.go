@@ -6,6 +6,7 @@
 package router
 
 import (
+	"log"
 	"path/filepath"
 	"time"
 
@@ -35,8 +36,11 @@ func Init() *gin.Engine {
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
 	router.NoRoute(controllers.NewHandleController().Handle)
 	router.NoMethod(controllers.NewHandleController().Handle)
-	prep(router)
-
+	//初始化路由相关信息
+	err := prep(router)
+	if err != nil {
+		log.Fatalf("start error route: %s", err.Error())
+	}
 	// router.Use(medium.GinLog(facade.NewZaplog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewZaplog("admin"), true))
 	// router.Use(medium.GinLog(facade.NewRedisLog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewRedisLog("admin"), true))
 	router.Use(middleware.Trace())
@@ -54,7 +58,7 @@ func Init() *gin.Engine {
 	return router
 }
 
-func prep(router *gin.Engine) {
+func prep(router *gin.Engine) error {
 	var (
 		uploadPath string
 		err        error
@@ -75,10 +79,13 @@ func prep(router *gin.Engine) {
 		if os.IsNotExist(err) {
 			err = os.Mkdir(uploadPath, os.ModeDir)
 			if err != nil {
-				panic(err.Error())
+
+				return err
 			}
 		}
 	}
 
 	router.StaticFS("/uploadfile", http.Dir(uploadPath))
+
+	return nil
 }
