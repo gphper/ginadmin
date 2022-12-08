@@ -37,26 +37,27 @@ func Init() error {
 	return nil
 }
 
-func LoadTemplates() multitemplate.Renderer {
+func LoadTemplates() (render multitemplate.Renderer, err error) {
 
-	r := multitemplate.NewRenderer()
+	render = multitemplate.NewRenderer()
 
 	layouts, err := fs.Glob(viewPath, "views/layout/*.html")
-
 	if err != nil {
-		panic(err.Error())
+		return
 	}
+
 	includes, err := fs.Glob(viewPath, "views/template/*/*.html")
 	if err != nil {
-		panic(err.Error())
+		return
 	}
+
 	for _, include := range includes {
 		layoutCopy := make([]string, len(layouts))
 		copy(layoutCopy, layouts)
 		files := append(layoutCopy, include)
 		dirSlice := strings.Split(include, "/")
 		fileName := strings.Join(dirSlice[len(dirSlice)-2:], "/")
-		r.AddFromFsFuncs(fileName, template2.GlobalTemplateFun, viewPath, files...)
+		render.AddFromFsFuncs(fileName, template2.GlobalTemplateFun, viewPath, files...)
 	}
-	return r
+	return
 }

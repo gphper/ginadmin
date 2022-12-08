@@ -69,7 +69,11 @@ func prep(router *gin.Engine) error {
 		router.GET("/swagger/*any", SwagHandler)
 	}
 
-	router.HTMLRender = web.LoadTemplates()
+	router.HTMLRender, err = web.LoadTemplates()
+	if err != nil {
+
+		return err
+	}
 
 	router.StaticFS("/statics", web.StaticsFs)
 
