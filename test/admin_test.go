@@ -6,6 +6,7 @@
 package test
 
 import (
+	"log"
 	"net/http"
 	"net/url"
 	"testing"
@@ -31,13 +32,13 @@ func (suite *AdminTestSuite) SetupSuite() {
 	suite.router = router.Init()
 }
 
-//登录页测试
+// 登录页测试
 func (suite *AdminTestSuite) TestALoginGet() {
 	body := httptestutil.Get("/admin/login", suite.router)
 	assert.Contains(suite.T(), string(body), "登录")
 }
 
-//登录
+// 登录
 func (suite *AdminTestSuite) TestALoginPost() {
 	option := httptestutil.OptionValue{
 		Param: url.Values{
@@ -91,9 +92,28 @@ func (suite *AdminTestSuite) TestBAddGroup() {
 }
 
 func TestExampleTestSuite(t *testing.T) {
-	configs.Init("")
-	web.Init()
-	redis.Init()
-	models.Init()
+
+	var err error
+
+	err = configs.Init("")
+	if err != nil {
+		log.Fatalf("start fail:[Config Init] %s", err.Error())
+	}
+
+	err = web.Init()
+	if err != nil {
+		log.Fatalf("start fail:[Web Init] %s", err.Error())
+	}
+
+	err = redis.Init()
+	if err != nil {
+		log.Fatalf("start fail:[Redis Init] %s", err.Error())
+	}
+
+	err = models.Init()
+	if err != nil {
+		log.Fatalf("start fail:[Mysql Init] %s", err.Error())
+	}
+
 	suite.Run(t, new(AdminTestSuite))
 }

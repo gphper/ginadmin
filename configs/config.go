@@ -10,7 +10,6 @@ package configs
 
 import (
 	"flag"
-	"fmt"
 	"io/ioutil"
 	"testing"
 
@@ -57,14 +56,15 @@ type BaseConf struct {
 
 var App *AppConf
 
-//初始化配置文件
-func Init(path string) {
+// 初始化配置文件
+func Init(path string) error {
 
 	var err error
 	if path == "" {
 		RootPath, err = filesystem.RootPath()
 		if err != nil {
-			fmt.Printf("get root path err:%v", err)
+
+			return err
 		}
 	} else {
 		RootPath = path
@@ -76,10 +76,14 @@ func Init(path string) {
 
 	yamlFile, err := ioutil.ReadFile(RootPath + "/configs/config.yaml")
 	if err != nil {
-		fmt.Println(err.Error())
+
+		return err
 	}
 	err = yaml.Unmarshal(yamlFile, &App)
 	if err != nil {
-		fmt.Println(err.Error())
+
+		return err
 	}
+
+	return nil
 }

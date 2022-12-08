@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strings"
 
@@ -29,10 +30,22 @@ func init() {
 func migrateFunc(cmd *cobra.Command, args []string) {
 
 	var tableMap map[string]struct{}
+	var err error
 
-	configs.Init(configPath)
-	redis.Init()
-	models.Init()
+	err = configs.Init(configPath)
+	if err != nil {
+		log.Fatalf("start fail:[Config Init] %s", err.Error())
+	}
+
+	err = redis.Init()
+	if err != nil {
+		log.Fatalf("start fail:[Redis Init] %s", err.Error())
+	}
+
+	err = models.Init()
+	if err != nil {
+		log.Fatalf("start fail:[Mysql Init] %s", err.Error())
+	}
 
 	tableMap = make(map[string]struct{})
 	if tables != "" {

@@ -22,8 +22,9 @@ import (
 
 var StaticsFs http.FileSystem
 
-func Init() {
+func Init() error {
 	StaticsFs = http.Dir(configs.RootPath + string(filepath.Separator) + "web" + string(filepath.Separator) + "statics")
+	return nil
 }
 
 func LoadTemplates() multitemplate.Renderer {
