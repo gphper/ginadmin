@@ -19,7 +19,20 @@ func NewHandleController() handleController {
 }
 
 func (con handleController) Handle(c *gin.Context) {
-	c.HTML(http.StatusOK, "home/error.html", gin.H{
-		"title": c.Writer.Status(),
-	})
+
+	if c.GetHeader("Accept") == "application/json" {
+
+		c.JSON(http.StatusNotFound, gin.H{
+			"code": 404,
+			"msg":  "url not fund",
+			"data": "",
+		})
+	} else {
+
+		c.HTML(http.StatusOK, "home/error.html", gin.H{
+			"title": "出错了~",
+			"code":  404,
+			"msg":   "url not fund",
+		})
+	}
 }
