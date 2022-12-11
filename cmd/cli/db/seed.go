@@ -1,6 +1,7 @@
 package db
 
 import (
+	"log"
 	"strings"
 
 	"github.com/gphper/ginadmin/configs"
@@ -26,10 +27,22 @@ func init() {
 
 func seedFunc(cmd *cobra.Command, args []string) {
 	var tableMap map[string]struct{}
+	var err error
 
-	configs.Init(confPath)
-	redis.Init()
-	models.Init()
+	err = configs.Init(configPath)
+	if err != nil {
+		log.Fatalf("start fail:[Config Init] %s", err.Error())
+	}
+
+	err = redis.Init()
+	if err != nil {
+		log.Fatalf("start fail:[Redis Init] %s", err.Error())
+	}
+
+	err = models.Init()
+	if err != nil {
+		log.Fatalf("start fail:[Mysql Init] %s", err.Error())
+	}
 
 	tableMap = make(map[string]struct{})
 	if tableSeed != "" {

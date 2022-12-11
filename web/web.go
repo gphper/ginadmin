@@ -22,22 +22,23 @@ import (
 
 var StaticsFs http.FileSystem
 
-func Init() {
+func Init() error {
 	StaticsFs = http.Dir(configs.RootPath + string(filepath.Separator) + "web" + string(filepath.Separator) + "statics")
+	return nil
 }
 
-func LoadTemplates() multitemplate.Renderer {
+func LoadTemplates() (render multitemplate.Renderer, err error) {
 	templatesDir := configs.RootPath + "/web/views"
-	r := multitemplate.NewRenderer()
+	render = multitemplate.NewRenderer()
 
 	layouts, err := filepath.Glob(templatesDir + "/layout/*.html")
 
 	if err != nil {
-		panic(err.Error())
+		return
 	}
 	includes, err := filepath.Glob(templatesDir + "/template/*/*.html")
 	if err != nil {
-		panic(err.Error())
+		return
 	}
 	for _, include := range includes {
 		layoutCopy := make([]string, len(layouts))
@@ -45,7 +46,7 @@ func LoadTemplates() multitemplate.Renderer {
 		files := append(layoutCopy, include)
 		dirSlice := strings.Split(include, string(filepath.Separator))
 		fileName := strings.Join(dirSlice[len(dirSlice)-2:], "/")
-		r.AddFromFilesFuncs(fileName, template2.GlobalTemplateFun, files...)
+		render.AddFromFilesFuncs(fileName, template2.GlobalTemplateFun, files...)
 	}
-	return r
+	return
 }

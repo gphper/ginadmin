@@ -3,6 +3,7 @@ package run
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gphper/ginadmin/configs"
@@ -35,14 +36,29 @@ func init() {
 }
 
 func runFunction(cmd *cobra.Command, args []string) {
+	var err error
+
 	showLogo()
 
-	configs.Init(configPath)
+	err = configs.Init(configPath)
+	if err != nil {
+		log.Fatalf("start fail:[Config Init] %s", err.Error())
+	}
 
-	web.Init()
+	err = web.Init()
+	if err != nil {
+		log.Fatalf("start fail:[Web Init] %s", err.Error())
+	}
 
-	redis.Init()
-	models.Init()
+	err = redis.Init()
+	if err != nil {
+		log.Fatalf("start fail:[Redis Init] %s", err.Error())
+	}
+
+	err = models.Init()
+	if err != nil {
+		log.Fatalf("start fail:[Mysql Init] %s", err.Error())
+	}
 
 	showPanel()
 	//判断是否编译线上版本

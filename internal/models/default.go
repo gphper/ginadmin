@@ -40,7 +40,7 @@ func (b *BaseModle) GetConnName() string {
 	return b.ConnName
 }
 
-//获取链接
+// 获取链接
 func GetDB(model GaTabler) *gorm.DB {
 
 	db, ok := mapDB[model.GetConnName()]
@@ -53,7 +53,7 @@ func GetDB(model GaTabler) *gorm.DB {
 	return db
 }
 
-func Init() {
+func Init() error {
 	mapDB = make(map[string]*gorm.DB)
 
 	for _, mysqlConfig := range configs.App.Mysqls {
@@ -63,7 +63,7 @@ func Init() {
 			Logger: logger.Discard,
 		})
 		if err != nil {
-			panic(err)
+			return err
 		}
 		sqlDb, _ := db.DB()
 		sqlDb.SetMaxOpenConns(mysqlConfig.MaxOpenConn)
@@ -74,6 +74,8 @@ func Init() {
 
 		mapDB[mysqlConfig.Name] = db
 	}
+
+	return nil
 
 }
 
