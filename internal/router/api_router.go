@@ -16,7 +16,7 @@ func ApiRouter(apiRouter *gin.RouterGroup) {
 	{
 		apiUserRouter := apiRouter.Group("user")
 		{
-			user.NewUserController().Routes(apiUserRouter)
+			addApiController(user.NewUserController(), apiUserRouter)
 
 		}
 	}

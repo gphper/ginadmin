@@ -24,12 +24,13 @@ func AdminRouter(adminRouter *gin.RouterGroup) {
 	store := cookie.NewStore([]byte("1GdFRMs4fcWBvLXT"))
 	adminRouter.Use(sessions.Sessions("mysession", store))
 	{
-		admin.NewLoginController().Routes(adminRouter)
+
+		addAdminController(admin.NewLoginController(), adminRouter)
 
 		adminHomeRouter := adminRouter.Group("/home")
 		adminHomeRouter.Use(middleware.AdminUserAuth())
 		{
-			admin.NewHomeController().Routes(adminHomeRouter)
+			addAdminController(admin.NewHomeController(), adminHomeRouter)
 		}
 
 		adminSettingRouter := adminRouter.Group("/setting")
@@ -37,17 +38,17 @@ func AdminRouter(adminRouter *gin.RouterGroup) {
 		{
 			adminGroup := adminSettingRouter.Group("/admingroup")
 			{
-				setting.NewAdminGroupController().Routes(adminGroup)
+				addAdminController(setting.NewAdminGroupController(), adminGroup)
 			}
 
 			adminUser := adminSettingRouter.Group("/adminuser")
 			{
-				setting.NewAdminUserController().Routes(adminUser)
+				addAdminController(setting.NewAdminUserController(), adminUser)
 			}
 
 			adminSystem := adminSettingRouter.Group("/system")
 			{
-				setting.NewAdminSystemController().Routes(adminSystem)
+				addAdminController(setting.NewAdminSystemController(), adminSystem)
 			}
 
 		}
@@ -56,21 +57,21 @@ func AdminRouter(adminRouter *gin.RouterGroup) {
 		adminDemoRouter := adminRouter.Group("/demo")
 		adminDemoRouter.Use(middleware.AdminUserAuth(), middleware.AdminUserPrivs())
 		{
-			demo.NewUploadController().Routes(adminDemoRouter)
+			addAdminController(demo.NewUploadController(), adminDemoRouter)
 		}
 
 		//Article文章管理
 		adminArticleRouter := adminRouter.Group("/article")
 		adminArticleRouter.Use(middleware.AdminUserAuth(), middleware.AdminUserPrivs())
 		{
-			article.NewArticleController().Routes(adminArticleRouter)
+			addAdminController(article.NewArticleController(), adminArticleRouter)
 		}
 
 		//文件上传
 		adminUploadRouter := adminRouter.Group("/upload")
 		adminUploadRouter.Use(middleware.AdminUserAuth())
 		{
-			upload.NewUploadController().Routes(adminUploadRouter)
+			addAdminController(upload.NewUploadController(), adminUploadRouter)
 		}
 
 	}
