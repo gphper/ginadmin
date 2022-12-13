@@ -8,10 +8,10 @@ package test
 import (
 	"bytes"
 	"encoding/json"
+	"log"
 	"net/url"
 	"testing"
 
-	"github.com/gin-gonic/gin"
 	"github.com/gphper/ginadmin/internal/router"
 	"github.com/gphper/ginadmin/pkg/utils/httptestutil"
 	"github.com/stretchr/testify/assert"
@@ -20,12 +20,18 @@ import (
 
 type ApiTestSuite struct {
 	suite.Suite
-	router *gin.Engine
+	router *router.Router
 	jtoken string
 }
 
 func (suite *ApiTestSuite) SetupSuite() {
-	suite.router = router.Init()
+
+	router, err := router.Init()
+	if err != nil {
+		log.Fatalf("router init fail: %s", err)
+	}
+
+	suite.router = router
 }
 
 // 注册接口测试

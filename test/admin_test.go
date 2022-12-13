@@ -11,7 +11,6 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/gin-gonic/gin"
 	"github.com/gphper/ginadmin/configs"
 	"github.com/gphper/ginadmin/internal/models"
 	"github.com/gphper/ginadmin/internal/redis"
@@ -24,12 +23,18 @@ import (
 
 type AdminTestSuite struct {
 	suite.Suite
-	router  *gin.Engine
+	router  *router.Router
 	cookies []*http.Cookie
 }
 
 func (suite *AdminTestSuite) SetupSuite() {
-	suite.router = router.Init()
+
+	router, err := router.Init()
+	if err != nil {
+		log.Fatalf("router init fail: %s", err)
+	}
+
+	suite.router = router
 }
 
 // 登录页测试
@@ -48,10 +53,10 @@ func (suite *AdminTestSuite) TestALoginPost() {
 	}
 	// 发起post请求，以表单形式传递参数
 	body, cookies := httptestutil.PostForm("/admin/login", suite.router, option)
-
 	if len(cookies) != 0 {
 		suite.cookies = cookies
 	}
+
 	assert.Contains(suite.T(), string(body), `"status":true`)
 }
 

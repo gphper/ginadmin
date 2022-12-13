@@ -25,7 +25,7 @@ require (
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mojocn/base64Captcha v1.3.5
 	github.com/onsi/gomega v1.16.0 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
+	github.com/pkg/errors v0.9.1
 	github.com/robfig/cron v1.2.0
 	github.com/spf13/cobra v1.6.1
 	github.com/stretchr/testify v1.8.0

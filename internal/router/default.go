@@ -6,12 +6,8 @@
 package router
 
 import (
-	"log"
 	"path/filepath"
 	"time"
-
-	"net/http"
-	"os"
 
 	"github.com/gphper/ginadmin/configs"
 	"github.com/gphper/ginadmin/internal/controllers"
@@ -20,76 +16,52 @@ import (
 	"github.com/gphper/ginadmin/pkg/loggers/medium"
 	"github.com/gphper/ginadmin/pkg/utils/strings"
 	"github.com/gphper/ginadmin/web"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
+
+	ginSwagger "github.com/swaggo/gin-swagger"
 
 	"github.com/gin-contrib/gzip"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 )
 
-var (
-	SwagHandler gin.HandlerFunc
-)
+func Init() (*Router, error) {
 
-func Init() *gin.Engine {
+	router := NewRouter(gin.Default())
 
-	router := gin.Default()
+	//设置404错误处理
+	router.SetRouteError(controllers.NewHandleController().Handle)
 
-	router.Use(gzip.Gzip(gzip.DefaultCompression))
-	router.NoRoute(controllers.NewHandleController().Handle)
-	router.NoMethod(controllers.NewHandleController().Handle)
-	//初始化路由相关信息
-	err := prep(router)
-	if err != nil {
-		log.Fatalf("start error route: %s", err.Error())
-	}
-	// router.Use(medium.GinLog(facade.NewZaplog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewZaplog("admin"), true))
-	// router.Use(medium.GinLog(facade.NewRedisLog("admin"), time.RFC3339, true), medium.RecoveryWithLog(facade.NewRedisLog("admin"), true))
-	router.Use(middleware.Trace())
-	router.Use(medium.GinLog(facade.NewLogger("admin"), time.RFC3339, false), medium.RecoveryWithLog(facade.NewLogger("admin"), true))
-	/*****admin路由定义******/
-	adminRouter := router.Group("/admin")
+	//设置全局中间件
+	router.SetGlobalMiddleware(middleware.Trace(), medium.GinLog(facade.NewLogger("admin"), time.RFC3339, false), medium.RecoveryWithLog(facade.NewLogger("admin"), true))
 
-	AdminRouter(adminRouter)
-
-	/***api路由定义****/
-	apiRouter := router.Group("/api")
-
-	ApiRouter(apiRouter)
-
-	return router
-}
-
-func prep(router *gin.Engine) error {
-	var (
-		uploadPath string
-		err        error
-	)
-
-	uploadPath = strings.JoinStr(configs.RootPath, string(filepath.Separator), "uploadfile")
-	if SwagHandler != nil {
-		router.GET("/swagger/*any", SwagHandler)
+	// 开发模式设置接口文档路由
+	if gin.Mode() == "debug" {
+		router.SetSwaagerHandle("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
 
-	router.HTMLRender, err = web.LoadTemplates()
+	// 设置模板解析函数
+	render, err := web.LoadTemplates()
 	if err != nil {
 
-		return err
+		return nil, err
 	}
+	router.SetHtmlRenderer(render)
 
-	router.StaticFS("/statics", web.StaticsFs)
+	//设置静态资源
+	router.SetStaticFile("/statics", web.StaticsFs)
 
-	_, err = os.Stat(uploadPath)
-
+	//设置上传附件
+	uploadPath := strings.JoinStr(configs.RootPath, string(filepath.Separator), "uploadfile")
+	err = router.SetUploadDir(uploadPath)
 	if err != nil {
-		if os.IsNotExist(err) {
-			err = os.Mkdir(uploadPath, os.ModeDir)
-			if err != nil {
-
-				return err
-			}
-		}
+		return nil, err
 	}
 
-	router.StaticFS("/uploadfile", http.Dir(uploadPath))
-
-	return nil
+	// 设置后台全局中间件
+	store := cookie.NewStore([]byte("1GdFRMs4fcWBvLXT"))
+	router.SetAdminRoute(NewAdminRouter(), gzip.Gzip(gzip.DefaultCompression), sessions.Sessions("mysession", store))
+	router.SetApiRoute(NewApiRouter())
+	return &router, nil
 }

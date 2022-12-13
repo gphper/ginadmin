@@ -11,13 +11,23 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ApiRouter(apiRouter *gin.RouterGroup) {
+type ApiRouter struct {
+	root *gin.RouterGroup
+}
 
+func NewApiRouter() *ApiRouter {
+	return &ApiRouter{}
+}
+
+func (ar ApiRouter) addRouter(con IApiController, router *gin.RouterGroup) {
+	con.Routes(router)
+}
+
+func (ar ApiRouter) AddRouters() {
 	{
-		apiUserRouter := apiRouter.Group("user")
+		apiUserRouter := ar.root.Group("user")
 		{
-			addApiController(user.NewUserController(), apiUserRouter)
-
+			ar.addRouter(user.NewUserController(), apiUserRouter)
 		}
 	}
 }

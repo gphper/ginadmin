@@ -13,66 +13,70 @@ import (
 	"github.com/gphper/ginadmin/internal/controllers/admin/upload"
 	"github.com/gphper/ginadmin/internal/middleware"
 
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 )
 
-func AdminRouter(adminRouter *gin.RouterGroup) {
+type AdminRouter struct {
+	root *gin.RouterGroup
+}
 
-	//设置后台用户权限中间件
-	store := cookie.NewStore([]byte("1GdFRMs4fcWBvLXT"))
-	adminRouter.Use(sessions.Sessions("mysession", store))
+func NewAdminRouter() *AdminRouter {
+	return &AdminRouter{}
+}
+
+func (ar AdminRouter) addRouter(con IAdminController, router *gin.RouterGroup) {
+	con.Routes(router)
+}
+
+func (ar AdminRouter) AddRouters() {
+
+	ar.addRouter(admin.NewLoginController(), ar.root)
+
+	adminHomeRouter := ar.root.Group("/home")
+	adminHomeRouter.Use(middleware.AdminUserAuth())
 	{
+		ar.addRouter(admin.NewHomeController(), adminHomeRouter)
+	}
 
-		addAdminController(admin.NewLoginController(), adminRouter)
-
-		adminHomeRouter := adminRouter.Group("/home")
-		adminHomeRouter.Use(middleware.AdminUserAuth())
+	adminSettingRouter := ar.root.Group("/setting")
+	adminSettingRouter.Use(middleware.AdminUserAuth(), middleware.AdminUserPrivs())
+	{
+		adminGroup := adminSettingRouter.Group("/admingroup")
 		{
-			addAdminController(admin.NewHomeController(), adminHomeRouter)
+			ar.addRouter(setting.NewAdminGroupController(), adminGroup)
 		}
 
-		adminSettingRouter := adminRouter.Group("/setting")
-		adminSettingRouter.Use(middleware.AdminUserAuth(), middleware.AdminUserPrivs())
+		adminUser := adminSettingRouter.Group("/adminuser")
 		{
-			adminGroup := adminSettingRouter.Group("/admingroup")
-			{
-				addAdminController(setting.NewAdminGroupController(), adminGroup)
-			}
-
-			adminUser := adminSettingRouter.Group("/adminuser")
-			{
-				addAdminController(setting.NewAdminUserController(), adminUser)
-			}
-
-			adminSystem := adminSettingRouter.Group("/system")
-			{
-				addAdminController(setting.NewAdminSystemController(), adminSystem)
-			}
-
+			ar.addRouter(setting.NewAdminUserController(), adminUser)
 		}
 
-		//Demo演示文件上传
-		adminDemoRouter := adminRouter.Group("/demo")
-		adminDemoRouter.Use(middleware.AdminUserAuth(), middleware.AdminUserPrivs())
+		adminSystem := adminSettingRouter.Group("/system")
 		{
-			addAdminController(demo.NewUploadController(), adminDemoRouter)
-		}
-
-		//Article文章管理
-		adminArticleRouter := adminRouter.Group("/article")
-		adminArticleRouter.Use(middleware.AdminUserAuth(), middleware.AdminUserPrivs())
-		{
-			addAdminController(article.NewArticleController(), adminArticleRouter)
-		}
-
-		//文件上传
-		adminUploadRouter := adminRouter.Group("/upload")
-		adminUploadRouter.Use(middleware.AdminUserAuth())
-		{
-			addAdminController(upload.NewUploadController(), adminUploadRouter)
+			ar.addRouter(setting.NewAdminSystemController(), adminSystem)
 		}
 
 	}
+
+	//Demo演示文件上传
+	adminDemoRouter := ar.root.Group("/demo")
+	adminDemoRouter.Use(middleware.AdminUserAuth(), middleware.AdminUserPrivs())
+	{
+		ar.addRouter(demo.NewUploadController(), adminDemoRouter)
+	}
+
+	//Article文章管理
+	adminArticleRouter := ar.root.Group("/article")
+	adminArticleRouter.Use(middleware.AdminUserAuth(), middleware.AdminUserPrivs())
+	{
+		ar.addRouter(article.NewArticleController(), adminArticleRouter)
+	}
+
+	//文件上传
+	adminUploadRouter := ar.root.Group("/upload")
+	adminUploadRouter.Use(middleware.AdminUserAuth())
+	{
+		ar.addRouter(upload.NewUploadController(), adminUploadRouter)
+	}
+
 }

@@ -14,9 +14,6 @@ import (
 	"github.com/gphper/ginadmin/internal/router"
 	"github.com/gphper/ginadmin/web"
 	"github.com/spf13/cobra"
-
-	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 var CmdRun = &cobra.Command{
@@ -32,13 +29,19 @@ var (
 
 func init() {
 	CmdRun.Flags().StringVarP(&configPath, "config path", "c", "", "config path")
-	CmdRun.Flags().StringVarP(&mode, "mode", "m", "dev", "dev or release")
+	CmdRun.Flags().StringVarP(&mode, "mode", "m", "debug", "debug or release")
 }
 
 func runFunction(cmd *cobra.Command, args []string) {
 	var err error
 
 	showLogo()
+
+	//判断是否编译线上版本
+	if mode == "release" {
+		gin.SetMode(gin.ReleaseMode)
+		gin.DefaultWriter = ioutil.Discard
+	}
 
 	err = configs.Init(configPath)
 	if err != nil {
@@ -61,17 +64,15 @@ func runFunction(cmd *cobra.Command, args []string) {
 	}
 
 	showPanel()
-	//判断是否编译线上版本
-	if mode == "release" {
-		gin.SetMode(gin.ReleaseMode)
-		gin.DefaultWriter = ioutil.Discard
-	} else {
-		router.SwagHandler = ginSwagger.WrapHandler(swaggerFiles.Handler)
+
+	r, err := router.Init()
+	if err != nil {
+		log.Fatalf("start fail:[Route Init] %s", err.Error())
 	}
 
-	app := internal.Application{
-		Route: router.Init(),
-	}
+	app := internal.Application{}
+
+	r.SetEngine(&app)
 	app.Run()
 }
 
