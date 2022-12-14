@@ -81,10 +81,7 @@ func Init() error {
 
 func GetModels() []interface{} {
 	return []interface{}{
-		&AdminUsers{},
-		&Article{},
-		&UploadType{},
-		&User{},
+		&AdminUsers{}, &Article{}, &UploadType{}, &User{},
 	}
 }
 

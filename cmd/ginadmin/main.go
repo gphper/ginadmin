@@ -7,6 +7,7 @@ package main
 
 import (
 	"github.com/gphper/ginadmin/cmd/cli/db"
+	"github.com/gphper/ginadmin/cmd/cli/file"
 	"github.com/gphper/ginadmin/cmd/cli/run"
 	_ "github.com/gphper/ginadmin/pkg/cron"
 	"github.com/spf13/cobra"
@@ -30,7 +31,7 @@ var (
 func main() {
 
 	var rootCmd = &cobra.Command{Use: "ginadmin"}
-	rootCmd.AddCommand(run.CmdRun, db.CmdDb)
+	rootCmd.AddCommand(run.CmdRun, db.CmdDb, file.CmdFile)
 	rootCmd.Execute()
 
 }

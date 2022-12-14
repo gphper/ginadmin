@@ -40,23 +40,26 @@ func Encryption(password string, salt string) string {
 /**
 *首字母大写
 **/
-func StrFirstToUpper(str string) (string, string) {
-	temp := strings.Split(str, "_")
+func StrFirstToUpper(str string) (string, string, string) {
+
 	var upperStr string
 	var firstStr string
+	var secondUp string
+	temp := strings.Split(str, "_")
+
 	for y := 0; y < len(temp); y++ {
 		vv := []rune(temp[y])
-		for i := 0; i < len(vv); i++ {
-			if i == 0 {
-				firstStr += string(vv[i])
-				vv[i] -= 32
-				upperStr += string(vv[i])
-			} else {
-				upperStr += string(vv[i])
-			}
+
+		firstStr += string(vv[0])
+		vv[0] -= 32
+		upperStr += string(vv)
+		if y == 0 {
+			secondUp += temp[0]
+		} else {
+			secondUp += string(vv)
 		}
 	}
-	return upperStr, firstStr
+	return upperStr, firstStr, secondUp
 }
 
 /*
