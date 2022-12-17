@@ -1,3 +1,6 @@
+# 最新文档查看
+> https://gphper.github.io/ginadmindoc/#/
+
 # GinAdmin
 
 这个项目是以Gin框架为基础搭建的后台管理平台，虽然很多人都认为go是用来开发高性能服务端项目的，但是也难免有要做web管理端的需求，总不能再使用别的语言来开发吧。所以整合出了GinAdmin项目，请大家多提意见指正！欢迎 star ⭐⭐
