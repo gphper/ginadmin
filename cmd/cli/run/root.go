@@ -12,6 +12,7 @@ import (
 	"github.com/gphper/ginadmin/internal/models"
 	"github.com/gphper/ginadmin/internal/redis"
 	"github.com/gphper/ginadmin/internal/router"
+	"github.com/gphper/ginadmin/pkg/cron"
 	"github.com/gphper/ginadmin/web"
 	"github.com/spf13/cobra"
 )
@@ -24,12 +25,14 @@ var CmdRun = &cobra.Command{
 
 var (
 	configPath string
+	crontab    string
 	mode       string
 )
 
 func init() {
 	CmdRun.Flags().StringVarP(&configPath, "config path", "c", "", "config path")
 	CmdRun.Flags().StringVarP(&mode, "mode", "m", "debug", "debug or release")
+	CmdRun.Flags().StringVarP(&crontab, "cron", "t", "open", "scheduled task control open or close")
 }
 
 func runFunction(cmd *cobra.Command, args []string) {
@@ -41,6 +44,11 @@ func runFunction(cmd *cobra.Command, args []string) {
 	if mode == "release" {
 		gin.SetMode(gin.ReleaseMode)
 		gin.DefaultWriter = ioutil.Discard
+	}
+
+	//定时任务
+	if crontab == "open" {
+		cron.Init()
 	}
 
 	err = configs.Init(configPath)

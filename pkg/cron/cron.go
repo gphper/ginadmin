@@ -9,7 +9,7 @@ import (
 	"github.com/robfig/cron"
 )
 
-func init() {
+func Init() {
 	crontab := cron.New()
 	// crontab.AddFunc("0 0 23 * *", WriteLog)
 	crontab.Start()
