@@ -10,9 +10,9 @@ import (
 	_ "github.com/gphper/ginadmin/docs"
 	"github.com/gphper/ginadmin/internal"
 	"github.com/gphper/ginadmin/internal/models"
-	"github.com/gphper/ginadmin/internal/redis"
 	"github.com/gphper/ginadmin/internal/router"
 	"github.com/gphper/ginadmin/pkg/cron"
+	"github.com/gphper/ginadmin/pkg/redisx"
 	"github.com/gphper/ginadmin/web"
 	"github.com/spf13/cobra"
 )
@@ -61,7 +61,7 @@ func runFunction(cmd *cobra.Command, args []string) {
 		log.Fatalf("start fail:[Web Init] %s", err.Error())
 	}
 
-	err = redis.Init()
+	err = redisx.Init()
 	if err != nil {
 		log.Fatalf("start fail:[Redis Init] %s", err.Error())
 	}

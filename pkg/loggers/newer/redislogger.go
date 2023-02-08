@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"time"
 
-	globalRedis "github.com/gphper/ginadmin/internal/redis"
+	"github.com/gphper/ginadmin/pkg/redisx"
 
 	"github.com/go-redis/redis"
 )
@@ -23,7 +23,7 @@ type RedisLogger struct {
 func NewRedisLogger(path string) *RedisLogger {
 
 	return &RedisLogger{
-		Client: globalRedis.RedisClient,
+		Client: redisx.GetRedisClient(),
 		Path:   path,
 	}
 }

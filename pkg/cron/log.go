@@ -14,7 +14,7 @@ import (
 	"time"
 
 	"github.com/gphper/ginadmin/configs"
-	globalRedis "github.com/gphper/ginadmin/internal/redis"
+	"github.com/gphper/ginadmin/pkg/redisx"
 	"github.com/gphper/ginadmin/pkg/utils/filesystem"
 	gstrings "github.com/gphper/ginadmin/pkg/utils/strings"
 )
@@ -29,7 +29,7 @@ func WriteLog() {
 	date := time.Now().AddDate(0, 0, -1).Local().Format("20060102")
 
 	pattern := "logs:" + date + ":*"
-	keys, _ := globalRedis.RedisClient.Keys(pattern).Result()
+	keys, _ := redisx.GetRedisClient().Keys(pattern).Result()
 
 	for _, key := range keys {
 		path := strings.ReplaceAll(key, ":", "/")
@@ -54,7 +54,7 @@ func writeFile(key string, file io.Writer, wg *sync.WaitGroup) {
 	var end int64 = 2
 	for {
 
-		logs, _ := globalRedis.RedisClient.LRange(key, start, end).Result()
+		logs, _ := redisx.GetRedisClient().LRange(key, start, end).Result()
 		fmt.Println(logs)
 		if len(logs) > 0 {
 			w := bufio.NewWriter(file)
@@ -67,7 +67,7 @@ func writeFile(key string, file io.Writer, wg *sync.WaitGroup) {
 			finishErr := w.Flush()
 			if finishErr == nil {
 				//删除redis中已写完数据
-				globalRedis.RedisClient.LTrim(key, end+1, -1).Result()
+				redisx.GetRedisClient().LTrim(key, end+1, -1).Result()
 			}
 		} else {
 			break

@@ -19,8 +19,8 @@ import (
 
 	"github.com/gphper/ginadmin/configs"
 	"github.com/gphper/ginadmin/internal/controllers/admin"
-	"github.com/gphper/ginadmin/internal/redis"
 	"github.com/gphper/ginadmin/pkg/loggers"
+	"github.com/gphper/ginadmin/pkg/redisx"
 	"github.com/gphper/ginadmin/pkg/utils/filesystem"
 	gstrings "github.com/gphper/ginadmin/pkg/utils/strings"
 
@@ -192,7 +192,7 @@ func (con adminSystemController) indexRedis(c *gin.Context) {
 
 	path := "logs"
 
-	dateSlice, err := redis.RedisClient.Keys("logs:*").Result()
+	dateSlice, err := redisx.GetRedisClient().Keys("logs:*").Result()
 
 	ctx, _ := c.Get("ctx")
 
@@ -235,7 +235,7 @@ func (con adminSystemController) getDirRedis(c *gin.Context) {
 
 	pattern := pathSlice[0] + ":*"
 
-	dateSlice, err := redis.RedisClient.Keys(pattern).Result()
+	dateSlice, err := redisx.GetRedisClient().Keys(pattern).Result()
 
 	ctx, _ := c.Get("ctx")
 
@@ -292,9 +292,9 @@ func (con adminSystemController) viewRedis(c *gin.Context) {
 
 	pathSlice := strings.Split(filePath, "_")
 
-	filecontents, _ := redis.RedisClient.LRange(pathSlice[0], int64(startLine-1), int64(endLine-1)).Result()
+	filecontents, _ := redisx.GetRedisClient().LRange(pathSlice[0], int64(startLine-1), int64(endLine-1)).Result()
 
-	line, _ := redis.RedisClient.LLen(pathSlice[0]).Result()
+	line, _ := redisx.GetRedisClient().LLen(pathSlice[0]).Result()
 
 	con.Html(c, http.StatusOK, "setting/systemlog_viewredis.html", gin.H{
 		"file_path":    filePath,

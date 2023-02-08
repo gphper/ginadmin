@@ -6,7 +6,7 @@ import (
 
 	"github.com/gphper/ginadmin/configs"
 	"github.com/gphper/ginadmin/internal/models"
-	"github.com/gphper/ginadmin/internal/redis"
+	"github.com/gphper/ginadmin/pkg/redisx"
 
 	"github.com/spf13/cobra"
 )
@@ -34,7 +34,7 @@ func seedFunc(cmd *cobra.Command, args []string) {
 		log.Fatalf("start fail:[Config Init] %s", err.Error())
 	}
 
-	err = redis.Init()
+	err = redisx.Init()
 	if err != nil {
 		log.Fatalf("start fail:[Redis Init] %s", err.Error())
 	}
