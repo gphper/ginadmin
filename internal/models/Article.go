@@ -8,11 +8,12 @@ package models
 import (
 	"time"
 
+	"github.com/gphper/ginadmin/pkg/mysqlx"
 	"gorm.io/gorm"
 )
 
 type Article struct {
-	BaseModle
+	mysqlx.BaseModle
 	ArticleId uint   `gorm:"primary_key;auto_increment"`
 	Title     string `gorm:"size:100;comment:'标题'"`
 	Desc      string `gorm:"size:100;comment:'描述'"`

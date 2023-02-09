@@ -8,12 +8,13 @@ package models
 import (
 	"time"
 
+	"github.com/gphper/ginadmin/pkg/mysqlx"
 	"github.com/gphper/ginadmin/pkg/utils/strings"
 	"gorm.io/gorm"
 )
 
 type AdminUsers struct {
-	BaseModle
+	mysqlx.BaseModle
 	Uid       uint   `gorm:"primary_key;auto_increment"`
 	GroupName string `gorm:"size:20;comment:'用户组名称'"`
 	Username  string `gorm:"size:100;comment:'用户名'"`

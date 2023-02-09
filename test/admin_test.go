@@ -12,8 +12,8 @@ import (
 	"testing"
 
 	"github.com/gphper/ginadmin/configs"
-	"github.com/gphper/ginadmin/internal/models"
 	"github.com/gphper/ginadmin/internal/router"
+	"github.com/gphper/ginadmin/pkg/mysqlx"
 	"github.com/gphper/ginadmin/pkg/redisx"
 	"github.com/gphper/ginadmin/pkg/utils/httptestutil"
 	"github.com/gphper/ginadmin/web"
@@ -115,7 +115,7 @@ func TestExampleTestSuite(t *testing.T) {
 		log.Fatalf("start fail:[Redis Init] %s", err.Error())
 	}
 
-	err = models.Init()
+	err = mysqlx.Init()
 	if err != nil {
 		log.Fatalf("start fail:[Mysql Init] %s", err.Error())
 	}

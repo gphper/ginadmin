@@ -87,6 +87,10 @@ func (Base BaseController) ErrorHtml(c *gin.Context, err error) {
 
 func (Base BaseController) Html(c *gin.Context, code int, name string, data gin.H) {
 
+	if data == nil {
+		data = gin.H{}
+	}
+
 	uid, _ := c.Get("uid")
 	username, _ := c.Get("username")
 	groupname, _ := c.Get("groupname")

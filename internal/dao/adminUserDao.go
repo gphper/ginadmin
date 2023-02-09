@@ -11,6 +11,7 @@ import (
 	"sync"
 
 	"github.com/gphper/ginadmin/internal/models"
+	"github.com/gphper/ginadmin/pkg/mysqlx"
 
 	"gorm.io/gorm"
 )
@@ -26,7 +27,7 @@ var (
 
 func NewAdminUserDao() *AdminUserDao {
 	onceAdminUserDao.Do(func() {
-		instanceAdminUser = &AdminUserDao{DB: models.GetDB(&models.AdminUsers{})}
+		instanceAdminUser = &AdminUserDao{DB: mysqlx.GetDB(&models.AdminUsers{})}
 	})
 	return instanceAdminUser
 }

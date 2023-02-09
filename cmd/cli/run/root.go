@@ -9,9 +9,9 @@ import (
 	"github.com/gphper/ginadmin/configs"
 	_ "github.com/gphper/ginadmin/docs"
 	"github.com/gphper/ginadmin/internal"
-	"github.com/gphper/ginadmin/internal/models"
 	"github.com/gphper/ginadmin/internal/router"
 	"github.com/gphper/ginadmin/pkg/cron"
+	"github.com/gphper/ginadmin/pkg/mysqlx"
 	"github.com/gphper/ginadmin/pkg/redisx"
 	"github.com/gphper/ginadmin/web"
 	"github.com/spf13/cobra"
@@ -66,7 +66,7 @@ func runFunction(cmd *cobra.Command, args []string) {
 		log.Fatalf("start fail:[Redis Init] %s", err.Error())
 	}
 
-	err = models.Init()
+	err = mysqlx.Init()
 	if err != nil {
 		log.Fatalf("start fail:[Mysql Init] %s", err.Error())
 	}

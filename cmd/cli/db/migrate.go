@@ -8,6 +8,7 @@ import (
 
 	"github.com/gphper/ginadmin/configs"
 	"github.com/gphper/ginadmin/internal/models"
+	"github.com/gphper/ginadmin/pkg/mysqlx"
 	"github.com/gphper/ginadmin/pkg/redisx"
 
 	"github.com/spf13/cobra"
@@ -42,7 +43,7 @@ func migrateFunc(cmd *cobra.Command, args []string) {
 		log.Fatalf("start fail:[Redis Init] %s", err.Error())
 	}
 
-	err = models.Init()
+	err = mysqlx.Init()
 	if err != nil {
 		log.Fatalf("start fail:[Mysql Init] %s", err.Error())
 	}
@@ -58,9 +59,9 @@ func migrateFunc(cmd *cobra.Command, args []string) {
 	}
 
 	for _, v := range models.GetModels() {
-		db := models.GetDB(v.(models.GaTabler))
+		db := mysqlx.GetDB(v.(mysqlx.GaTabler))
 		if tables != "" {
-			if _, ok := tableMap[v.(models.GaTabler).TableName()]; !ok {
+			if _, ok := tableMap[v.(mysqlx.GaTabler).TableName()]; !ok {
 				continue
 			}
 		}

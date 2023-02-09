@@ -37,7 +37,7 @@
             <div class="form-group col-md-12">
                 <button type="button" onclick="upload_resource('封面图上传','UP_COMMON','cover_img',1)" class="btn btn-sm btn-w-md btn-info">封面图上传</button>
                 <div id="cover_img">
-                  {{if isset .article.CoverImg}}
+                  {{if .article.CoverImg}}
                   <div class="img-div"><img src="/{{ .article.CoverImg }}"><span onclick="del_img($(this))">×</span><input type="hidden" name="cover_img" value="{{.article.CoverImg}}"></div>
                   {{end}}
                 </div>

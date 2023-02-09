@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/gphper/ginadmin/internal/models"
+	"github.com/gphper/ginadmin/pkg/mysqlx"
 
 	"gorm.io/gorm"
 )
@@ -22,7 +23,7 @@ var onceUtd sync.Once
 
 func NewUploadTypeDao() *uploadTypeDao {
 	onceUtd.Do(func() {
-		insUtd = &uploadTypeDao{DB: models.GetDB(&models.UploadType{})}
+		insUtd = &uploadTypeDao{DB: mysqlx.GetDB(&models.UploadType{})}
 	})
 	return insUtd
 }

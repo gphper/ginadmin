@@ -8,11 +8,12 @@ package models
 import (
 	"time"
 
+	"github.com/gphper/ginadmin/pkg/mysqlx"
 	"gorm.io/gorm"
 )
 
 type User struct {
-	BaseModle
+	mysqlx.BaseModle
 	Uid          uint       `gorm:"primary_key;auto_increment"`
 	Nickname     string     `json:"nickname" form:"nickanme"`
 	Email        string     `json:"email" form:"email"`

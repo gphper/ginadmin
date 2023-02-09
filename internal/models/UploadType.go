@@ -5,10 +5,13 @@
  */
 package models
 
-import "gorm.io/gorm"
+import (
+	"github.com/gphper/ginadmin/pkg/mysqlx"
+	"gorm.io/gorm"
+)
 
 type UploadType struct {
-	BaseModle
+	mysqlx.BaseModle
 	Id          uint   `gorm:"primary_key;auto_increment"`
 	TypeName    string `gorm:"size:100;comment:'类型名称'"`
 	StoragePath string `gorm:"size:100;comment:'存储路径'"`

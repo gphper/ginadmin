@@ -10,6 +10,7 @@ import (
 	"sync"
 
 	"github.com/gphper/ginadmin/internal/models"
+	"github.com/gphper/ginadmin/pkg/mysqlx"
 
 	"gorm.io/gorm"
 )
@@ -25,7 +26,7 @@ var (
 
 func NewArticleDao() *ArticleDao {
 	onceArticleDao.Do(func() {
-		instanceArticle = &ArticleDao{DB: models.GetDB(&models.Article{})}
+		instanceArticle = &ArticleDao{DB: mysqlx.GetDB(&models.Article{})}
 	})
 	return instanceArticle
 }

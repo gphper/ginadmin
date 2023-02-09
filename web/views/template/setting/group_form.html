@@ -31,7 +31,7 @@
               <input type="hidden" name="groupid" value="{{.id}}">
               <div class="form-group">
                 <label for="example-text-input">角色名称</label>
-                {{if isset $.id}}
+                {{if $.id}}
                 <input class="form-control" type="text" name="groupname" disabled placeholder="角色名称" value="{{.id}}">
                 <input type="hidden" name="groupname" value="{{.id}}">
                 {{else}}

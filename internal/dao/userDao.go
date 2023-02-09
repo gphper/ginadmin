@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/gphper/ginadmin/internal/models"
+	"github.com/gphper/ginadmin/pkg/mysqlx"
 
 	"gorm.io/gorm"
 )
@@ -24,7 +25,7 @@ var (
 
 func NewUserDao() *UserDao {
 	onceUserDao.Do(func() {
-		instanceUser = &UserDao{DB: models.GetDB(&models.Article{})}
+		instanceUser = &UserDao{DB: mysqlx.GetDB(&models.Article{})}
 	})
 	return instanceUser
 }

@@ -3,7 +3,7 @@ package dao
 import (
 	"sync"
 
-	"github.com/gphper/ginadmin/internal/models"
+	"github.com/gphper/ginadmin/pkg/mysqlx"
 
 	"gorm.io/gorm"
 )
@@ -19,7 +19,7 @@ var (
 
 func NewAdminGroupDao() *AdminGroupDao {
 	onceAdminGroup.Do(func() {
-		instanceAdminGroup = &AdminGroupDao{DB: models.GetDB(&models.BaseModle{ConnName: "default"})}
+		instanceAdminGroup = &AdminGroupDao{DB: mysqlx.GetDB(&mysqlx.BaseModle{ConnName: "default"})}
 	})
 	return instanceAdminGroup
 }
