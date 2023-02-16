@@ -46,7 +46,10 @@ func getTmpDir() string {
 
 	fmt.Println("777777777", dir)
 
-	res, _ := filepath.EvalSymlinks(dir)
+	res, err := filepath.EvalSymlinks(dir)
+	if err != nil {
+		fmt.Println("888888888", err.Error())
+	}
 	fmt.Println("888888888", res)
 	return res
 }
