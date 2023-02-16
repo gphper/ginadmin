@@ -22,7 +22,8 @@ import (
 */
 func RootPath() (path string, err error) {
 	path = getCurrentAbPathByExecutable()
-	if strings.Contains(path, getTmpDir()) {
+	tmpDir := getTmpDir()
+	if tmpDir != "" && strings.Contains(path, tmpDir) {
 		path = getCurrentAbPathByCaller()
 	}
 	path = strings.Replace(path, "pkg/utils/filesystem", "", 1)
