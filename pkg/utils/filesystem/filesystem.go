@@ -22,11 +22,15 @@ import (
 */
 func RootPath() (path string, err error) {
 	path = getCurrentAbPathByExecutable()
+	fmt.Println("333333333333", path)
 	tmpDir := getTmpDir()
+	fmt.Println("44444444444", path)
 	if tmpDir != "" && strings.Contains(path, tmpDir) {
 		path = getCurrentAbPathByCaller()
+		fmt.Println("555555555555", path)
 	}
 	path = strings.Replace(path, "pkg/utils/filesystem", "", 1)
+	fmt.Println("66666666666666", path)
 	return
 }
 
@@ -40,7 +44,10 @@ func getTmpDir() string {
 		dir = "tmp"
 	}
 
+	fmt.Println("777777777", dir)
+
 	res, _ := filepath.EvalSymlinks(dir)
+	fmt.Println("888888888", res)
 	return res
 }
 
@@ -50,7 +57,9 @@ func getCurrentAbPathByExecutable() string {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("1111111111", exePath)
 	res, _ := filepath.EvalSymlinks(filepath.Dir(exePath))
+	fmt.Println("222222222222", res)
 	return res
 }
 
