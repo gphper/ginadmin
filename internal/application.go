@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/gphper/ginadmin/configs"
+	"github.com/gphper/ginadmin/internal/cron"
 
 	"github.com/gin-gonic/gin"
 )
@@ -40,6 +41,12 @@ func (app Application) Run() {
 	signal.Notify(quit, os.Interrupt)
 
 	<-quit
+
+	log.Println("Cron Close ...")
+	openCron, cronCloseCtx := cron.GraceClose()
+	if openCron {
+		<-cronCloseCtx.Done()
+	}
 
 	log.Println("Shutdown Server ...")
 
