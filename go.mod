@@ -34,8 +34,7 @@ require (
 	github.com/ugorji/go v1.2.7 // indirect
 	go.uber.org/zap v1.17.0
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
-	golang.org/x/image v0.0.0-20210628002857-a66eb6448b8d // indirect
-	golang.org/x/tools v0.3.0 // indirect
+	golang.org/x/image v0.6.0 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0
 	gorm.io/driver/mysql v1.1.0
