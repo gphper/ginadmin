@@ -9,6 +9,7 @@ import (
 	"github.com/gphper/ginadmin/cmd/cli/db"
 	"github.com/gphper/ginadmin/cmd/cli/file"
 	"github.com/gphper/ginadmin/cmd/cli/run"
+	"github.com/gphper/ginadmin/cmd/cli/version"
 	"github.com/spf13/cobra"
 )
 
@@ -30,7 +31,7 @@ var (
 func main() {
 
 	var rootCmd = &cobra.Command{Use: "ginadmin"}
-	rootCmd.AddCommand(run.CmdRun, db.CmdDb, file.CmdFile)
+	rootCmd.AddCommand(run.CmdRun, db.CmdDb, file.CmdFile, version.CmdVersion)
 	rootCmd.Execute()
 
 }
