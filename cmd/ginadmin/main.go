@@ -6,6 +6,10 @@
 package main
 
 import (
+	"fmt"
+	"os"
+	"time"
+
 	"github.com/gphper/ginadmin/cmd/cli/db"
 	"github.com/gphper/ginadmin/cmd/cli/file"
 	"github.com/gphper/ginadmin/cmd/cli/run"
@@ -29,6 +33,14 @@ var (
 // @host localhost:20011
 // @basepath /api
 func main() {
+
+	// 设置时区
+	local, err := time.LoadLocation("Asia/Shanghai")
+	if err != nil {
+		fmt.Printf("set location fail: %s", err.Error())
+		os.Exit(1)
+	}
+	time.Local = local
 
 	var rootCmd = &cobra.Command{Use: "ginadmin"}
 	rootCmd.AddCommand(run.CmdRun, db.CmdDb, file.CmdFile, version.CmdVersion)
