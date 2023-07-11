@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/gphper/ginadmin/configs"
@@ -36,9 +37,8 @@ func (app Application) Run() {
 		}
 	}()
 
-	quit := make(chan os.Signal)
-
-	signal.Notify(quit, os.Interrupt)
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 
 	<-quit
 
