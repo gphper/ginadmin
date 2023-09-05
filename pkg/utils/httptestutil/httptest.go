@@ -12,7 +12,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/gphper/ginadmin/internal/router"
+	"github.com/gphper/ginadmin/pkg/utils/httptestutil/router"
 )
 
 type OptionValue struct {

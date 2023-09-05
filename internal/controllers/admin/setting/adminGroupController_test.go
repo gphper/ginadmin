@@ -3,7 +3,7 @@
  * @Author: gphper
  * @Date: 2022-03-31 19:59:19
  */
-package test
+package setting
 
 import (
 	"log"
@@ -12,10 +12,11 @@ import (
 	"testing"
 
 	"github.com/gphper/ginadmin/configs"
-	"github.com/gphper/ginadmin/internal/router"
+	"github.com/gphper/ginadmin/internal/controllers/admin"
 	"github.com/gphper/ginadmin/pkg/mysqlx"
 	"github.com/gphper/ginadmin/pkg/redisx"
 	"github.com/gphper/ginadmin/pkg/utils/httptestutil"
+	"github.com/gphper/ginadmin/pkg/utils/httptestutil/router"
 	"github.com/gphper/ginadmin/web"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
@@ -33,6 +34,9 @@ func (suite *AdminTestSuite) SetupSuite() {
 	if err != nil {
 		log.Fatalf("router init fail: %s", err)
 	}
+
+	router.SetAdminRoute("/admin", admin.NewLoginController())
+	router.SetAdminRoute("/admin/setting/admingroup", NewAdminGroupController())
 
 	suite.router = router
 }
