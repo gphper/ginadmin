@@ -43,13 +43,15 @@ func (zlog ZapLog) Info(ctx context.Context, msg string, info map[string]string)
 }
 
 func (zlog ZapLog) Error(ctx context.Context, msg string, info map[string]string) {
-	zapSlice := make([]zap.Field, len(info))
+
 	var fieldNum int
 
 	value := ctx.Value("requestId")
 	if value != nil {
 		info["request_id"] = value.(string)
 	}
+
+	zapSlice := make([]zap.Field, len(info))
 
 	for k, v := range info {
 		zapSlice[fieldNum] = zap.String(k, v)
