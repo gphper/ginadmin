@@ -6,6 +6,8 @@
 package router
 
 import (
+	"crypto/rand"
+	"os"
 	"path/filepath"
 	"time"
 
@@ -25,6 +27,21 @@ import (
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 )
+
+// sessionKey returns the key used to sign session cookies. It is read from the
+// GINADMIN_SESSION_KEY environment variable so the signing secret is never
+// hardcoded. When the variable is not set a random key is generated at startup.
+func sessionKey() []byte {
+	if v := os.Getenv("GINADMIN_SESSION_KEY"); v != "" {
+		return []byte(v)
+	}
+
+	key := make([]byte, 32)
+	if _, err := rand.Read(key); err != nil {
+		panic(err)
+	}
+	return key
+}
 
 func Init() (*Router, error) {
 
@@ -60,7 +77,7 @@ func Init() (*Router, error) {
 	}
 
 	// 设置后台全局中间件
-	store := cookie.NewStore([]byte("1GdFRMs4fcWBvLXT"))
+	store := cookie.NewStore(sessionKey())
 	router.SetAdminRoute(NewAdminRouter(), gzip.Gzip(gzip.DefaultCompression), sessions.Sessions("mysession", store))
 	router.SetApiRoute(NewApiRouter())
 	return &router, nil
